@@ -15,24 +15,24 @@ public partial class KaluDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Kategorium> Kategoria { get; set; }
+    public virtual DbSet<Kategoria> Kategoriat { get; set; }
 
-    public virtual DbSet<Käyttäjä> Käyttäjäs { get; set; }
+    public virtual DbSet<Käyttäjä> Käyttäjät { get; set; }
 
-    public virtual DbSet<Rooli> Roolis { get; set; }
+    public virtual DbSet<Rooli> Roolit { get; set; }
 
-    public virtual DbSet<Status> Statuses { get; set; }
+    public virtual DbSet<Status> Statukset { get; set; }
 
-    public virtual DbSet<Tapahtuma> Tapahtumas { get; set; }
+    public virtual DbSet<Tapahtuma> Tapahtumat { get; set; }
 
-    public virtual DbSet<Toimipiste> Toimipistes { get; set; }
+    public virtual DbSet<Toimipiste> Toimipisteet { get; set; }
 
-    public virtual DbSet<Tuote> Tuotes { get; set; }
+    public virtual DbSet<Tuote> Tuotteet { get; set; }
 
     // Poistin OnConfiguring metodin, dbContextin Konfiguraatio tapahtuu nyt program.cs tiedostossa.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Kategorium>(entity =>
+        modelBuilder.Entity<Kategoria>(entity =>
         {
             entity.HasKey(e => e.KategoriaId);
 
