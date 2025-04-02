@@ -9,6 +9,9 @@ builder.Services.AddDbContext<KaluDbContext>(options => options.UseSqlServer(con
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Lis‰sin t‰m‰n paketin niin pystyy p‰ivitt‰‰ sivun ilman ett‰ tarvii rebuildata
 
+// Add services to the container.
+builder.Services.AddControllersWithViews(); //
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -34,6 +34,8 @@ public partial class KaluDbContext : DbContext
     {
         modelBuilder.Entity<Kategoria>(entity =>
         {
+            entity.ToTable("Kategoria");
+
             entity.HasKey(e => e.KategoriaId);
 
             entity.Property(e => e.KategoriaNimi)
