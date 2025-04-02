@@ -1,4 +1,10 @@
+using KalustoLuetteloSovellus.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // T‰m‰ hakee connection stringin appsettings.jsonista
+builder.Services.AddDbContext<KaluDbContext>(options => options.UseSqlServer(connectionString)); // Lis‰‰ dbcontextin meid‰n azure sql serveriin i.e yhdist‰‰ sovelluksen azuren databaseen
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Lis‰sin t‰m‰n paketin niin pystyy p‰ivitt‰‰ sivun ilman ett‰ tarvii rebuildata
