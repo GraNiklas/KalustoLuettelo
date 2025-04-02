@@ -9,22 +9,21 @@ using KalustoLuetteloSovellus.Models;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
-    public class StatusController : Controller
+    public class RoolitController : Controller
     {
         private readonly KaluDbContext _context;
-
-        public StatusController(KaluDbContext context)
+        public RoolitController(KaluDbContext context)
         {
             _context = context;
         }
 
-        // GET: Status
+        // GET: Rooli
         public async Task<IActionResult> Index()
         {
-        return View(await _context.Statukset.ToListAsync());
+        return View(await _context.Roolit.ToListAsync());
         }
 
-        // GET: Status/Details/5
+        // GET: Rooli/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,35 +31,35 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            var status = await _context.Statukset
-                .FirstOrDefaultAsync(m => m.StatusId == id);
-            if (status == null)
+            var rooli = await _context.Roolit
+                .FirstOrDefaultAsync(m => m.RooliId == id);
+            if (rooli == null)
             {
                 return NotFound();
             }
 
-            return View(status);
+            return View(rooli);
         }
 
-        // GET: Status/Create
+        // GET: Rooli/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Status/Create
+        // POST: Rooli/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StatusId,StatusNimi")] Status status)
+        public async Task<IActionResult> Create([Bind("RooliId,RooliNimi")] Rooli rooli)
         {
-                _context.Add(status);
+                _context.Add(rooli);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
         }
 
-        // GET: Status/Edit/5
+        // GET: Rooli/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -68,22 +67,22 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            var status = await _context.Statukset.FindAsync(id);
-            if (status == null)
+            var rooli = await _context.Roolit.FindAsync(id);
+            if (rooli == null)
             {
                 return NotFound();
             }
-            return View(status);
+            return View(rooli);
         }
 
-        // POST: Status/Edit/5
+        // POST: Rooli/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StatusId,StatusNimi")] Status status)
+        public async Task<IActionResult> Edit(int id, [Bind("RooliId,RooliNimi")] Rooli rooli)
         {
-            if (id != status.StatusId)
+            if (id != rooli.RooliId)
             {
                 return NotFound();
             }
@@ -92,12 +91,12 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 try
                 {
-                    _context.Update(status);
+                    _context.Update(rooli);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StatusExists(status.StatusId))
+                    if (!RooliExists(rooli.RooliId))
                     {
                         return NotFound();
                     }
@@ -108,10 +107,10 @@ namespace KalustoLuetteloSovellus.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(status);
+            return View(rooli);
         }
 
-        // GET: Status/Delete/5
+        // GET: Rooli/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -119,34 +118,34 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            var status = await _context.Statukset
-                .FirstOrDefaultAsync(m => m.StatusId == id);
-            if (status == null)
+            var rooli = await _context.Roolit
+                .FirstOrDefaultAsync(m => m.RooliId == id);
+            if (rooli == null)
             {
                 return NotFound();
             }
 
-            return View(status);
+            return View(rooli);
         }
 
-        // POST: Status/Delete/5
+        // POST: Rooli/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var status = await _context.Statukset.FindAsync(id);
-            if (status != null)
+            var rooli = await _context.Roolit.FindAsync(id);
+            if (rooli != null)
             {
-                _context.Statukset.Remove(status);
+                _context.Roolit.Remove(rooli);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StatusExists(int id)
+        private bool RooliExists(int id)
         {
-            return _context.Statukset.Any(e => e.StatusId == id);
+            return _context.Roolit.Any(e => e.RooliId == id);
         }
     }
 }
