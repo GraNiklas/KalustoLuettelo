@@ -11,12 +11,17 @@ namespace KalustoLuetteloSovellus.Controllers
 {
     public class StatusController : Controller
     {
-        private readonly KaluDbContext _context = new KaluDbContext();
+        private readonly KaluDbContext _context;
+
+        public StatusController(KaluDbContext context)
+        {
+            _context = context;
+        }
 
         // GET: Status
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Statukset.ToListAsync());
+        return View(await _context.Statukset.ToListAsync());
         }
 
         // GET: Status/Details/5

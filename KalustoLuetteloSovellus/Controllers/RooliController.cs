@@ -11,12 +11,16 @@ namespace KalustoLuetteloSovellus.Controllers
 {
     public class RooliController : Controller
     {
-        private readonly KaluDbContext _context = new KaluDbContext();
+        private readonly KaluDbContext _context;
+        public RooliController(KaluDbContext context)
+        {
+            _context = context;
+        }
 
         // GET: Rooli
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Roolit.ToListAsync());
+        return View(await _context.Roolit.ToListAsync());
         }
 
         // GET: Rooli/Details/5
