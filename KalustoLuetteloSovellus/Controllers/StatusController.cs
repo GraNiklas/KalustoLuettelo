@@ -11,12 +11,7 @@ namespace KalustoLuetteloSovellus.Controllers
 {
     public class StatusController : Controller
     {
-        private readonly KaluDbContext _context;
-
-        public StatusController(KaluDbContext context)
-        {
-            _context = context;
-        }
+        private readonly KaluDbContext _context = new KaluDbContext();
 
         // GET: Status
         public async Task<IActionResult> Index()
@@ -55,13 +50,9 @@ namespace KalustoLuetteloSovellus.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StatusId,StatusNimi")] Status status)
         {
-            if (ModelState.IsValid)
-            {
                 _context.Add(status);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(status);
         }
 
         // GET: Status/Edit/5

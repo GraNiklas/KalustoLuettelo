@@ -11,12 +11,7 @@ namespace KalustoLuetteloSovellus.Controllers
 {
     public class RooliController : Controller
     {
-        private readonly KaluDbContext _context;
-
-        public RooliController(KaluDbContext context)
-        {
-            _context = context;
-        }
+        private readonly KaluDbContext _context = new KaluDbContext();
 
         // GET: Rooli
         public async Task<IActionResult> Index()
@@ -55,13 +50,9 @@ namespace KalustoLuetteloSovellus.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RooliId,RooliNimi")] Rooli rooli)
         {
-            if (ModelState.IsValid)
-            {
                 _context.Add(rooli);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(rooli);
         }
 
         // GET: Rooli/Edit/5
