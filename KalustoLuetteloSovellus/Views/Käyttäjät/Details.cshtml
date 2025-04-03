@@ -1,0 +1,36 @@
+﻿@model KalustoLuetteloSovellus.Models.Käyttäjä
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Käyttäjä</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Käyttäjätunnus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Käyttäjätunnus)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Salasana)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Salasana)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Rooli)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Rooli.RooliId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.KäyttäjäId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

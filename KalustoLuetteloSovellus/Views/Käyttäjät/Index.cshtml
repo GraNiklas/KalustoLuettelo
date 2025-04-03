@@ -1,0 +1,47 @@
+﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Käyttäjä>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Käyttäjätunnus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salasana)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rooli)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Käyttäjätunnus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salasana)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rooli.RooliId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.KäyttäjäId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.KäyttäjäId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.KäyttäjäId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
