@@ -21,7 +21,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Käyttäjät
         public async Task<IActionResult> Index()
         {
-            var kaluDbContext = _context.Käyttäjäs.Include(k => k.Rooli);
+            var kaluDbContext = _context.Käyttäjät.Include(k => k.Rooli);
             return View(await kaluDbContext.ToListAsync());
         }
 
@@ -33,7 +33,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            var käyttäjä = await _context.Käyttäjäs
+            var käyttäjä = await _context.Käyttäjät
                 .Include(k => k.Rooli)
                 .FirstOrDefaultAsync(m => m.KäyttäjäId == id);
             if (käyttäjä == null)
@@ -47,7 +47,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Käyttäjät/Create
         public IActionResult Create()
         {
-            ViewData["RooliId"] = new SelectList(_context.Roolis, "RooliId", "RooliId");
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RooliId"] = new SelectList(_context.Roolis, "RooliId", "RooliId", käyttäjä.RooliId);
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId", käyttäjä.RooliId);
             return View(käyttäjä);
         }
 
@@ -76,12 +76,12 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            var käyttäjä = await _context.Käyttäjäs.FindAsync(id);
+            var käyttäjä = await _context.Käyttäjät.FindAsync(id);
             if (käyttäjä == null)
             {
                 return NotFound();
             }
-            ViewData["RooliId"] = new SelectList(_context.Roolis, "RooliId", "RooliId", käyttäjä.RooliId);
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId", käyttäjä.RooliId);
             return View(käyttäjä);
         }
 
@@ -117,7 +117,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RooliId"] = new SelectList(_context.Roolis, "RooliId", "RooliId", käyttäjä.RooliId);
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId", käyttäjä.RooliId);
             return View(käyttäjä);
         }
 
@@ -129,7 +129,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            var käyttäjä = await _context.Käyttäjäs
+            var käyttäjä = await _context.Käyttäjät
                 .Include(k => k.Rooli)
                 .FirstOrDefaultAsync(m => m.KäyttäjäId == id);
             if (käyttäjä == null)
@@ -145,10 +145,10 @@ namespace KalustoLuetteloSovellus.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var käyttäjä = await _context.Käyttäjäs.FindAsync(id);
+            var käyttäjä = await _context.Käyttäjät.FindAsync(id);
             if (käyttäjä != null)
             {
-                _context.Käyttäjäs.Remove(käyttäjä);
+                _context.Käyttäjät.Remove(käyttäjä);
             }
 
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
         private bool KäyttäjäExists(int id)
         {
-            return _context.Käyttäjäs.Any(e => e.KäyttäjäId == id);
+            return _context.Käyttäjät.Any(e => e.KäyttäjäId == id);
         }
     }
 }
