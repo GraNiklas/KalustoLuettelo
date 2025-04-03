@@ -27,7 +27,7 @@ public partial class Tuote
 
     public int ToimipisteId { get; set; }
 
-    public virtual Kategorium Kategoria { get; set; } = null!;
+    public virtual Kategoria Kategoria { get; set; } = null!;
 
     public virtual Status Status { get; set; } = null!;
 

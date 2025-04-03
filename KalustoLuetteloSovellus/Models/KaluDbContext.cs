@@ -15,28 +15,27 @@ public partial class KaluDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Kategorium> Kategoria { get; set; }
+    public virtual DbSet<Kategoria> Kategoriat { get; set; }
 
-    public virtual DbSet<Käyttäjä> Käyttäjäs { get; set; }
+    public virtual DbSet<Käyttäjä> Käyttäjät { get; set; }
 
-    public virtual DbSet<Rooli> Roolis { get; set; }
+    public virtual DbSet<Rooli> Roolit { get; set; }
 
-    public virtual DbSet<Status> Statuses { get; set; }
+    public virtual DbSet<Status> Statukset { get; set; }
 
-    public virtual DbSet<Tapahtuma> Tapahtumas { get; set; }
+    public virtual DbSet<Tapahtuma> Tapahtumat { get; set; }
 
-    public virtual DbSet<Toimipiste> Toimipistes { get; set; }
+    public virtual DbSet<Toimipiste> Toimipisteet { get; set; }
 
-    public virtual DbSet<Tuote> Tuotes { get; set; }
+    public virtual DbSet<Tuote> Tuotteet { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=kaluserver.database.windows.net;Database=KaluDb;User ID=KaluAdmin;Password=SalainenSalasana123!;Encrypt=True;TrustServerCertificate=False");
-
+    // Poistin OnConfiguring metodin, dbContextin Konfiguraatio tapahtuu nyt program.cs tiedostossa.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Kategorium>(entity =>
+        modelBuilder.Entity<Kategoria>(entity =>
         {
+            entity.ToTable("Kategoria");
+
             entity.HasKey(e => e.KategoriaId);
 
             entity.Property(e => e.KategoriaNimi)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KalustoLuetteloSovellus.Models;
 
-public partial class Kategorium
+public partial class Kategoria
 {
     public int KategoriaId { get; set; }
 

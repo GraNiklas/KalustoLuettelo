@@ -1,0 +1,79 @@
+﻿@model KalustoLuetteloSovellus.Models.Tuote
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Tuote</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TuoteId" />
+            <div class="form-group">
+                <label asp-for="IdNumero" class="control-label"></label>
+                <input asp-for="IdNumero" class="form-control" />
+                <span asp-validation-for="IdNumero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KategoriaId" class="control-label"></label>
+                <select asp-for="KategoriaId" class="form-control" asp-items="ViewBag.KategoriaId"></select>
+                <span asp-validation-for="KategoriaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusId" class="control-label"></label>
+                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
+                <span asp-validation-for="StatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kuvaus" class="control-label"></label>
+                <input asp-for="Kuvaus" class="form-control" />
+                <span asp-validation-for="Kuvaus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kuva" class="control-label"></label>
+                <input asp-for="Kuva" class="form-control" />
+                <span asp-validation-for="Kuva" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OstoPvm" class="control-label"></label>
+                <input asp-for="OstoPvm" class="form-control" />
+                <span asp-validation-for="OstoPvm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hinta" class="control-label"></label>
+                <input asp-for="Hinta" class="form-control" />
+                <span asp-validation-for="Hinta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Takuu" class="control-label"></label>
+                <input asp-for="Takuu" class="form-control" />
+                <span asp-validation-for="Takuu" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Aktiivinen" /> @Html.DisplayNameFor(model => model.Aktiivinen)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToimipisteId" class="control-label"></label>
+                <select asp-for="ToimipisteId" class="form-control" asp-items="ViewBag.ToimipisteId"></select>
+                <span asp-validation-for="ToimipisteId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

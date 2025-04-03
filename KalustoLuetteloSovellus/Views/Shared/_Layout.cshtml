@@ -1,5 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@{
+    var isAdmin = ViewBag.isAdmin ??= true; // testausta varten laita tämä true jos haluat admin näkymän ja false jos haluat käyttäjänäkymän. T:Niklas
+    var isLoggedIn = ViewBag.isLoggedIn ??= true; // testausta varten laita tämä true jos haluat kirjautuneen näkymän ja false jos haluat ei kirjautuneen näkymän. T:Niklas
+}
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,21 +19,49 @@
                 <img src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px;width:auto" />
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KalustoLuetteloSovellus</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item float-end">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Search</a>
-                        </li>
-
+                        @*
+                            Kaikki linkit on nyt Home index, vaihdetaan sitä mukaan kun niitä valmistuu. T:Niklas
+                        *@
+                        @{
+                            if(isLoggedIn)
+                            {
+                                
+                                <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tuotteet" asp-action="Index">Tuotteet</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Tapahtumat</a>
+                                </li>
+                            
+                                if(isAdmin)
+                                {
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Toimipisteet</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Käyttäjät</a>
+                                </li>
+                                }
+                            }
+                        }
                     </ul>
                 </div>
             </div>
