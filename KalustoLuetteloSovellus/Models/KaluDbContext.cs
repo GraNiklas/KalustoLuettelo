@@ -71,7 +71,7 @@ public partial class KaluDbContext : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.ToTable("Status");
+            entity.ToTable("Status"); 
 
             entity.Property(e => e.StatusNimi)
                 .HasMaxLength(50)
