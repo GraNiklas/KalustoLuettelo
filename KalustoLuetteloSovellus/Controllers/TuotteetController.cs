@@ -121,18 +121,18 @@ namespace KalustoLuetteloSovellus.Controllers
             }
             if (ModelState.IsValid)
             {
+                olemassaOlevaTuote.TuoteId = tuote.TuoteId;
+                olemassaOlevaTuote.IdNumero = tuote.IdNumero;
+                olemassaOlevaTuote.KategoriaId = tuote.KategoriaId;
+                olemassaOlevaTuote.StatusId = tuote.StatusId;
+                olemassaOlevaTuote.Kuvaus = tuote.Kuvaus;
+                olemassaOlevaTuote.OstoPvm = tuote.OstoPvm;
+                olemassaOlevaTuote.Hinta = tuote.Hinta;
+                olemassaOlevaTuote.Takuu = tuote.Takuu;
+                olemassaOlevaTuote.Aktiivinen = tuote.Aktiivinen;
+                olemassaOlevaTuote.ToimipisteId = tuote.ToimipisteId;
                 if (tuote.KuvaFile != null)
                 {
-                    olemassaOlevaTuote.TuoteId = tuote.TuoteId;
-                    olemassaOlevaTuote.IdNumero = tuote.IdNumero;
-                    olemassaOlevaTuote.KategoriaId = tuote.KategoriaId;
-                    olemassaOlevaTuote.StatusId = tuote.StatusId;
-                    olemassaOlevaTuote.Kuvaus = tuote.Kuvaus;
-                    olemassaOlevaTuote.OstoPvm = tuote.OstoPvm;
-                    olemassaOlevaTuote.Hinta = tuote.Hinta;
-                    olemassaOlevaTuote.Takuu = tuote.Takuu;
-                    olemassaOlevaTuote.Aktiivinen = tuote.Aktiivinen;
-                    olemassaOlevaTuote.ToimipisteId = tuote.ToimipisteId;
                     // Convert uploaded file to byte array
                     using (var memoryStream = new MemoryStream())
                     {
