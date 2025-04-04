@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KalustoLuetteloSovellus.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -49,9 +50,9 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tuotteet/Create
         public IActionResult Create()
         {
-            ViewData["KategoriaId"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaId");
-            ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId");
-            ViewData["ToimipisteId"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "ToimipisteId");
+            ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi");
+            ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi");
+            ViewData["ToimipisteNimi"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi");
             return View();
         }
 
@@ -60,10 +61,18 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TuoteId,IdNumero,KategoriaId,StatusId,Kuvaus,Kuva,OstoPvm,Hinta,Takuu,Aktiivinen,ToimipisteId")] Tuote tuote)
+        public async Task<IActionResult> Create( Tuote tuote)
         {
             if (ModelState.IsValid)
             {
+                if(tuote.KuvaFile != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await tuote.KuvaFile.CopyToAsync(memoryStream);
+                        tuote.Kuva = memoryStream.ToArray();
+                    }
+                }
                 _context.Add(tuote);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,9 +96,10 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-            ViewData["KategoriaId"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaId", tuote.KategoriaId);
-            ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
-            ViewData["ToimipisteId"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "ToimipisteId", tuote.ToimipisteId);
+                    
+            ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi",tuote.KategoriaId);
+            ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tuote.StatusId);
+            ViewData["ToimipisteNimi"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi", tuote.ToimipisteId);
             return View(tuote);
         }
 
@@ -98,18 +108,44 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TuoteId,IdNumero,KategoriaId,StatusId,Kuvaus,Kuva,OstoPvm,Hinta,Takuu,Aktiivinen,ToimipisteId")] Tuote tuote)
+        public async Task<IActionResult> Edit(int id, Tuote tuote)
         {
             if (id != tuote.TuoteId)
             {
                 return NotFound();
             }
-
+            var olemassaOlevaTuote = await _context.Tuotteet.FindAsync(id);
+            if (olemassaOlevaTuote == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
+                if (tuote.KuvaFile != null)
+                {
+                    olemassaOlevaTuote.TuoteId = tuote.TuoteId;
+                    olemassaOlevaTuote.IdNumero = tuote.IdNumero;
+                    olemassaOlevaTuote.KategoriaId = tuote.KategoriaId;
+                    olemassaOlevaTuote.StatusId = tuote.StatusId;
+                    olemassaOlevaTuote.Kuvaus = tuote.Kuvaus;
+                    olemassaOlevaTuote.OstoPvm = tuote.OstoPvm;
+                    olemassaOlevaTuote.Hinta = tuote.Hinta;
+                    olemassaOlevaTuote.Takuu = tuote.Takuu;
+                    olemassaOlevaTuote.Aktiivinen = tuote.Aktiivinen;
+                    olemassaOlevaTuote.ToimipisteId = tuote.ToimipisteId;
+                    // Convert uploaded file to byte array
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await tuote.KuvaFile.CopyToAsync(memoryStream);
+                        olemassaOlevaTuote.Kuva = memoryStream.ToArray();
+                    }
+
+                    // Explicitly mark ProfilePicture as modified
+                    _context.Entry(olemassaOlevaTuote).Property(p => p.Kuva).IsModified = true;
+                }
                 try
                 {
-                    _context.Update(tuote);
+                    _context.Update(olemassaOlevaTuote);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

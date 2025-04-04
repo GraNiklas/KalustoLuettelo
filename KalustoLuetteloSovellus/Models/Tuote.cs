@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KalustoLuetteloSovellus.Models;
 
@@ -17,6 +18,8 @@ public partial class Tuote
 
     public byte[]? Kuva { get; set; }
 
+    [NotMapped] public IFormFile? KuvaFile { get; set; }
+
     public DateOnly? OstoPvm { get; set; }
 
     public int? Hinta { get; set; }
@@ -27,11 +30,11 @@ public partial class Tuote
 
     public int ToimipisteId { get; set; }
 
-    public virtual Kategoria Kategoria { get; set; } = null!;
+    public virtual Kategoria? Kategoria { get; set; } = null!;
 
-    public virtual Status Status { get; set; } = null!;
+    public virtual Status? Status { get; set; } = null!;
 
     public virtual ICollection<Tapahtuma> Tapahtumas { get; set; } = new List<Tapahtuma>();
 
-    public virtual Toimipiste Toimipiste { get; set; } = null!;
+    public virtual Toimipiste? Toimipiste { get; set; } = null!;
 }

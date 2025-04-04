@@ -4,13 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Uusi tuote</h1>
 
 <h4>Tuote</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IdNumero" class="control-label"></label>
@@ -18,12 +18,16 @@
                 <span asp-validation-for="IdNumero" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="KategoriaId" class="control-label"></label>
-                <select asp-for="KategoriaId" class ="form-control" asp-items="ViewBag.KategoriaId"></select>
+                <label asp-for="Kategoria" class="control-label"></label>
+                <select asp-for="KategoriaId" class ="form-control" asp-items="ViewBag.KategoriaNimi"></select>
             </div>
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusNimi"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Toimipiste" class="control-label"></label>
+                <select asp-for="ToimipisteId" class ="form-control" asp-items="ViewBag.ToimipisteNimi"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Kuvaus" class="control-label"></label>
@@ -31,28 +35,24 @@
                 <span asp-validation-for="Kuvaus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Kuva" class="control-label"></label>
-                <input asp-for="Kuva" class="form-control" />
-                <span asp-validation-for="Kuva" class="text-danger"></span>
+                <label asp-for="KuvaFile" class="control-label"></label>
+                <input asp-for="KuvaFile" class="form-control" type="file" />
+                <span asp-validation-for="KuvaFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OstoPvm" class="control-label"></label>
-                <input asp-for="OstoPvm" class="form-control" />
+                <input asp-for="OstoPvm" class="form-control" type="date" />
                 <span asp-validation-for="OstoPvm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Takuu" class="control-label"></label>
+                <input asp-for="Takuu" class="form-control" type="date"/>
+                <span asp-validation-for="Takuu" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Hinta" class="control-label"></label>
                 <input asp-for="Hinta" class="form-control" />
                 <span asp-validation-for="Hinta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Takuu" class="control-label"></label>
-                <input asp-for="Takuu" class="form-control" />
-                <span asp-validation-for="Takuu" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ToimipisteId" class="control-label"></label>
-                <select asp-for="ToimipisteId" class ="form-control" asp-items="ViewBag.ToimipisteId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

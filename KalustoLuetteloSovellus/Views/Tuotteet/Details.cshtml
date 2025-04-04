@@ -26,7 +26,10 @@
             @Html.DisplayNameFor(model => model.Kuva)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kuva)
+            @if (Model.Kuva != null && Model.Kuva.Length > 0)
+            {
+                <img class="" style="width:256px;height:256px;object-fit:cover;border-radius:16px" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Kuva)" alt="Tuote kuva" />
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.OstoPvm)
@@ -56,19 +59,19 @@
             @Html.DisplayNameFor(model => model.Kategoria)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kategoria.KategoriaId)
+            @Html.DisplayFor(model => model.Kategoria.KategoriaNimi)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status.StatusId)
+            @Html.DisplayFor(model => model.Status.StatusNimi)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Toimipiste)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Toimipiste.ToimipisteId)
+            @Html.DisplayFor(model => model.Toimipiste.KaupunkiJaToimipisteNimi)
         </dd>
     </dl>
 </div>
