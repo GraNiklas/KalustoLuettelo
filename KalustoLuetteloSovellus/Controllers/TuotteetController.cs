@@ -46,7 +46,25 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return View(tuote);
         }
+        public async Task<IActionResult> DetailsPartial(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var tuote = await _context.Tuotteet
+                .Include(t => t.Kategoria)
+                .Include(t => t.Status)
+                .Include(t => t.Toimipiste)
+                .FirstOrDefaultAsync(m => m.TuoteId == id);
+            if (tuote == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_TuoteKorttiPartial",tuote);
+        }
         // GET: Tuotteet/Create
         public IActionResult Create()
         {
