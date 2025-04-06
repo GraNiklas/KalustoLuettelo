@@ -1,0 +1,51 @@
+﻿@model KalustoLuetteloSovellus.Models.Tapahtuma
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Tapahtuma</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AloitusPvm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AloitusPvm)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LopetusPvm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LopetusPvm)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Kommentti)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Kommentti)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Käyttäjä)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Käyttäjä.KäyttäjäId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tuote)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tuote.TuoteId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TapahtumaId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

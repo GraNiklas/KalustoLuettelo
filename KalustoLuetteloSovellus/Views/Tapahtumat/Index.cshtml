@@ -1,0 +1,59 @@
+﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tapahtuma>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AloitusPvm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LopetusPvm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kommentti)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Käyttäjä)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tuote)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AloitusPvm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LopetusPvm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Kommentti)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Käyttäjä.KäyttäjäId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tuote.TuoteId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TapahtumaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TapahtumaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TapahtumaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

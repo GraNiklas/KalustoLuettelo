@@ -1,0 +1,48 @@
+﻿@model KalustoLuetteloSovellus.Models.Tapahtuma
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Tapahtuma</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AloitusPvm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AloitusPvm)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LopetusPvm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LopetusPvm)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Kommentti)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Kommentti)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Käyttäjä)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Käyttäjä.KäyttäjäId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tuote)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tuote.TuoteId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.TapahtumaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

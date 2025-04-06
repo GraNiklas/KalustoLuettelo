@@ -1,0 +1,36 @@
+﻿@model KalustoLuetteloSovellus.Models.Toimipiste
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Toimipiste</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Oppilaitos)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Oppilaitos)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Kaupunki)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Kaupunki)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ToimipisteNimi)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ToimipisteNimi)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ToimipisteId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
