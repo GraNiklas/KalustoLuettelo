@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Tiedot</h1>
 
 <div>
     <h4>Status</h4>
@@ -19,6 +19,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.StatusId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <input type="submit" value="Muokkaa" class="btn btn-secondary" />|
+    <a asp-action="Index">Takaisin</a>
 </div>
+
+
+
