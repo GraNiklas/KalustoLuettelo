@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Muokkaa käyttäjää</h1>
 
 <h4>Käyttäjä</h4>
 <hr />
@@ -29,14 +29,16 @@
                 <span asp-validation-for="RooliId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i><a style="visibility:hidden">i</a>
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-secondary" asp-action="Index"><i class="fa-solid fa-circle-left"></i></a>
 </div>
 
 @section Scripts {
