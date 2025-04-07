@@ -3,19 +3,62 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    /* nää vois laittaa omaan tiedostoon sitten jossain kohtaa */
+    .darkMode{
+        color: rgb(200,200,200);
+        background-color: rgb(10,10,10);
+    }
+    .carousel-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin: auto;
+    }
+
+    .carousel-view {
+        overflow: hidden;
+        width: 900px; /* 3 items * 300px width */
+        height: 100%;
+    }
+
+    .carousel-track {
+        display: flex;
+        height:100%;
+        flex-wrap:nowrap;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .carousel-item {
+        width: 500px;
+        height: 100%;
+        display:block;
+        flex-shrink: 0;
+        text-align: center;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        margin: 0 5px;
+    }
+</style>
+
 
 <h1>Tuotteet</h1>
 
 <p>
     <a class="btn btn-success" asp-action="Create"><i class="fas fa-add"></i>Lisää uusi</a>
 </p>
-<div class="row flex-nowrap">
-    <button class="btn btn-secondary" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
-    @foreach (var item in Model)
-    {
-        @Html.Partial("_TuoteKorttiPartial", item)
-    }
-    <button class="btn btn-secondary" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
+<div class="carousel-container">
+    <button class="btn btn-secondary" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
+    <div class="carousel-view">
+        <div class="carousel-track" id="carouselTrack">
+        @foreach (var item in Model)
+        {
+            @Html.Partial("_TuoteKorttiPartial", item)
+        }
+        </div>
+    </div>
+    <button class="btn btn-secondary" id="btnRight" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
 </div>
 <table class="table">
     <thead>
@@ -98,3 +141,40 @@
 }
     </tbody>
 </table>
+<script>
+    //Karuselli koodi
+    window.onload = function(){
+        // document.body.classList.add('darkMode');
+
+        const track = document.getElementById('carouselTrack');
+        const btnLeft = document.getElementById('btnLeft');
+        const btnRight = document.getElementById('btnRight');
+
+        const visibleCount = 2;
+        let currentIndex = 0;
+
+        const items = document.querySelectorAll('.carousel-item');
+
+        const totalItems = items.length;
+
+        function updateCarousel() {
+            console.log(currentIndex)
+            const offset = currentIndex * 500; // 500px item width * index
+            track.style.transform = `translateX(-${offset}px)`;
+        }
+
+        btnRight.addEventListener('click', () => {
+            if (currentIndex < totalItems - visibleCount) {
+            currentIndex++;
+            updateCarousel();
+            }
+        });
+
+        btnLeft.addEventListener('click', () => {
+            if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+            }
+        });
+    };
+</script>
