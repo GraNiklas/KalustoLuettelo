@@ -1,0 +1,33 @@
+﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <img src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px;width:auto" />
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KalustoLuetteloSovellus</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+               
+                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Tuotteet" asp-action="Index">Tuotteet</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Tapahtumat" asp-action="Index">Tapahtumat</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a></li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Toimipisteet" asp-action="Index">Toimipisteet</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</a>
+                    </div>
+                </li>
+
+                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
