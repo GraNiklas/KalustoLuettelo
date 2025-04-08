@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 @{
-    
-    var käyttäjä = Context.Session.GetString("LoggedUser");
-    var isAdmin = ViewBag.isAdmin ??= true; // testausta varten laita tämä true jos haluat admin näkymän ja false jos haluat käyttäjänäkymän. T:Niklas
-    var isLoggedIn = käyttäjä != ""; // testausta varten laita tämä true jos haluat kirjautuneen näkymän ja false jos haluat ei kirjautuneen näkymän. T:Niklas
+
+    var käyttäjä = Context.Session.GetString("Käyttäjätunnus");
+    var rooliId = Context.Session.GetInt32("RooliId");
+    var isAdmin = true; //rooliId == 40000; // testausta varten laita tämä true jos haluat admin näkymän ja false jos haluat käyttäjänäkymän. T:Niklas
+    var isLoggedIn = käyttäjä != "" || käyttäjä != null; // testausta varten laita tämä true jos haluat kirjautuneen näkymän ja false jos haluat ei kirjautuneen näkymän. T:Niklas
 }
 <head>
     <meta charset="utf-8" />
@@ -34,11 +35,11 @@
                             Kaikki linkit on nyt Home index, vaihdetaan sitä mukaan kun niitä valmistuu. T:Niklas
                         *@
                         @{
+                            
                             if(isLoggedIn)
                             {
-                                
                                 <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Tuotteet" asp-action="Index">Tuotteet</a>
@@ -46,38 +47,42 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Tapahtumat" asp-action="Index">Tapahtumat</a>
                                 </li>
-                            
-                                if(isAdmin)
-                                {
-                                
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Toimipisteet" asp-action="Index">Toimipisteet</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                                 </li>
-                                    
+                                if(isAdmin)
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Toimipisteet" asp-action="Index">Toimipisteet</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</a>
+                                    </li>
                                 }
-                                @käyttäjä
+                                
                             }
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
+                            </li>
+                            
+                            <li>
+                                <p>@käyttäjä</p>
+                            </li>
+
                         }
                     </ul>
                 </div>
