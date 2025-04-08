@@ -10,13 +10,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - KalustoLuetteloSovellus</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/KalustoLuetteloSovellus.styles.css" asp-append-version="true" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>  <!-- Bootstrap Bundle JS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+
 </head>
 <body>
     <header>
@@ -28,57 +32,40 @@
                 aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @*
                             Kaikki linkit on nyt Home index, vaihdetaan sitä mukaan kun niitä valmistuu. T:Niklas
                         *@
-                        @{
-                            if(isLoggedIn)
-                            {
-                                
-                                <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tuotteet" asp-action="Index">Tuotteet</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tapahtumat" asp-action="Index">Tapahtumat</a>
-                                </li>
-                            
-                                if(isAdmin)
-                                {
-                                
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Toimipisteet" asp-action="Index">Toimipisteet</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                                </li>
-                                    
-                                }
-                                @käyttäjä
-                            }
-                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tuotteet" asp-action="Index">Tuotteet</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tapahtumat" asp-action="Index">Tapahtumat</a></li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Toimipisteet" asp-action="Index">Toimipisteet</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Login</a></li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Logout">Logout</a></li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Register">Register</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -95,9 +82,5 @@
             &copy; 2025 - KalustoLuetteloSovellus - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
