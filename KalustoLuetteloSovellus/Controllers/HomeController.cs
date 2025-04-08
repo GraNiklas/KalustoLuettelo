@@ -99,9 +99,8 @@ public class HomeController : Controller
             ViewBag.LoginMessage = "Succesfull login";
             ViewBag.LoggedStatus = "In";
             ViewBag.LoginError = 0;
-            HttpContext.Session.SetString("LoggedUser", loggedUser.K‰ytt‰j‰tunnus);
-            //Session["LoggedMessage"] = "Logged in as " + loggedUser.K‰ytt‰j‰tunnus;
-            //Session["UserName"] = loggedUser.K‰ytt‰j‰tunnus;
+            HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
+            HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
             return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
         }
         else
