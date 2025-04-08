@@ -5,7 +5,8 @@
 }
 <style>
     /* nää vois laittaa omaan tiedostoon sitten jossain kohtaa */
-    .darkMode{
+
+    .darkMode {  /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
         color: rgb(200,200,200);
         background-color: rgb(10,10,10);
     }
@@ -20,7 +21,10 @@
         overflow: hidden;
         width: 900px; /* 3 items * 300px width */
         height: 100%;
+        position: relative;
+        mask-image: linear-gradient(90deg,transparent 0%,black 10%,black 90%,transparent 100%);
     }
+    
 
     .carousel-track {
         display: flex;
@@ -29,9 +33,11 @@
         transition: transform 0.3s ease-in-out;
     }
 
+
     .carousel-item {
         width: 500px;
         height: 100%;
+        /* margin-left:250px; */
         display:block;
         flex-shrink: 0;
         text-align: center;
@@ -54,7 +60,7 @@
         <div class="carousel-track" id="carouselTrack">
         @foreach (var item in Model)
         {
-            @Html.Partial("_TuoteKorttiPartial", item)
+            @await Html.PartialAsync("_TuoteKorttiPartial", item)
         }
         </div>
     </div>
@@ -124,13 +130,13 @@
                 @Html.DisplayFor(modelItem => item.Aktiivinen)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)
+                @if(item.Kategoria != null)@Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status.StatusNimi)
+                @if(item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)
+                @if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)
             </td>
             <td>
                 <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
@@ -138,43 +144,72 @@
                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
-}
-    </tbody>
-</table>
-<script>
-    //Karuselli koodi
-    window.onload = function(){
-        // document.body.classList.add('darkMode');
-
-        const track = document.getElementById('carouselTrack');
-        const btnLeft = document.getElementById('btnLeft');
-        const btnRight = document.getElementById('btnRight');
-
-        const visibleCount = 2;
-        let currentIndex = 0;
-
-        const items = document.querySelectorAll('.carousel-item');
-
-        const totalItems = items.length;
-
-        function updateCarousel() {
-            console.log(currentIndex)
-            const offset = currentIndex * 500; // 500px item width * index
-            track.style.transform = `translateX(-${offset}px)`;
         }
+    </tbody>
 
-        btnRight.addEventListener('click', () => {
-            if (currentIndex < totalItems - visibleCount) {
-            currentIndex++;
-            updateCarousel();
-            }
-        });
+</table>
 
-        btnLeft.addEventListener('click', () => {
-            if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
+
+
+    <script type="text/javascript">
+        // Karuselli koodi
+        // document.body.classList.add('darkMode');
+        window.onload = function(){
+
+            const track = document.getElementById('carouselTrack');
+            const btnLeft = document.getElementById('btnLeft');
+            const btnRight = document.getElementById('btnRight');
+
+            let currentIndex = 0;
+
+            const items = document.querySelectorAll('.carousel-item');
+
+            const totalItems = items.length;
+
+            function updateCarousel() {
+                // console.log(currentIndex)
+                let itemWidth = 500
+                const offset = currentIndex * itemWidth; // 500px item width * index
+                track.style.transform = `translateX(-${offset}px)`;
             }
-        });
-    };
-</script>
+            function updateButtons(currentIndex) {
+                if(currentIndex == 0)
+                {
+                    btnLeft.classList.add("disabled");
+                }
+                else
+                {
+                    btnLeft.classList.remove("disabled");
+                }
+
+                if(currentIndex == totalItems - 1)
+                {
+                    btnRight.classList.add("disabled");
+                }
+                else
+                {
+                    btnRight.classList.remove("disabled");
+                }
+            }
+
+            updateButtons(currentIndex);
+
+            btnRight.addEventListener('click', () => {
+                if (currentIndex < totalItems) {
+                currentIndex++;
+                updateCarousel();
+                updateButtons(currentIndex);
+                }
+            });
+
+            btnLeft.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+                updateButtons(currentIndex);
+                }
+            });
+
+        };
+
+    </script>
