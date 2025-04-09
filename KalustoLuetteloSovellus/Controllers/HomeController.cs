@@ -1,15 +1,16 @@
+using System;
+using System.IO;
+using System.Text;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using KalustoLuetteloSovellus.Models;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 
-
-
+using Microsoft.AspNetCore.Identity;
 
 namespace KalustoLuetteloSovellus.Controllers;
 
@@ -40,14 +41,12 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-    public async Task<ActionResult> Login()
+    public ActionResult Login()
     {
-
         return View();
-
     }
     [HttpGet]
-    public async Task<ActionResult> Register()
+    public ActionResult Register()
     {
         return View();
     }
@@ -71,6 +70,9 @@ public class HomeController : Controller
             }
             else
             {
+                var hasher = new PasswordHasher<K‰ytt‰j‰>();
+                string hashedPassword = hasher.HashPassword(k‰ytt‰j‰, k‰ytt‰j‰.Salasana); // t‰m‰ hashaa salasanan
+                k‰ytt‰j‰.Salasana = hashedPassword;
                 _context.K‰ytt‰j‰t.Add(k‰ytt‰j‰);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,7 +80,7 @@ public class HomeController : Controller
         }
         return View();
     }
-    public async Task<ActionResult> Logout()
+    public ActionResult Logout()
     {
         HttpContext.Session.Clear();
         return RedirectToAction("Index");
@@ -88,28 +90,39 @@ public class HomeController : Controller
     [HttpPost]
     public ActionResult Authorize(K‰ytt‰j‰ k‰ytt‰j‰)
     {
-        
-        var crpwd = "";
-        //var salt = Hmac.GenerateSalt();
-        //var hmac1 = Hmac.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(k‰ytt‰j‰.Salasana), salt);
 
-        var loggedUser = _context.K‰ytt‰j‰t.SingleOrDefault(x => x.K‰ytt‰j‰tunnus == k‰ytt‰j‰.K‰ytt‰j‰tunnus && x.Salasana == k‰ytt‰j‰.Salasana);
-        if (loggedUser != null)
+        var loggedUser = _context.K‰ytt‰j‰t.SingleOrDefault(x => x.K‰ytt‰j‰tunnus == k‰ytt‰j‰.K‰ytt‰j‰tunnus);
+        if (loggedUser == null) 
         {
-            ViewBag.LoginMessage = "Succesfull login";
-            ViewBag.LoggedStatus = "In";
-            ViewBag.LoginError = 0;
-            HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
-            HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
-            return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
+            return View();  // palataan jos ei lˆydy k‰ytt‰j‰‰ k‰ytt‰j‰tunnuksella.
         }
-        else
+
+        var hasher = new PasswordHasher<K‰ytt‰j‰>();
+
+        var result = hasher.VerifyHashedPassword(k‰ytt‰j‰, loggedUser.Salasana, k‰ytt‰j‰.Salasana); // t‰m‰ varmistaa ett‰ salasana on oikein
+
+        if (result == PasswordVerificationResult.Success) // tarkistaa onko salasana verifikaatio success
         {
-            ViewBag.LoginMessage = "Login unsuccesfull";
-            ViewBag.LoggedStatus = "Out";
-            ViewBag.LoginError = 1;
-            //k‰ytt‰j‰.LoginErrorMessage = "Tuntematon k‰ytt‰j‰tunnus tai salasana";
-            return View("Index", k‰ytt‰j‰);
+
+            if (loggedUser != null)
+            {
+                ViewBag.LoginMessage = "Succesfull login";
+                ViewBag.LoggedStatus = "In";
+                ViewBag.LoginError = 0;
+                HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
+                HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
+                return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
+            }
+            else
+            {
+                ViewBag.LoginMessage = "Login unsuccesfull";
+                ViewBag.LoggedStatus = "Out";
+                ViewBag.LoginError = 1;
+                //k‰ytt‰j‰.LoginErrorMessage = "Tuntematon k‰ytt‰j‰tunnus tai salasana";
+                return View("Index", k‰ytt‰j‰);
+            }
         }
+        return View("Index", k‰ytt‰j‰);
+
     }
 }

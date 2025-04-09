@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
-
+<link rel="stylesheet" type="text/css" href="\css\kalu.css">
 @{
     ViewData["Title"] = "Index";
 }
+
 <style>
     /* nää vois laittaa omaan tiedostoon sitten jossain kohtaa */
 
@@ -36,7 +37,7 @@
 
     .carousel-item {
         width: 500px;
-        height: 100%;
+        height: 500px;
         /* margin-left:250px; */
         display:block;
         flex-shrink: 0;
@@ -52,10 +53,10 @@
 <h1>Tuotteet</h1>
 
 <p>
-    <a class="btn btn-success" asp-action="Create"><i class="fas fa-add"></i>Lisää uusi</a>
+    <a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
 </p>
 <div class="carousel-container">
-    <button class="btn btn-secondary" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
+    <button class="btn btn-sec" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
     <div class="carousel-view">
         <div class="carousel-track" id="carouselTrack">
         @foreach (var item in Model)
@@ -64,7 +65,7 @@
         }
         </div>
     </div>
-    <button class="btn btn-secondary" id="btnRight" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
+    <button class="btn btn-sec" id="btnRight" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
 </div>
 <table class="table">
     <thead>
@@ -73,7 +74,7 @@
                 @Html.DisplayNameFor(model => model.IdNumero)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Kuvaus)
+                @Html.DisplayNameFor(model => model.Kuvaus) 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Kuva)
@@ -139,9 +140,9 @@
                 @if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)
             </td>
             <td>
-                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
-                <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
+                <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
+                <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
+                <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
         }
