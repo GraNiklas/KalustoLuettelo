@@ -56,26 +56,30 @@ public class HomeController : Controller
     {
 
         if ((käyttäjä.Käyttäjätunnus.Contains("@student.careeria.fi") ||
-            käyttäjä.Käyttäjätunnus.Contains("@careeria.fi") &&
+             käyttäjä.Käyttäjätunnus.Contains("@careeria.fi")) &&
             käyttäjä.Käyttäjätunnus != "@student.careeria.fi" &&
-            käyttäjä.Salasana != ""
-        ))
+            käyttäjä.Salasana != "")
         {
             käyttäjä.RooliId = 40001;
             var olemassaolevaKäyttäjä = await _context.Käyttäjät.FirstOrDefaultAsync(k => k.Käyttäjätunnus == käyttäjä.Käyttäjätunnus);
             if (olemassaolevaKäyttäjä != null)
             {
                 // käyttäjätunnus on käytössä  MITEN ME KERROTAAN KÄYTTÄJÄLLE ETTÄ KÄYTTÄJÄTUNNUS ON KÄYTÖSSÄ
+                ViewBag.ErrorMessage = "Käyttäjätunnus käytössä";
                 return View();
             }
             else
             {
                 var hasher = new PasswordHasher<Käyttäjä>();
-                string hashedPassword = hasher.HashPassword(käyttäjä, käyttäjä.Salasana); // tämä hashaa salasanan
-                käyttäjä.Salasana = hashedPassword;
-                _context.Käyttäjät.Add(käyttäjä);
-                _context.SaveChanges();
+
+                käyttäjä.Salasana = hasher.HashPassword(käyttäjä, käyttäjä.Salasana); // tämä hashaa salasanan
+
+                await _context.Käyttäjät.AddAsync(käyttäjä);
+                await _context.SaveChangesAsync();
+                
                 return RedirectToAction("Index");
+
+                //return RedirectToAction("Authorize",käyttäjä); // koitin autorisoida, registerin jälkeen mutta tämä ei toiminnut 
             }
         }
         return View();

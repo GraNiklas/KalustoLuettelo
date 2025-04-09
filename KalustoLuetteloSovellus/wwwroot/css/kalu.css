@@ -1,9 +1,22 @@
-﻿:root {
+﻿/*VÄRIT*/
+:root {
     --main-color: #d7af4d;
     --main-color-hover: #EFC356;
     --secondary-color:#c7c7c7;
     --secondary-color-hover:#D9D9D9;
 }
+/*VÄRIT*/
+
+
+/*DARKMODE*/
+.darkMode { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+    color: rgb(200,200,200);
+    background-color: rgb(10,10,10);
+}
+/*DARKMODE*/
+
+
+/*BUTTONIT*/
 .btn-main{
     background-color:var(--main-color);
     border-radius:2px;
@@ -20,7 +33,44 @@
     background-color: var(--secondary-color-hover)
     /*bold form */
 }
+/*BUTTONIT*/
 
-body {
 
+/*KARUSELLI*/
+.carousel-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: auto;
 }
+
+.carousel-view {
+    overflow: hidden;
+    width: 900px; /* 3 items * 300px width */
+    height: 100%;
+    position: relative;
+    mask-image: linear-gradient(90deg,transparent 0%,black 10%,black 90%,transparent 100%);
+}
+
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    flex-wrap: nowrap;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.carousel-item {
+    width: 500px;
+    height: 500px;
+    /* margin-left:250px; */
+    display: block;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+}
+/*KARUSELLI*/

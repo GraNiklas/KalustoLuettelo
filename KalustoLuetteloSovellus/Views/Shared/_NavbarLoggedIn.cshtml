@@ -1,4 +1,8 @@
-﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var käyttäjä = Context.Session.GetString("Käyttäjätunnus");
+}
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container-fluid">
         <img src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px;width:auto" />
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">KalustoLuetteloSovellus</a>
@@ -24,8 +28,8 @@
                         <a class="dropdown-item" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</a>
                     </div>
                 </li>
-
-                <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                <li class="nav-item ms-auto"><p class="p-2 m-0">Tervetuloa @käyttäjä!</p></li>
+                <li class="nav-item ms-2 me-4"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
             </ul>
         </div>
     </div>
