@@ -106,7 +106,7 @@ public class HomeController : Controller
 
             if (loggedUser != null)
             {
-                ViewBag.LoginMessage = "Succesfull login";
+                ViewBag.LoginMessage = "Successful login";
                 ViewBag.LoggedStatus = "In";
                 ViewBag.LoginError = 0;
                 HttpContext.Session.SetString("Käyttäjätunnus", loggedUser.Käyttäjätunnus);
@@ -115,7 +115,7 @@ public class HomeController : Controller
             }
             else
             {
-                ViewBag.LoginMessage = "Login unsuccesfull";
+                ViewBag.LoginMessage = "Login unsuccessful";
                 ViewBag.LoggedStatus = "Out";
                 ViewBag.LoginError = 1;
                 //käyttäjä.LoginErrorMessage = "Tuntematon käyttäjätunnus tai salasana";
