@@ -24,9 +24,9 @@
 .btn-main:hover{
     background-color:var(--main-color-hover);
 }
-.btn-sec{
-    background-color:var(--secondary-color);
-    border-radius:2px;
+.btn-sec {
+    background-color: var(--secondary-color);
+    border-radius: 2px;
 }
 
 .btn-sec:hover {

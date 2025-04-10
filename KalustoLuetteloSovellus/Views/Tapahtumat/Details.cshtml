@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Tiedot</h1>
 
 <div>
     <h4>Tapahtuma</h4>
@@ -32,17 +32,24 @@
             @Html.DisplayNameFor(model => model.Käyttäjä)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Käyttäjä.KäyttäjäId)
+            @Html.DisplayFor(model => model.Käyttäjä.Käyttäjätunnus)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Tuote)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tuote.TuoteId)
+            @Html.DisplayFor(model => model.Tuote.Kuvaus)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tuote.IdNumero)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tuote.IdNumero)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.TapahtumaId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TapahtumaId"><i class="fas fa-edit"></i>Muokkaa</a>
+    <a class="btn btn-secondary ms-2" asp-action="Index"><i class="fas fa-arrow-left"></i>Takaisin</a>
 </div>
