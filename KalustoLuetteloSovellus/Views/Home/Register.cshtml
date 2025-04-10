@@ -5,14 +5,14 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Rekisteröinti</h1>
+<h1 style="padding-left:30%">Rekisteröityminen</h1>
 
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     <body>
 
-        <div class="form-horizontal">
+        <div class="form-horizontal" style="width:70%;padding-left:30%">
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.KäyttäjäId)
@@ -35,7 +35,7 @@
             </label>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Sign in" class="btn btn-success" />
+                    <input type="submit" value="Rekisteröidy" class="btn btn-success" />
                 </div>
             </div>
         </div>
