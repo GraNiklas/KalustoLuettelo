@@ -128,7 +128,7 @@ public class HomeController : Controller
                 ViewBag.LoggedStatus = "Out";
                 ViewBag.LoginError = 1;
                 //käyttäjä.LoginErrorMessage = "Tuntematon käyttäjätunnus tai salasana";
-                return View("Index", käyttäjä);
+                return View("Login");
             }
         }
         return View("Index", käyttäjä);
