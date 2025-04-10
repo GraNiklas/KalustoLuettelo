@@ -33,19 +33,32 @@
             @Html.DisplayNameFor(model => model.Käyttäjä)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Käyttäjä.KäyttäjäId)
+            @Html.DisplayFor(model => model.Käyttäjä.Käyttäjätunnus)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Tuote)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tuote.TuoteId)
+            @Html.DisplayFor(model => model.Tuote.Kuvaus)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tuote.IdNumero)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tuote.IdNumero)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="TapahtumaId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <div class=" d-flex">
+            <div class="form-group">
+                <div class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                    <input type="submit" value="Delete" style="background:none;border:none;color:white" />
+                </div>
+            </div>
+            <a class="btn btn-secondary ms-2" asp-action="Index"><i class="fas fa-arrow-left"></i>Takaisin</a>
+        </div>
     </form>
 </div>

@@ -21,7 +21,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tapahtumat
         public async Task<IActionResult> Index()
         {
-            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote);
+            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
             return View(await kaluDbContext.ToListAsync());
         }
 
@@ -48,8 +48,9 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tapahtumat/Create
         public IActionResult Create()
         {
-            ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "KäyttäjäId");
+            ViewData["Käyttäjätunnus"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "Käyttäjätunnus");
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId");
+            ViewData["IdNumero"] = new SelectList(_context.Tuotteet, "IdNumero", "IdNumero");
             return View();
         }
 
@@ -84,8 +85,8 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-            ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "KäyttäjäId", tapahtuma.KäyttäjäId);
-            ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId", tapahtuma.TuoteId);
+            ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "Käyttäjätunnus", tapahtuma.KäyttäjäId);
+            ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "Kuvaus", tapahtuma.TuoteId);
             return View(tapahtuma);
         }
 
