@@ -54,6 +54,10 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Register(Käyttäjä käyttäjä)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(käyttäjä);
+        }
 
         if ((käyttäjä.Käyttäjätunnus.Contains("@student.careeria.fi") ||
              käyttäjä.Käyttäjätunnus.Contains("@careeria.fi")) &&
@@ -77,7 +81,7 @@ public class HomeController : Controller
                 await _context.Käyttäjät.AddAsync(käyttäjä);
                 await _context.SaveChangesAsync();
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("Login");
 
                 //return RedirectToAction("Authorize",käyttäjä); // koitin autorisoida, registerin jälkeen mutta tämä ei toiminnut 
             }
@@ -96,9 +100,10 @@ public class HomeController : Controller
     {
 
         var loggedUser = _context.Käyttäjät.SingleOrDefault(x => x.Käyttäjätunnus == käyttäjä.Käyttäjätunnus);
-        if (loggedUser == null) 
+        if (loggedUser == null)
         {
-            return View();  // palataan jos ei löydy käyttäjää käyttäjätunnuksella.
+            ViewBag.ErrorMessage = "Tuntematon käyttäjätunnus";
+            return View("Login");
         }
 
         var hasher = new PasswordHasher<Käyttäjä>();
@@ -119,7 +124,7 @@ public class HomeController : Controller
             }
             else
             {
-                ViewBag.LoginMessage = "Login unsuccessful";
+                ViewBag.LoginMessage = "Väärä salasana";
                 ViewBag.LoggedStatus = "Out";
                 ViewBag.LoginError = 1;
                 //käyttäjä.LoginErrorMessage = "Tuntematon käyttäjätunnus tai salasana";

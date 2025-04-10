@@ -5,6 +5,11 @@
     ViewData["Title"] = "Login";
 }
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
 <h1 style="padding-left:30%">Kirjautuminen</h1>
 
 <h2 style="padding-left:30%">Kirjaudu sisään</h2>
