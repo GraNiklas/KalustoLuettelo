@@ -54,10 +54,10 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<ActionResult> Register(Käyttäjä käyttäjä)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(käyttäjä);
-        }
+        //if (!ModelState.IsValid)
+        //{
+        //    return View(käyttäjä);
+        //}
 
         if ((käyttäjä.Käyttäjätunnus.Contains("@student.careeria.fi") ||
              käyttäjä.Käyttäjätunnus.Contains("@careeria.fi")) &&
