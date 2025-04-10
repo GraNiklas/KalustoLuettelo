@@ -35,6 +35,36 @@
 }
 /*BUTTONIT*/
 
+/*BOOTSTRAP OVERRIDE*/
+.btn-primary {
+    background-color: var(--main-color) !important;
+    border-color: var( --main-color-hover) !important;
+    color:black;
+    border-radius: 2px;
+}
+.btn-success {
+    background-color: var(--main-color) !important;
+    border-color: var( --main-color-hover) !important;
+    color: black;
+    border-radius: 2px;
+}
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    border-color: var( --secondary-color-hover) !important;
+    color: black;
+    border-radius: 2px;
+}
+.btn-danger {
+    background-color: var(--main-color) !important;
+    border-color: var( --main-color-hover) !important;
+    color: black;
+    border-radius: 2px;
+}
+
+.border-bottom {
+    border-bottom: 2px solid var(--main-color-hover) !important;
+}
+/*BOOTSTRAP OVERRIDE*/
 
 /*KARUSELLI*/
 .carousel-container {
