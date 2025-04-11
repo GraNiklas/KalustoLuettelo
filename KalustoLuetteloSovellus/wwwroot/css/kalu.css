@@ -104,3 +104,45 @@
     margin: 0 5px;
 }
 /*KARUSELLI*/
+
+.nav-item a.nav-link {
+    position: relative;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-item a.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background-color: #EFC356;
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-item a.nav-link:hover::after {
+    width: 100%;
+}
+
+.dropdown-item {
+    position: relative;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-item::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: #EFC356;
+    transition: width 0.3s ease-in-out;
+}
+
+.dropdown-item:hover::after {
+    width: 100%;
+}
