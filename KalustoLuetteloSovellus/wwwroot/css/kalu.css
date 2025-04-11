@@ -109,6 +109,8 @@
 /*KIRJAUTUNUT NÄKYMÄN YLÄVALIKKO*/
 
 .nav-item a.nav-link {
+    font-size: 1.125rem;
+    font-weight: 700;
     position: relative;
     text-decoration: none;
     color: black;
