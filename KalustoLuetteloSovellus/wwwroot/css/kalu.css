@@ -4,28 +4,50 @@
     --main-color-hover: #EFC356;
     --secondary-color: #c7c7c7;
     --secondary-color-hover: #D9D9D9;
-    --darkmode-bg-color: #1F1F1F;
+    --text-color: #1F1F1F;
 
+    --darkmode-bg-color: #1F1F1F;
+    --darkmode-text-color: #D9D9D9;
+    --darkmode-text-sec-color: #B3B3B3;
 }
 /*VÄRIT*/
 
 
 /*DARKMODE*/
 .darkMode { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
-    color: white;
+    color: var(--darkmode-text-color);
     background-color: var(--darkmode-bg-color);
 }
-.darkMode body{ /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
-    color: white;
+.darkMode body { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+    color: var(--darkmode-text-color);
     background-color: var(--darkmode-bg-color);
 }
+.darkMode .nav-link { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+    color: var(--darkmode-text-color)!important;
+    background-color: var(--darkmode-bg-color)!important;
+}
+.darkMode .navbar-brand { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+    color: var(--darkmode-text-color)!important;
+    background-color: var(--darkmode-bg-color)!important;
+}
+.darkMode .careeria-logo {
+    filter:invert();
+}
+.darkMode .table {
+    color: var(--darkmode-text-sec-color) !important;
+    background-color: var(--darkmode-bg-color) !important;
+}
+
 /*DARKMODE*/
 
 
+.careeria-logo {
+    color: var(--text-color);
+}
 /*BUTTONIT*/
-.btn-main{
-    background-color:var(--main-color);
-    border-radius:2px;
+.btn-main {
+    background-color: var(--main-color);
+    border-radius: 2px;
 }
 .btn-main:hover{
     background-color:var(--main-color-hover);
@@ -121,6 +143,10 @@
 
 
 /*KIRJAUTUNUT NÄKYMÄN YLÄVALIKKO*/
+
+.navbar-brand { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+    color: var(--text-color) !important;
+}
 
 .nav-item a.nav-link {
     font-size: 1.125rem;
