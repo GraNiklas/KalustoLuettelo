@@ -13,7 +13,39 @@
                 <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Koti</a></li>
                 <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Rekisteröidy</a></li>
                 <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Kirjaudu sisään</a></li>
+                <li class="nav-item ms-auto d-flex align-items-center">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="theme-toggle">
+                        <label class="form-check-label" id="currentTheme" for="theme-toggle">Dark Mode</label>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+<script>
+    const toggleSwitch = document.getElementById("theme-toggle");
+
+    // Check local storage for theme preference
+    if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("darkmode");
+        toggleSwitch.checked = true;
+        SetDarkmodeState(toggleSwitch.checked)
+    }
+
+    toggleSwitch.addEventListener("change", function () {
+        SetDarkmodeState(this.checked)
+    });
+    function SetDarkmodeState(value)
+    {
+        if (value) {
+            document.documentElement.classList.add("darkMode");
+            localStorage.setItem("theme", "dark");
+            document.getElementById("currentTheme").textContent = "Light mode";
+        } else {
+            document.documentElement.classList.remove("darkMode");
+            localStorage.setItem("theme", "light");
+            document.getElementById("currentTheme").textContent = "Dark mode";
+        }
+    }
+</script>
