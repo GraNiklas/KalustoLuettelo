@@ -190,3 +190,10 @@
 .nav-link.dropdown-toggle:hover::before {
     width: 100%;
 }
+
+
+/*PIILOTTAA NAPIT TUOTE SIVULLA*/
+
+.hidden {
+    visibility: hidden !important;
+}
