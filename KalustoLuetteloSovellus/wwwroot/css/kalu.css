@@ -105,6 +105,9 @@
 }
 /*KARUSELLI*/
 
+
+/*KIRJAUTUNUT NÄKYMÄN YLÄVALIKKO*/
+
 .nav-item a.nav-link {
     position: relative;
     text-decoration: none;
@@ -126,10 +129,13 @@
     width: 100%;
 }
 
+/*AADMIN PUDOTUS VALIKON LINKIT*/
+
 .dropdown-item {
     position: relative;
     text-decoration: none;
     color: black;
+    
 }
 
 .dropdown-item::after {
@@ -144,5 +150,33 @@
 }
 
 .dropdown-item:hover::after {
+    width: 100%;
+}
+
+
+/*ADMIN PUDOTUS VALIKON NUOLI*/
+.nav-link.dropdown-toggle::after {
+    display: none !important;
+}
+
+
+.nav-link.dropdown-toggle {
+    position: relative;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-link.dropdown-toggle::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background-color: #EFC356;
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-link.dropdown-toggle:hover::before {
     width: 100%;
 }
