@@ -19,6 +19,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Käyttäjät
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Index()
         {
             var kaluDbContext = _context.Käyttäjät.Include(k => k.Rooli);
@@ -26,6 +27,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Käyttäjät/Details/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,6 +47,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Käyttäjät/Create
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public IActionResult Create()
         {
             ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId");
@@ -56,6 +59,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Create([Bind("KäyttäjäId,Käyttäjätunnus,Salasana,RooliId")] Käyttäjä käyttäjä)
         {
             if (ModelState.IsValid)
@@ -69,6 +73,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Käyttäjät/Edit/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,6 +95,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("KäyttäjäId,Käyttäjätunnus,Salasana,RooliId")] Käyttäjä käyttäjä)
         {
             if (id != käyttäjä.KäyttäjäId)
@@ -122,6 +128,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Käyttäjät/Delete/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,6 +150,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // POST: Käyttäjät/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var käyttäjä = await _context.Käyttäjät.FindAsync(id);

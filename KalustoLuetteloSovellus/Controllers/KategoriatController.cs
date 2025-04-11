@@ -19,12 +19,14 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Kategoriat
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Kategoriat.ToListAsync());
         }
 
         // GET: Kategoriat/Details/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,6 +45,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Kategoriat/Create
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +56,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Create([Bind("KategoriaId,KategoriaNimi")] Kategoria kategoria)
         {
             if (ModelState.IsValid)
@@ -65,6 +69,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Kategoriat/Edit/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +90,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("KategoriaId,KategoriaNimi")] Kategoria kategoria)
         {
             if (id != kategoria.KategoriaId)
@@ -116,6 +122,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Kategoriat/Delete/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,6 +143,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // POST: Kategoriat/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var kategoria = await _context.Kategoriat.FindAsync(id);

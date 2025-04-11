@@ -19,12 +19,14 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Status
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Index()
         {
         return View(await _context.Statukset.ToListAsync());
         }
 
         // GET: Status/Details/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,6 +45,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Status/Create
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +56,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Create([Bind("StatusId,StatusNimi")] Status status)
         {
                 _context.Add(status);
@@ -61,6 +65,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Status/Edit/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,6 +86,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("StatusId,StatusNimi")] Status status)
         {
             if (id != status.StatusId)
@@ -112,6 +118,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Status/Delete/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,6 +139,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // POST: Status/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var status = await _context.Statukset.FindAsync(id);

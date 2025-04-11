@@ -108,6 +108,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet/Edit/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -132,6 +133,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int id, Tuote tuote)
         {
             if (id != tuote.TuoteId)
@@ -192,6 +194,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet/Delete/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -215,6 +218,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // POST: Tuotteet/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tuote = await _context.Tuotteet.FindAsync(id);

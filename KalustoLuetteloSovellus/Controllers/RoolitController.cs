@@ -18,12 +18,14 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Rooli
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Index()
         {
         return View(await _context.Roolit.ToListAsync());
         }
 
         // GET: Rooli/Details/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,6 +44,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Rooli/Create
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +55,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Create([Bind("RooliId,RooliNimi")] Rooli rooli)
         {
                 _context.Add(rooli);
@@ -60,6 +64,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Rooli/Edit/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,6 +85,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("RooliId,RooliNimi")] Rooli rooli)
         {
             if (id != rooli.RooliId)
@@ -111,6 +117,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Rooli/Delete/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,6 +138,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // POST: Rooli/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var rooli = await _context.Roolit.FindAsync(id);

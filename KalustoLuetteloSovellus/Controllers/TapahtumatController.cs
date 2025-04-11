@@ -128,6 +128,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tapahtumat/Delete/5
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,6 +151,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // POST: Tapahtumat/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tapahtuma = await _context.Tapahtumat.FindAsync(id);
