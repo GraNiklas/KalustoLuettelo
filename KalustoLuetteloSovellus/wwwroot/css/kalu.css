@@ -4,18 +4,19 @@
     --main-color-hover: #EFC356;
     --secondary-color: #c7c7c7;
     --secondary-color-hover: #D9D9D9;
-    --darkmode-bg-color: rgb(20,20,20);
+    --darkmode-bg-color: #1F1F1F;
+
 }
 /*VÄRIT*/
 
 
 /*DARKMODE*/
 .darkMode { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
-    color: rgb(200,200,200);
+    color: white;
     background-color: var(--darkmode-bg-color);
 }
 .darkMode body{ /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
-    color: rgb(200,200,200);
+    color: white;
     background-color: var(--darkmode-bg-color);
 }
 /*DARKMODE*/
