@@ -4,7 +4,7 @@
 @{
 
     var käyttäjä = Context.Session.GetString("Käyttäjätunnus"); // tässä oli väärä stringi
-    var isAdmin = ViewBag.isAdmin ??= true; // testausta varten laita tämä true jos haluat admin näkymän ja false jos haluat käyttäjänäkymän. T:Niklas
+    var isAdmin = Context.Session.GetInt32("RooliId") == 40000;
     var isLoggedIn = käyttäjä != ""; // testausta varten laita tämä true jos haluat kirjautuneen näkymän ja false jos haluat ei kirjautuneen näkymän. T:Niklas
 }
 <head>
