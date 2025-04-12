@@ -1,0 +1,89 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var käyttäjä = Context.Session.GetString("Käyttäjätunnus");
+    var isAdmin = Context.Session.GetInt32("RooliId") == 40000;
+    var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
+
+}
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <img class="careeria-logo" src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px;width:auto" />
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" >KalustoLuetteloSovellus</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                @if(!isLoggedIn) // ei kirjautunut
+                {
+                    <li class="nav-item"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Koti</a></li>
+                    <li class="nav-item ms-auto"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Register">Rekisteröidy</a></li>
+                    <li class="nav-item"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Login">Kirjaudu sisään</a></li>
+                }
+                else // kirjautunut
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Koti</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Tuotteet" asp-action="Index">Tuotteet</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Tapahtumat" asp-action="Index">Tapahtumat</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="User">Omat sivut</a></li>
+
+                    @if (isAdmin) // admin
+                    { 
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Statukset" asp-action="Index">Statukset</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Toimipisteet" asp-action="Index">Toimipisteet</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Kategoriat" asp-action="Index">Kategoriat</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Roolit" asp-action="Index">Roolit</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Käyttäjät" asp-action="Index">Käyttäjät</a>
+                            </div>
+                        </li>
+                    }
+                    <li class="nav-item ms-auto"><a class="nav-link p-2 m-0">Tervetuloa @käyttäjä!</a></li>
+                    <li class="nav-item ms-2 me-4"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Kirjaudu ulos</a></li>
+                }
+                <li class="nav-item ms-2 me-2 align-content-center">
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="theme-toggle">
+                            <label class="form-check-label" id="currentTheme" for="theme-toggle">Dark Mode</label>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+<script>
+
+
+    const toggleSwitch = document.getElementById("theme-toggle");
+
+    // Check local storage for theme preference
+    if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("darkMode");
+        toggleSwitch.checked = true;
+        SetDarkmodeState(toggleSwitch.checked)
+    }
+        
+
+    toggleSwitch.addEventListener("change", function () {
+        SetDarkmodeState(this.checked)
+    });
+    function SetDarkmodeState(value)
+    {
+        if (value) {
+            document.documentElement.classList.add("darkMode");
+            localStorage.setItem("theme", "dark");
+            document.getElementById("currentTheme").textContent = "Light mode";
+        } else {
+            document.documentElement.classList.remove("darkMode");
+            localStorage.setItem("theme", "light");
+            document.getElementById("currentTheme").textContent = "Dark mode";
+        }
+    }
+</script>

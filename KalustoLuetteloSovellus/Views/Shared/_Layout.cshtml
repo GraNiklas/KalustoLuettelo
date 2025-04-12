@@ -22,14 +22,7 @@
 <body>
 
     @{
-        if (Context.Session.GetString("Käyttäjätunnus") == null)
-        {
-            await Html.RenderPartialAsync("_NavbarLoggedOut");
-        }
-        else
-        {
-            await Html.RenderPartialAsync("_NavbarLoggedIn");
-        }
+        await Html.RenderPartialAsync("_Navbar");
     }
 
     <div class="container body-content">
