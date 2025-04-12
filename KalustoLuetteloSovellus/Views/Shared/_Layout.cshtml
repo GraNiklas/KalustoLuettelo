@@ -3,9 +3,9 @@
 <html lang="en">
 @{
 
-    var käyttäjä = Context.Session.GetString("Käyttäjätunnus"); // tässä oli väärä stringi
+    var käyttäjä = Context.Session.GetString("Käyttäjätunnus"); 
     var isAdmin = Context.Session.GetInt32("RooliId") == 40000;
-    var isLoggedIn = käyttäjä != ""; // testausta varten laita tämä true jos haluat kirjautuneen näkymän ja false jos haluat ei kirjautuneen näkymän. T:Niklas
+    var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
 <head>
     <meta charset="utf-8" />

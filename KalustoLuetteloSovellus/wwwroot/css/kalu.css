@@ -37,9 +37,30 @@
     color: var(--darkmode-text-sec-color) !important;
     background-color: var(--darkmode-bg-color) !important;
 }
+.darkMode .navbar{
+/*    position: fixed !important;*/
+    background-color: var(--darkmode-bg-color) !important;
+    filter: drop-shadow(0 0 40px rgba(0,0,0,0.2))
+
+}
+.darkMode .carousel-item {
+    background-color: var(--darkmode-bg-color) !important;
+}
 
 /*DARKMODE*/
 
+
+.navbar {
+/*    position: fixed !important;*/
+    width: 100%;
+    background-color: white !important;
+    z-index: 1000;
+    filter: drop-shadow(0 0 40px rgba(0,0,0,0.2))
+}
+
+body {
+
+}
 
 .careeria-logo {
     color: var(--text-color);
@@ -125,13 +146,16 @@
     /* margin-left:250px; */
     display: block;
     flex-shrink: 0;
-/*    text-align: center;*/
+    /*    text-align: center;*/
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     margin: 0 5px;
+    background-color:white;
+    filter: drop-shadow(0 0 8px rgba(0,0,0,0.3))
 }
 /*KARUSELLI*/
+
 
 
 /*Navbar brand override*/

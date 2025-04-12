@@ -26,9 +26,14 @@ public class HomeController : Controller
         _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        // Tämä ottaa nyt vaa 10 ensimmäistä tuotetta tietokannasta, voidaan keksiä joku juttu missä se hakee tapahtumista viimeisimmät 10 tapahtumaa ja listaa ne tuotteet, en tiedä.
+        //var t = _context.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).Take(10);  // tämä on nyt vain esimerkki viimeisimmistä tapahtumista
+
+
+        var kaluDbContext = _context.Tuotteet.Include(t => t.Kategoria).Include(t => t.Status).Include(t => t.Toimipiste).Take(10); 
+        return View(await kaluDbContext.ToListAsync());
     }
 
     public IActionResult User()
