@@ -33,7 +33,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ToimipisteId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Poista</button>
+        <a class="btn btn-light" asp-action="Index"><i class="fa-solid fa-circle-left"></i> Takaisin</a>
     </form>
 </div>
