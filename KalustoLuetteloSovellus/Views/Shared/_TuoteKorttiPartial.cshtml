@@ -100,7 +100,8 @@
     </div>
     <hr />
     <div>
-        <a class="btn btn-main" asp-action="Edit" asp-route-id="@Model?.TuoteId"><i class="fas fa-edit"></i></a>
-        <a class="btn btn-sec" asp-action="Details" asp-route-id="@Model?.TuoteId"><i class="fas fa-search"></i></a>
+        <a class="btn btn-main" asp-controller="Tuotteet" asp-action="Edit" asp-route-id="@Model?.TuoteId" asp-route-returnUrl="@Context.Request.Path"><i class="fas fa-edit"></i></a>
+        <a class="btn btn-sec" asp-controller="Tuotteet" asp-action="Details" asp-route-id="@Model?.TuoteId" asp-route-returnUrl="@Context.Request.Path"><i class="fas fa-search"></i></a>
+        
     </div>
 </div>

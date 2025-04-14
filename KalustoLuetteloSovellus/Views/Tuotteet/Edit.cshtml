@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@{
+    string returnUrl = ViewData["ReturnUrl"]?.ToString();
+}
+
 
 <h1>Muokkaa</h1>
 
@@ -12,6 +16,9 @@
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
             <input type="hidden" asp-for="TuoteId" />
             <div class="form-group">
                 <label asp-for="IdNumero" class="control-label"></label>
@@ -75,7 +82,7 @@
                     </div>
                 </div>
                 <div>
-                    <a class="btn btn-secondary ms-2" asp-action="Index"><i class="fas fa-arrow-left"></i>Takaisin</a>
+                    <a class="btn btn-secondary ms-2" href="@returnUrl"><i class="fas fa-arrow-left"></i> Takaisin</a>
                 </div>
             </div>
         </form>
