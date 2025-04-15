@@ -3,9 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-@{
-    string returnUrl = ViewData["ReturnUrl"]?.ToString();
-}
+
 <h1>Details</h1>
 
 <div>
@@ -78,17 +76,6 @@
     </dl>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TuoteId" asp-route-returnUrl="@ViewData["ReturnUrl"]">
-        <i class="fas fa-edit"></i> Muokkaa
-    </a>
-
-    <a class="btn btn-secondary ms-2" href="@ViewData["ReturnUrl"]">
-        <i class="fas fa-arrow-left"></i> Takaisin
-    </a>
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TuoteId"><i class="fas fa-edit"></i>Muokkaa</a>
+    <a class="btn btn-secondary ms-2" asp-action="Index"><i class="fas fa-arrow-left"></i>Takaisin</a>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

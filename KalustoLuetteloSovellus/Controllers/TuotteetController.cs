@@ -28,7 +28,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet/Details/5
-        public async Task<IActionResult> Details(int? id, string returnUrl)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -40,21 +40,19 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Include(t => t.Status)
                 .Include(t => t.Toimipiste)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
-
             if (tuote == null)
             {
                 return NotFound();
             }
 
-            ViewData["ReturnUrl"] = returnUrl ?? Url.Action("Index", "Home"); // Jos returnUrl ei ole määritelty, ohjaa kotisivulle
             return View(tuote);
         }
 
+        
+        
 
-
-
-
-        public async Task<IActionResult> DetailsPartial(int? id, string returnUrl)
+        
+        public async Task<IActionResult> DetailsPartial(int? id)
         {
             if (id == null)
             {
@@ -71,9 +69,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            ViewData["ReturnUrl"] = returnUrl ?? Url.Action("Index", "Home"); // tai mihin haluat palata
-
-            return PartialView("_TuoteKorttiPartial", tuote);
+            return PartialView("_TuoteKorttiPartial",tuote);
         }
         // GET: Tuotteet/Create
         public IActionResult Create()
@@ -113,35 +109,42 @@ namespace KalustoLuetteloSovellus.Controllers
 
         // GET: Tuotteet/Edit/5
         [ServiceFilter(typeof(AdminOnlyFilter))]
-        public IActionResult Edit(int id, string returnUrl)
+        public async Task<IActionResult> Edit(int? id)
         {
-            var tuote = _context.Tuotteet.Find(id);
-            if (tuote == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            ViewData["ReturnUrl"] = returnUrl ?? Url.Action("Index", "Tuotteet");
+            var tuote = await _context.Tuotteet.FindAsync(id);
+            if (tuote == null)
+            {
+                return NotFound();
+            }
+                    
+            ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi",tuote.KategoriaId);
+            ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tuote.StatusId);
+            ViewData["ToimipisteNimi"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi", tuote.ToimipisteId);
             return View(tuote);
         }
-
+        
         // POST: Tuotteet/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(AdminOnlyFilter))]
-        public async Task<IActionResult> Edit(int id, Tuote tuote, string returnUrl)
+        public async Task<IActionResult> Edit(int id, Tuote tuote)
         {
             if (id != tuote.TuoteId)
             {
                 return NotFound();
             }
-
             var olemassaOlevaTuote = await _context.Tuotteet.FindAsync(id);
             if (olemassaOlevaTuote == null)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 olemassaOlevaTuote.TuoteId = tuote.TuoteId;
@@ -154,18 +157,18 @@ namespace KalustoLuetteloSovellus.Controllers
                 olemassaOlevaTuote.Takuu = tuote.Takuu;
                 olemassaOlevaTuote.Aktiivinen = tuote.Aktiivinen;
                 olemassaOlevaTuote.ToimipisteId = tuote.ToimipisteId;
-
                 if (tuote.KuvaFile != null)
                 {
+                    // Convert uploaded file to byte array
                     using (var memoryStream = new MemoryStream())
                     {
                         await tuote.KuvaFile.CopyToAsync(memoryStream);
                         olemassaOlevaTuote.Kuva = memoryStream.ToArray();
                     }
 
+                    // Explicitly mark ProfilePicture as modified
                     _context.Entry(olemassaOlevaTuote).Property(p => p.Kuva).IsModified = true;
                 }
-
                 try
                 {
                     _context.Update(olemassaOlevaTuote);
@@ -182,15 +185,8 @@ namespace KalustoLuetteloSovellus.Controllers
                         throw;
                     }
                 }
-
-                // Jos returnUrl on määritelty, ohjaa siihen
-                if (!string.IsNullOrEmpty(returnUrl))
-                {
-                    return Redirect(returnUrl);
-                }
                 return RedirectToAction(nameof(Index));
             }
-
             ViewData["KategoriaId"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaId", tuote.KategoriaId);
             ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
             ViewData["ToimipisteId"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "ToimipisteId", tuote.ToimipisteId);
