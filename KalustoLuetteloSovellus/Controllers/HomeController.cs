@@ -117,6 +117,12 @@ public class HomeController : Controller
         }
 
         var hasher = new PasswordHasher<K‰ytt‰j‰>();
+        if (string.IsNullOrEmpty(k‰ytt‰j‰.Salasana))
+        {
+            ViewBag.ErrorMessage = "Tyhj‰ salasana, arvaa mit‰ sun pit‰‰ t‰ytt‰‰ se...";
+            return View("Login");
+        }
+
 
         var result = hasher.VerifyHashedPassword(k‰ytt‰j‰, loggedUser.Salasana, k‰ytt‰j‰.Salasana); // t‰m‰ varmistaa ett‰ salasana on oikein
 
