@@ -23,7 +23,7 @@
             <th>@Html.DisplayNameFor(model => model.Takuu)</th>
             <th>@Html.DisplayNameFor(model => model.Aktiivinen)</th>
             <th>@Html.DisplayNameFor(model => model.Kategoria)</th>
-            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            @* <th>@Html.DisplayNameFor(model => model.Status)</th> *@
             <th>@Html.DisplayNameFor(model => model.Toimipiste)</th>
             <th></th>
         </tr>
@@ -44,7 +44,7 @@
             <td>@Html.DisplayFor(modelItem => item.Takuu)</td>
             <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
             <td>@if(item.Kategoria != null)@Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)</td>
-            <td>@if(item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
+            @* <td>@if(item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td> *@
             <td>@if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
             <td>
                 <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>

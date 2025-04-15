@@ -23,7 +23,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tuotteet
         public async Task<IActionResult> Index()
         {
-            var kaluDbContext = _context.Tuotteet.Include(t => t.Kategoria).Include(t => t.Status).Include(t => t.Toimipiste);
+            var kaluDbContext = _context.Tuotteet.Include(t => t.Kategoria).Include(t => t.Toimipiste);
             return View(await kaluDbContext.ToListAsync());
         }
 
@@ -37,7 +37,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             var tuote = await _context.Tuotteet
                 .Include(t => t.Kategoria)
-                .Include(t => t.Status)
+                //.Include(t => t.Status)
                 .Include(t => t.Toimipiste)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
             if (tuote == null)
@@ -61,7 +61,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             var tuote = await _context.Tuotteet
                 .Include(t => t.Kategoria)
-                .Include(t => t.Status)
+                //.Include(t => t.Status)
                 .Include(t => t.Toimipiste)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
             if (tuote == null)
@@ -102,7 +102,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["KategoriaId"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaId", tuote.KategoriaId);
-            ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
+            //ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
             ViewData["ToimipisteId"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "ToimipisteId", tuote.ToimipisteId);
             return View(tuote);
         }
@@ -123,7 +123,7 @@ namespace KalustoLuetteloSovellus.Controllers
             }
                     
             ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi",tuote.KategoriaId);
-            ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tuote.StatusId);
+            //ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tuote.StatusId);
             ViewData["ToimipisteNimi"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi", tuote.ToimipisteId);
             return View(tuote);
         }
@@ -150,7 +150,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 olemassaOlevaTuote.TuoteId = tuote.TuoteId;
                 olemassaOlevaTuote.IdNumero = tuote.IdNumero;
                 olemassaOlevaTuote.KategoriaId = tuote.KategoriaId;
-                olemassaOlevaTuote.StatusId = tuote.StatusId;
+                //olemassaOlevaTuote.StatusId = tuote.StatusId;
                 olemassaOlevaTuote.Kuvaus = tuote.Kuvaus;
                 olemassaOlevaTuote.OstoPvm = tuote.OstoPvm;
                 olemassaOlevaTuote.Hinta = tuote.Hinta;
@@ -188,7 +188,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["KategoriaId"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaId", tuote.KategoriaId);
-            ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
+            //ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
             ViewData["ToimipisteId"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "ToimipisteId", tuote.ToimipisteId);
             return View(tuote);
         }
@@ -204,7 +204,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             var tuote = await _context.Tuotteet
                 .Include(t => t.Kategoria)
-                .Include(t => t.Status)
+                //.Include(t => t.Status)
                 .Include(t => t.Toimipiste)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
             if (tuote == null)

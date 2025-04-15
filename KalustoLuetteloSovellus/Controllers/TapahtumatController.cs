@@ -21,7 +21,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tapahtumat
         public async Task<IActionResult> Index()
         {
-            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
+            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
             return View(await kaluDbContext.ToListAsync());
         }
 
@@ -61,12 +61,12 @@ namespace KalustoLuetteloSovellus.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TapahtumaId,TuoteId,AloitusPvm,LopetusPvm,Kommentti,KäyttäjäId")] Tapahtuma tapahtuma)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 _context.Add(tapahtuma);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "KäyttäjäId", tapahtuma.KäyttäjäId);
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId", tapahtuma.TuoteId);
             return View(tapahtuma);

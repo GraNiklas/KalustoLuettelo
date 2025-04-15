@@ -29,18 +29,18 @@ public partial class KaluDbContext : DbContext
 
     public virtual DbSet<Tuote> Tuotteet { get; set; }
 
-    // Poistin OnConfiguring metodin, dbContextin Konfiguraatio tapahtuu nyt program.cs tiedostossa.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Kategoria>(entity =>
-        {
+         {
             entity.ToTable("Kategoria");
-
             entity.HasKey(e => e.KategoriaId);
-
             entity.Property(e => e.KategoriaNimi)
+
                 .HasMaxLength(50)
+
                 .IsUnicode(false);
+
         });
 
         modelBuilder.Entity<Käyttäjä>(entity =>
@@ -71,7 +71,7 @@ public partial class KaluDbContext : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.ToTable("Status"); 
+            entity.ToTable("Status");
 
             entity.Property(e => e.StatusNimi)
                 .HasMaxLength(50)
@@ -92,6 +92,11 @@ public partial class KaluDbContext : DbContext
                 .HasForeignKey(d => d.KäyttäjäId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tapahtuma_Käyttäjä");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.Tapahtumas)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Tapahtuma_Status");
 
             entity.HasOne(d => d.Tuote).WithMany(p => p.Tapahtumas)
                 .HasForeignKey(d => d.TuoteId)
@@ -117,7 +122,7 @@ public partial class KaluDbContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Tuote>(entity =>
+        modelBuilder.Entity<Tuote>((Action<Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Tuote>>)(entity =>
         {
             entity.ToTable("Tuote");
 
@@ -125,26 +130,21 @@ public partial class KaluDbContext : DbContext
             entity.Property(e => e.IdNumero)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.Kuva).HasColumnType("image");
-            entity.Property(e => e.Kuvaus)
+            entity.Property((System.Linq.Expressions.Expression<Func<Tuote, byte[]?>>)(e => e.Kuva)).HasColumnType("image");
+            entity.Property((System.Linq.Expressions.Expression<Func<Tuote, string?>>)(e => e.Kuvaus))
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Kategoria).WithMany(p => p.Tuotes)
+            entity.HasOne(d => d.Kategoria).WithMany((System.Linq.Expressions.Expression<Func<Kategoria, IEnumerable<Tuote>?>>?)(p => p.Tuotes))
                 .HasForeignKey(d => d.KategoriaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tuote_Kategoria");
-
-            entity.HasOne(d => d.Status).WithMany(p => p.Tuotes)
-                .HasForeignKey(d => d.StatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Tuote_Status");
 
             entity.HasOne(d => d.Toimipiste).WithMany(p => p.Tuotes)
                 .HasForeignKey(d => d.ToimipisteId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tuote_Toimipiste");
-        });
+        }));
 
         OnModelCreatingPartial(modelBuilder);
     }

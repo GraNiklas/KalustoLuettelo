@@ -9,14 +9,14 @@
                     </h1>
                     <div class="d-flex">
                         <strong>
-                            @Model.Status?.StatusNimi
+                            @* @Model.Status?.StatusNimi *@
                         </strong>
                     </div>
                     <div class="d-flex ms-2">
                         @{
-                            var color = Model.Status?.StatusNimi == "Vapaa" ? "chartreuse" : Model.Status?.StatusNimi == "Huollossa" ? "yellow" : "red";
+                            // var color = Model.Status?.StatusNimi == "Vapaa" ? "chartreuse" : Model.Status?.StatusNimi == "Huollossa" ? "yellow" : "red";
                         }
-                        <div style="height:24px;width:24px;background-color:@color;border-radius:256px;border:2px solid gray"></div>
+                        @* <div style="height:24px;width:24px;background-color:@color;border-radius:256px;border:2px solid gray"></div> *@
                     </div>
                 </div>
                 <hr />
@@ -64,12 +64,12 @@
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Kategoria.KategoriaNimi)
                         </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Status)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Status.StatusNimi)
-                        </dd>
+                        @* <dt class="col-sm-2"> *@
+                        @*     @Html.DisplayNameFor(model => model.Status) *@
+                        @* </dt> *@
+                        @* <dd class="col-sm-10"> *@
+                        @*     @Html.DisplayFor(model => model.Status.StatusNimi) *@
+                        @* </dd> *@
                         <dt class="col-sm-2">
                             @Html.DisplayNameFor(model => model.Toimipiste)
                         </dt>

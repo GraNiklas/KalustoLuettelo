@@ -13,7 +13,7 @@ public partial class Käyttäjä
 
     public int RooliId { get; set; }
 
-    public virtual Rooli? Rooli { get; set; } = null!;
+    public virtual Rooli Rooli { get; set; } = null!;
 
     public virtual ICollection<Tapahtuma> Tapahtumas { get; set; } = new List<Tapahtuma>();
 }

@@ -23,11 +23,11 @@
                 <select asp-for="KategoriaId" class="form-control" asp-items="ViewBag.KategoriaNimi"></select>
                 <span asp-validation-for="KategoriaId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusNimi"></select>
-                <span asp-validation-for="StatusId" class="text-danger"></span>
-            </div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="Status" class="control-label"></label> *@
+            @*     <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusNimi"></select> *@
+            @*     <span asp-validation-for="StatusId" class="text-danger"></span> *@
+            @* </div> *@
             <div class="form-group">
                 <label asp-for="Toimipiste" class="control-label"></label>
                 <select asp-for="ToimipisteId" class="form-control" asp-items="ViewBag.ToimipisteNimi"></select>

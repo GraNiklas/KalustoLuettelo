@@ -32,7 +32,7 @@ public class HomeController : Controller
         //var t = _context.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).Take(10);  // tämä on nyt vain esimerkki viimeisimmistä tapahtumista
 
 
-        var kaluDbContext = _context.Tuotteet.Include(t => t.Kategoria).Include(t => t.Status).Include(t => t.Toimipiste).Take(10); 
+        var kaluDbContext = _context.Tuotteet.Include(t => t.Kategoria).Include(t => t.Toimipiste).Take(10); 
         return View(await kaluDbContext.ToListAsync());
     }
 

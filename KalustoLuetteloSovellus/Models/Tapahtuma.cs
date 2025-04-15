@@ -17,7 +17,11 @@ public partial class Tapahtuma
 
     public int KäyttäjäId { get; set; }
 
-    public virtual Käyttäjä? Käyttäjä { get; set; } = null!;
+    public int StatusId { get; set; }
 
-    public virtual Tuote? Tuote { get; set; } = null!;
+    public virtual Käyttäjä Käyttäjä { get; set; } = null!;
+
+    public virtual Status Status { get; set; } = null!;
+
+    public virtual Tuote Tuote { get; set; } = null!;
 }

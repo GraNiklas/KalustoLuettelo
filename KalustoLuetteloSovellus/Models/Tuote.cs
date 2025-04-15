@@ -12,12 +12,9 @@ public partial class Tuote
 
     public int KategoriaId { get; set; }
 
-    public int StatusId { get; set; }
-
     public string? Kuvaus { get; set; }
 
     public byte[]? Kuva { get; set; }
-
     [NotMapped] public IFormFile? KuvaFile { get; set; }
 
     public DateOnly? OstoPvm { get; set; }
@@ -31,8 +28,6 @@ public partial class Tuote
     public int ToimipisteId { get; set; }
 
     public virtual Kategoria? Kategoria { get; set; } = null!;
-
-    public virtual Status? Status { get; set; } = null!;
 
     public virtual ICollection<Tapahtuma> Tapahtumas { get; set; } = new List<Tapahtuma>();
 
