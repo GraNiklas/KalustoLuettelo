@@ -235,5 +235,11 @@ namespace KalustoLuetteloSovellus.Controllers
         {
             return _context.Tuotteet.Any(e => e.TuoteId == id);
         }
+
+        public async Task<IActionResult> _TapahtumaRivit()
+        {
+            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
+            return View(await kaluDbContext.ToListAsync());
+        }
     }
 }

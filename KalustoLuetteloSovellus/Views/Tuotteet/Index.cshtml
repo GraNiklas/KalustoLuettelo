@@ -4,48 +4,119 @@
     ViewData["Title"] = "Index";
 }
 
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $(".showItemClass").click(function () {
+            let tuoteId = $(this).data("itemid");
+            // alert("Klikkasit tuotenumero:" + tuoteId);
+            });
+        });
+    </script>
+}
 
 <h1>Tuotteet</h1>
+<h2>Haitarin muokkaus aloitettu....</h2>
 
 <p>
-    <a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
+<a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
 </p>
 
-<table class="table">
+
+<div class="container-fluid">
+
+    <div class="card-header">
+        <a class="card-link">
+            <form>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-warning font-weight-bold">TuoteId</span>
+                    </div>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="IdNumero" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Kuva" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Kuvaus" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="OstoPvm" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Hinta" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Takuu" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Kategoria" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Toimipiste" disabled>
+                    <input type="text" class="form-control text-bg-secondary font-weight-bold px-2" value="Aktiivinen" disabled>
+                </div>
+            </form>
+        </a>
+    </div>
+
+    <div id="accordion">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link showItemClass" data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId">
+                        <form>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@item.TuoteId</span>
+                                </div>
+                                @*<label class="px-2" for="usr">@Html.DisplayNameFor(model => model.Customers.CompanyName):</label>*@
+                                <input type="text" class="form-control px-2" value="@item.IdNumero" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Kuva" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Kuvaus" disabled>
+                                <input type="text" class="form-control px-2" value="@item.OstoPvm" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Hinta" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Takuu" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Kategoria" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Toimipiste" disabled>
+                                <input type="text" class="form-control px-2" value="@item.Aktiivinen" disabled>
+                            </div>
+                        </form>
+                    </a>
+                </div>
+                <div id="collapse_@item.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item.TuoteId">
+                    <div class="card-body">
+                        <p> Ladataan tuotteiden @item.TuoteId rivit </p>
+@*                         <div id="orderDetails_@item.TuoteId"></div> *@
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+@* <table class="table">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.TuoteId)</th>
             <th>@Html.DisplayNameFor(model => model.IdNumero)</th>
-            <th>@Html.DisplayNameFor(model => model.Kuvaus)</th>
             <th>@Html.DisplayNameFor(model => model.Kuva)</th>
+            <th>@Html.DisplayNameFor(model => model.Kuvaus)</th>
             <th>@Html.DisplayNameFor(model => model.OstoPvm)</th>
             <th>@Html.DisplayNameFor(model => model.Hinta)</th>
             <th>@Html.DisplayNameFor(model => model.Takuu)</th>
-            <th>@Html.DisplayNameFor(model => model.Aktiivinen)</th>
             <th>@Html.DisplayNameFor(model => model.Kategoria)</th>
-            @* <th>@Html.DisplayNameFor(model => model.Status)</th> *@
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
             <th>@Html.DisplayNameFor(model => model.Toimipiste)</th>
+            <th>@Html.DisplayNameFor(model => model.Aktiivinen)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
-        <tr>
+        <tr class="showItemClass" data-itemid ="@item.TuoteId">
             <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
             <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
+            <td>@if (item.Kuva != null && item.Kuva.Length > 0){<img class="" style="width:25px;height:25px;object-fit:cover" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Kuva)" alt="Tuote kuva" />}</td>
             <td>@Html.DisplayFor(modelItem => item.Kuvaus)</td>
-            <td>@if (item.Kuva != null && item.Kuva.Length > 0)
-                {
-                    <img class="" style="width:25px;height:25px;object-fit:cover" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Kuva)" alt="Tuote kuva" />
-                }
-            </td>
             <td>@Html.DisplayFor(modelItem => item.OstoPvm)</td>
             <td>@Html.DisplayFor(modelItem => item.Hinta)</td>
             <td>@Html.DisplayFor(modelItem => item.Takuu)</td>
-            <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
             <td>@if(item.Kategoria != null)@Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)</td>
-            @* <td>@if(item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td> *@
+            <td>@if(item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
             <td>@if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
+            <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
             <td>
                 <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
                 <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
@@ -55,7 +126,8 @@
         }
     </tbody>
 
-</table>
+</table> *@
+
 
 
 
