@@ -58,14 +58,25 @@
                                     <span class="input-group-text">@item.TuoteId</span>
                                 </div>
                                 @*<label class="px-2" for="usr">@Html.DisplayNameFor(model => model.Customers.CompanyName):</label>*@
-                                <input type="text" class="form-control px-2" value="@item.IdNumero" disabled>
-                                <input type="text" class="form-control px-2" value="@item.Kuva" disabled>
+                                <input type="text" class="form-control px-2" value="@item.IdNumero" disabled>                                
+                                @if (item.Kuva != null && item.Kuva.Length > 0)
+                                {
+                                    <img style="width:38px;height:38px;object-fit:cover" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Kuva)" alt="Tuotekuva" />
+                                }
+
                                 <input type="text" class="form-control px-2" value="@item.Kuvaus" disabled>
                                 <input type="text" class="form-control px-2" value="@item.OstoPvm" disabled>
                                 <input type="text" class="form-control px-2" value="@item.Hinta" disabled>
                                 <input type="text" class="form-control px-2" value="@item.Takuu" disabled>
-                                <input type="text" class="form-control px-2" value="@item.Kategoria" disabled>
-                                <input type="text" class="form-control px-2" value="@item.Toimipiste" disabled>
+                                @if (item.Kategoria != null)
+                                {
+                                    <input type="text" class="form-control px-2" value="@item.Kategoria.KategoriaNimi" disabled>
+                                }
+
+                                @if (item.Toimipiste != null)
+                                {
+                                    <input type="text" class="form-control px-2" value="@item.Toimipiste.ToimipisteNimi" disabled>
+                                }
                                 <input type="text" class="form-control px-2" value="@item.Aktiivinen" disabled>
                             </div>
                         </form>
