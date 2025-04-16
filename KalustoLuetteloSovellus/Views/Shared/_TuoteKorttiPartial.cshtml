@@ -1,4 +1,8 @@
 ﻿@model KalustoLuetteloSovellus.Models.Tuote
+
+@{
+    var statusNimi = ViewBag.status; // tää tulee myöhemmin tohon status palloon, pitää lisätä controllerissa statuksen haku viimeisimmästä tapahtumasta t:Niklas
+}
 <div class="carousel-item col-md-4 mb-6" style="border:2px solid gray;border-radius:8px; padding:16px;margin:16px">
     <div>
         <div class="d-flex flex-column">
@@ -101,6 +105,7 @@
     <hr />
     <div>
         <a class="btn btn-main" asp-controller="Tuotteet" asp-action="Edit" asp-route-id="@Model?.TuoteId"><i class="fas fa-edit"></i></a>
-        <a class="btn btn-sec" asp-controller="Tuotteet" asp-action="Details" asp-route-id="@Model?.TuoteId"><i class="fas fa-search"></i></a>
+        <a class="btn btn-main" asp-controller="Tuotteet" asp-action="Details" asp-route-id="@Model?.TuoteId"><i class="fas fa-search"></i></a>
+        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@Model?.TuoteId"><i class="fas fa-calendar-check"></i></a>
     </div>
 </div>

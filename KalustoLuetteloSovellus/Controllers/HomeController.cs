@@ -135,6 +135,7 @@ public class HomeController : Controller
                 ViewBag.LoggedStatus = "In";
                 ViewBag.LoginError = 0;
                 HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
+                HttpContext.Session.SetInt32("K‰ytt‰j‰Id", loggedUser.K‰ytt‰j‰Id);
                 HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
                 return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
             }

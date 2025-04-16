@@ -21,7 +21,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tapahtumat
         public async Task<IActionResult> Index()
         {
-            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
+            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t=>t.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
             return View(await kaluDbContext.ToListAsync());
         }
 
@@ -46,12 +46,37 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tapahtumat/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int tuoteId)
         {
-            ViewData["Käyttäjätunnus"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "Käyttäjätunnus");
-            ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId");
-            ViewData["IdNumero"] = new SelectList(_context.Tuotteet, "IdNumero", "IdNumero");
-            return View();
+            var tuote = await _context.Tuotteet
+                .Include(t => t.Kategoria)
+                .Include(t => t.Toimipiste)
+                .FirstOrDefaultAsync(t => t.TuoteId == tuoteId);
+            Console.WriteLine("tuoteid create: ", tuoteId);
+            if(tuote == null)
+            {
+                Console.WriteLine("tuote on null ");
+                return RedirectToAction("Index","Home");
+            }
+            ViewData["Käyttäjätunnus"] = HttpContext.Session.GetString("käyttäjätunnus");
+            ViewData["TuoteId"] = tuote.TuoteId;
+            ViewData["IdNumero"] = tuote.IdNumero;
+            ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi");
+
+            var tapahtuma = new Tapahtuma();
+            var käyttäjäId = HttpContext.Session.GetInt32("KäyttäjäId");
+            var käyttäjä = await _context.Käyttäjät.FirstOrDefaultAsync(k => k.KäyttäjäId == käyttäjäId);
+            if(käyttäjä == null || käyttäjäId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            tapahtuma.KäyttäjäId = (int)käyttäjäId;
+            tapahtuma.Käyttäjä = käyttäjä;
+            tapahtuma.TuoteId = tuoteId;
+            tapahtuma.Tuote = tuote;
+            tapahtuma.AloitusPvm = DateOnly.FromDateTime(DateTime.Today);
+            tapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today.AddDays(7)); // lisätään vaikka viikko lopetuspäivään defaultiks
+            return View(tapahtuma);
         }
 
         // POST: Tapahtumat/Create
@@ -59,14 +84,14 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TapahtumaId,TuoteId,AloitusPvm,LopetusPvm,Kommentti,KäyttäjäId")] Tapahtuma tapahtuma)
+        public async Task<IActionResult> Create(Tapahtuma tapahtuma)
         {
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 _context.Add(tapahtuma);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
+            }
             ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "KäyttäjäId", tapahtuma.KäyttäjäId);
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId", tapahtuma.TuoteId);
             return View(tapahtuma);

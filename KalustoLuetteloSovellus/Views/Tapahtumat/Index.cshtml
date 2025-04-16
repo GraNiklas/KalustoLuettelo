@@ -19,6 +19,7 @@
             <th>@Html.DisplayNameFor(model => model.Kommentti)</th>
             <th>@Html.DisplayNameFor(model => model.Käyttäjä)</th>
             <th>@Html.DisplayNameFor(model => model.Tuote)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
             @* <th> *@
             @*     @Html.DisplayNameFor(model => model.Tuote.Status.StatusNimi) *@
             @* </th> *@
@@ -36,14 +37,15 @@
             <td>@Html.DisplayFor(modelItem => item.Kommentti)</td>
             <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
             <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
+            <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
             @* <td> *@
             @*     @Html.DisplayFor(modelItem => item.Tuote.Status.StatusNimi) *@
             @* </td> *@
             <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
             <td>
-                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
-                    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                    <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
+                    <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
 }
