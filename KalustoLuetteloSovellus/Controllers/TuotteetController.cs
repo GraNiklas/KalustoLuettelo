@@ -255,11 +255,11 @@ namespace KalustoLuetteloSovellus.Controllers
             return _context.Tuotteet.Any(e => e.TuoteId == id);
         }
 
-        public async Task<IActionResult> _TapahtumaRivit()
+        public async Task<IActionResult> _TapahtumaRivitPartial()
         {
-            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
-            return PartialView("_tapahtumaRivitPartial",await kaluDbContext.ToListAsync());
+            var tapahtumat = await _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste).ToListAsync();
             
+            return PartialView("_TapahtumaRivitPartial", tapahtumat);
         }
 
     }

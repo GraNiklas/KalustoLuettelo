@@ -1,0 +1,39 @@
+﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tapahtuma>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
+            <th>@Html.DisplayNameFor(model => model.Tuote.IdNumero)</th>
+            <th>@Html.DisplayNameFor(model => model.AloitusPvm)</th>
+            <th>@Html.DisplayNameFor(model => model.LopetusPvm)</th>
+            <th>@Html.DisplayNameFor(model => model.Kommentti)</th>
+            <th>@Html.DisplayNameFor(model => model.Käyttäjä)</th>
+            <th>@Html.DisplayNameFor(model => model.Tuote)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th>@Html.DisplayNameFor(model => model.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</th>
+            <th>Toiminnot</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td>
+                <td>@Html.DisplayFor(modelItem => item.AloitusPvm)</td>
+                <td>@Html.DisplayFor(modelItem => item.LopetusPvm)</td>
+                <td>@Html.DisplayFor(modelItem => item.Kommentti)</td>
+                <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
+                <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
+                <td class="d-flex gap-2">
+                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
+                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

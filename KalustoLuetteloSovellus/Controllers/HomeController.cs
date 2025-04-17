@@ -38,9 +38,11 @@ public class HomeController : Controller
         return View(await kaluDbContext.ToListAsync());
     }
 
-    public IActionResult User()
+    public async Task<IActionResult> User()
     {
-        return View();
+        var k‰ytt‰j‰Id = HttpContext.Session.GetInt32("K‰ytt‰j‰Id");
+        var k‰ytt‰j‰ = await _context.K‰ytt‰j‰t.Include(k => k.Tapahtumat).ThenInclude(k => k.Status).Include(k => k.Tapahtumat).ThenInclude(t => t.Tuote).ThenInclude(t => t.Toimipiste).FirstOrDefaultAsync(k => k.K‰ytt‰j‰Id == k‰ytt‰j‰Id);
+        return View(k‰ytt‰j‰);
     }
 
     public IActionResult Privacy()
