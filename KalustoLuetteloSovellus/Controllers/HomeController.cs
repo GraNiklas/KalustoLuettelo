@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
 
 using Microsoft.AspNetCore.Identity;
+using KalustoLuetteloSovellus.Services;
 
 namespace KalustoLuetteloSovellus.Controllers;
 
@@ -18,12 +19,13 @@ public class HomeController : Controller
 {
     private readonly KaluDbContext _context;
     private readonly ILogger<HomeController> _logger;
+    private readonly EmailService _emailService;
 
-
-    public HomeController(ILogger<HomeController> logger, KaluDbContext context)
+    public HomeController(ILogger<HomeController> logger, KaluDbContext context, EmailService emailService)
     {
         _logger = logger;
         _context = context;
+        _emailService = emailService;
     }
 
     public async Task<IActionResult> Index()
@@ -90,7 +92,8 @@ public class HomeController : Controller
 
                 await _context.Käyttäjät.AddAsync(käyttäjä);
                 await _context.SaveChangesAsync();
-                
+                await _emailService.SendEmailAsync(käyttäjä.Käyttäjätunnus, "Hello", "This is a test email");
+
                 return RedirectToAction("Login");
 
                 //return RedirectToAction("Authorize",käyttäjä); // koitin autorisoida, registerin jälkeen mutta tämä ei toiminnut 
