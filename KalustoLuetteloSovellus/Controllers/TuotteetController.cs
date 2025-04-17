@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KalustoLuetteloSovellus.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -21,9 +22,25 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var kaluDbContext = _context.Tuotteet.Include(t => t.Kategoria).Include(t => t.Toimipiste);
+            ViewData["HintaSortParm"] = string.IsNullOrEmpty(sortOrder) ? "hinta_desc" : "";
+
+            var kaluDbContext = _context.Tuotteet
+                .Include(t => t.Kategoria)
+                .Include(t => t.Toimipiste)
+                .AsQueryable();
+
+            switch (sortOrder)
+            {
+                case "hinta_desc":
+                    kaluDbContext = kaluDbContext.OrderByDescending(t => t.Hinta ?? 0);
+                    break;
+                default:
+                    kaluDbContext = kaluDbContext.OrderBy(t => t.Hinta ?? 0);
+                    break;
+            }
+
             return View(await kaluDbContext.ToListAsync());
         }
 
@@ -241,5 +258,6 @@ namespace KalustoLuetteloSovellus.Controllers
             var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
             return View(await kaluDbContext.ToListAsync());
         }
+
     }
 }
