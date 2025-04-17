@@ -5,21 +5,21 @@
 }
 
 @section scripts {
-    <script type="text/javascript">
-        $(function () {
-            $(".showItemClass").click(function () {
-            let tuoteId = $(this).data("itemid");
-            // alert("Klikkasit tuotenumero:" + tuoteId);
-            });
-        });
-    </script>
+<script type="text/javascript">
+    $(function () {
+    $(".showItemClass").click(function () {
+    let tuoteId = $(this).data("itemid");
+    // alert("Klikkasit tuotenumero:" + tuoteId);
+    });
+    });
+</script>
 }
 
 <h1>Tuotteet</h1>
 <h2>Haitarin muokkaus aloitettu....</h2>
 
 <p>
-<a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
+    <a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
 </p>
 <i class="fa fa-sort-amount-asc"></i> Järjestä hinnan mukaan
 
@@ -86,6 +86,13 @@
                 <div id="collapse_@item.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item.TuoteId">
                     <div class="card-body">
                         <p> Ladataan tuotteiden @item.TuoteId rivit </p>
+                        @{
+                            foreach (var tapahtuma in item.Tapahtumat)
+                            {
+                                // await Html.PartialAsync("_tapahtumaRivitPartial", tapahtuma);
+                                // <p>@tapahtuma.Kommentti</p>
+                            }
+                        }
 @*                         <div id="orderDetails_@item.TuoteId"></div> *@
                     </div>
                 </div>

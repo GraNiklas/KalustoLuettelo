@@ -54,7 +54,7 @@ public partial class KaluDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Rooli).WithMany(p => p.Käyttäjäs)
+            entity.HasOne(d => d.Rooli).WithMany(p => p.Käyttäjät)
                 .HasForeignKey(d => d.RooliId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Käyttäjä_Rooli");
@@ -88,17 +88,17 @@ public partial class KaluDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Käyttäjä).WithMany(p => p.Tapahtumas)
+            entity.HasOne(d => d.Käyttäjä).WithMany(p => p.Tapahtumat)
                 .HasForeignKey(d => d.KäyttäjäId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tapahtuma_Käyttäjä");
 
-            entity.HasOne(d => d.Status).WithMany(p => p.Tapahtumas)
+            entity.HasOne(d => d.Status).WithMany(p => p.Tapahtumat)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tapahtuma_Status");
 
-            entity.HasOne(d => d.Tuote).WithMany(p => p.Tapahtumas)
+            entity.HasOne(d => d.Tuote).WithMany(p => p.Tapahtumat)
                 .HasForeignKey(d => d.TuoteId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tapahtumat_Tuote");
@@ -135,12 +135,12 @@ public partial class KaluDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Kategoria).WithMany((System.Linq.Expressions.Expression<Func<Kategoria, IEnumerable<Tuote>?>>?)(p => p.Tuotes))
+            entity.HasOne(d => d.Kategoria).WithMany((System.Linq.Expressions.Expression<Func<Kategoria, IEnumerable<Tuote>?>>?)(p => p.Tuotteet))
                 .HasForeignKey(d => d.KategoriaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tuote_Kategoria");
 
-            entity.HasOne(d => d.Toimipiste).WithMany(p => p.Tuotes)
+            entity.HasOne(d => d.Toimipiste).WithMany(p => p.Tuotteet)
                 .HasForeignKey(d => d.ToimipisteId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tuote_Toimipiste");

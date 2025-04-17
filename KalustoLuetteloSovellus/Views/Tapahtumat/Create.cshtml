@@ -16,16 +16,16 @@
         <div class="col-12">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Tuote.IdNumero" class="control-label"></label>
-                    <p class="form-control">@Model.Tuote.IdNumero</p>
+                @* <div class="form-group"> *@
+                    @* <label asp-for="Tuote.IdNumero" class="control-label"></label> *@
+                    @* <p class="form-control">@Model.Tuote.IdNumero</p> *@
                     @* <select asp-for="Tuote.IdNumero" class="form-control" asp-items="ViewBag.Idnumero" disabled></select> *@
-                </div>
-                <div class="form-group">
-                    <label asp-for="Tuote.Kuvaus" class="control-label"></label>
-                    <p class="form-control">@Model.Tuote.Kuvaus</p>
+                @* </div> *@
+                @* <div class="form-group"> *@
+                    @* <label asp-for="Tuote.Kuvaus" class="control-label"></label> *@
+                    @* <p class="form-control">@Model.Tuote.Kuvaus</p> *@
                     @* <select asp-for="Tuote.Kuvaus" class="form-control" asp-items="ViewBag.Kuvaus" disabled></select> *@
-                </div>
+                @* </div> *@
                 <div class="form-group">
                     <label asp-for="AloitusPvm" class="control-label"></label>
                     <input asp-for="AloitusPvm" class="form-control" type="date" />
@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Kommentti" class="control-label"></label>
-                    <input asp-for="Kommentti" class="form-control" />
+                    <textarea asp-for="Kommentti" class="form-control" rows="5" ></textarea>
                     <span asp-validation-for="Kommentti" class="text-danger"></span>
                 </div>
                 <div class="form-group">

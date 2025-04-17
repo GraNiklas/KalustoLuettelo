@@ -9,6 +9,7 @@ using KalustoLuetteloSovellus.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Routing;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -29,6 +30,7 @@ namespace KalustoLuetteloSovellus.Controllers
             var kaluDbContext = _context.Tuotteet
                 .Include(t => t.Kategoria)
                 .Include(t => t.Toimipiste)
+                .Include(t => t.Tapahtumat)
                 .AsQueryable();
 
             switch (sortOrder)
@@ -256,7 +258,8 @@ namespace KalustoLuetteloSovellus.Controllers
         public async Task<IActionResult> _TapahtumaRivit()
         {
             var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
-            return View(await kaluDbContext.ToListAsync());
+            return PartialView("_tapahtumaRivitPartial",await kaluDbContext.ToListAsync());
+            
         }
 
     }

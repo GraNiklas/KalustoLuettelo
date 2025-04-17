@@ -9,5 +9,5 @@ public partial class Rooli
 
     public string RooliNimi { get; set; } = null!;
 
-    public virtual ICollection<Käyttäjä> Käyttäjäs { get; set; } = new List<Käyttäjä>();
+    public virtual ICollection<Käyttäjä> Käyttäjät { get; set; } = new List<Käyttäjä>();
 }

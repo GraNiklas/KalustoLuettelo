@@ -15,5 +15,5 @@ public partial class Käyttäjä
 
     public virtual Rooli Rooli { get; set; } = null!;
 
-    public virtual ICollection<Tapahtuma> Tapahtumas { get; set; } = new List<Tapahtuma>();
+    public virtual ICollection<Tapahtuma> Tapahtumat { get; set; } = new List<Tapahtuma>();
 }

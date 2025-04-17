@@ -13,7 +13,7 @@ public partial class Toimipiste
 
     public string? ToimipisteNimi { get; set; }
 
-    public virtual ICollection<Tuote> Tuotes { get; set; } = new List<Tuote>();
+    public virtual ICollection<Tuote> Tuotteet { get; set; } = new List<Tuote>();
     public string? KaupunkiJaToimipisteNimi => $"{Kaupunki} - {ToimipisteNimi} ";
 
 }

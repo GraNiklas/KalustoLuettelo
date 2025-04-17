@@ -29,7 +29,7 @@ public partial class Tuote
 
     public virtual Kategoria? Kategoria { get; set; } = null!;
 
-    public virtual ICollection<Tapahtuma> Tapahtumas { get; set; } = new List<Tapahtuma>();
+    public virtual ICollection<Tapahtuma> Tapahtumat { get; set; } = new List<Tapahtuma>();
 
     public virtual Toimipiste? Toimipiste { get; set; } = null!;
 }

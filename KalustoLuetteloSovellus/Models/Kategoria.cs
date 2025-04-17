@@ -9,5 +9,5 @@ public partial class Kategoria
 
     public string KategoriaNimi { get; set; } = null!;
 
-    public virtual ICollection<Tuote> Tuotes { get; set; } = new List<Tuote>();
+    public virtual ICollection<Tuote> Tuotteet { get; set; } = new List<Tuote>();
 }
