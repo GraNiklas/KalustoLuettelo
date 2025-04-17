@@ -18,8 +18,9 @@
             };
 
             using var smtp = new SmtpClient();
+            smtp.ServerCertificateValidationCallback = (s, c, h, e) => true; // ⚠️ Use only for dev/testing!
             await smtp.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync("kalusovellus@gmail.com", "SalainenSalasana123!");
+            await smtp.AuthenticateAsync("kalusovellus@gmail.com", "noec dtkd rxcb rrgq");
             await smtp.SendAsync(email);
             await smtp.DisconnectAsync(true);
         }
