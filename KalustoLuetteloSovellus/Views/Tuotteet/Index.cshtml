@@ -64,6 +64,10 @@
                                 {
                                     <img style="width:38px;height:38px;object-fit:cover" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Kuva)" alt="Tuotekuva" />
                                 }
+                                else
+                                {
+                                    <img style="width:38px;height:38px;object-fit:cover" src="~/Images/OletusKuva.png" alt="Tuotekuva" />
+                                }
 
                                 <input type="text" class="form-control px-2" value="@item.Kuvaus" disabled>
                                 <input type="text" class="form-control px-2" value="@item.OstoPvm" disabled>
@@ -86,13 +90,10 @@
                 <div id="collapse_@item.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item.TuoteId">
                     <div class="card-body">
                         <p> Ladataan tuotteiden @item.TuoteId rivit </p>
-                        @{
-                            foreach (var tapahtuma in item.Tapahtumat)
-                            {
-                                // await Html.PartialAsync("_tapahtumaRivitPartial", tapahtuma);
-                                // <p>@tapahtuma.Kommentti</p>
-                            }
-                        }
+                        @await Html.PartialAsync("_TapahtumaRivitPartial", item.Tapahtumat)
+                        
+                        @* @Html.Raw(partial) *@
+                        
 @*                         <div id="orderDetails_@item.TuoteId"></div> *@
                     </div>
                 </div>

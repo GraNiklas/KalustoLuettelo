@@ -1,6 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Http
+@model KalustoLuetteloSovellus.Models.Käyttäjä
 @{
     ViewData["Title"] = "User";
 }
 
 <h1>Omat sivut</h1>
+
+
+<h5>Käyttäjän edelliset tapahtumat</h5>
+
+<h6>Rooli: @Model.RooliId</h6>
+
+@await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat)
