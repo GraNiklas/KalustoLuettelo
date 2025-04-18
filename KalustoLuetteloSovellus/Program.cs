@@ -1,5 +1,4 @@
 using KalustoLuetteloSovellus.Models;
-using KalustoLuetteloSovellus.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -26,8 +25,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddTransient<EmailService>();
+builder.Services.Configure<SmtpSettings>(
+    builder.Configuration.GetSection("SmtpSettings"));
+
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 var app = builder.Build();
 
