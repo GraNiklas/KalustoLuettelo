@@ -10,6 +10,30 @@
 @*     <a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a> *@
 @* </p> *@
 <h5 class="pb-4">Uuden tapahtuman luonti tuotteen kautta</h5>
+
+<div class="d-flex gap-2">
+    <p>Kaikki tapahtumat: <strong>@ViewData["Kaikki"]</strong></p>
+    <p>Näytetyt tapahtumat: <strong>@ViewData["Suodatetut"]</strong></p>
+</div>
+<div class="d-flex gap-2">
+    <form method="get" class="d-flex gap-2 mb-2">
+        <div class="form-group">
+            <label>Status</label>
+            <select name="statusId" class="form-control" asp-items="ViewBag.Statuses">
+                <option value="">Kaikki statukset</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Toimipiste</label>
+            <select name="toimipisteId" class="form-control" asp-items="ViewBag.Toimipisteet">
+                <option value="">Kaikki toimipisteet</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-main mt-4"><i class="fas fa-filter"></i> Suodata</button>
+    </form>
+</div>
 <table class="table table-hover table-bordered">
     <thead>
         <tr>

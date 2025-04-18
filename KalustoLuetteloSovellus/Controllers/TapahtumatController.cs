@@ -19,10 +19,34 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tapahtumat
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? statusId = null,int? toimipisteId = null)
         {
-            var kaluDbContext = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t=>t.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
-            return View(await kaluDbContext.ToListAsync());
+            IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
+
+            ViewData["Kaikki"] = tapahtumat.Count();
+            //FILTERÖINTI
+
+            //STATUS
+            if (statusId.HasValue)
+            {
+                tapahtumat = tapahtumat.Where(t => t.StatusId == statusId.Value);
+            }
+            //TOIMIPISTE
+            if (toimipisteId.HasValue)
+            {
+                tapahtumat = tapahtumat.Where(t => t.Tuote.ToimipisteId == toimipisteId.Value);
+            }
+
+            var statukset = await _context.Statukset.ToListAsync();
+            var toimpisteet = await _context.Toimipisteet.ToListAsync();
+
+            ViewBag.Statuses = new SelectList(statukset, "StatusId", "StatusNimi",statusId);
+            ViewBag.Toimipisteet = new SelectList(toimpisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi",toimipisteId);
+
+            
+            ViewData["Suodatetut"] = tapahtumat.Count();
+
+            return View(await tapahtumat.ToListAsync());
         }
 
         // GET: Tapahtumat/Details/5

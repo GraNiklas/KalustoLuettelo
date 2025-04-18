@@ -46,6 +46,10 @@
 .darkMode .carousel-item {
     background-color: var(--darkmode-bg-color) !important;
 }
+.darkMode .form-control {
+    background-color: var(--darkmode-bg-color) !important;
+    color: var(--darkmode-text-sec-color) !important;
+}
 
 /*DARKMODE*/
 
@@ -196,6 +200,11 @@ body {
 }
 
 /*AADMIN PUDOTUS VALIKON LINKIT*/
+
+select{
+    appearance:auto!important;
+}
+
 
 .dropdown-item {
     position: relative;
