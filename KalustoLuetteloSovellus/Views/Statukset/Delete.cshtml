@@ -20,8 +20,9 @@
     </dl>
     
     <form asp-action="Delete">
+        <div class="d-flex mt-2">
         <input type="hidden" asp-for="StatusId" />
         <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Poista</button>
-        <a class="btn btn-light" asp-action="Index"><i class="fa-solid fa-circle-left"></i> Takaisin</a>
+            <a class="btn btn-secondary ms-2" asp-action="Index"><i class="fa-solid fa-circle-left"></i> Takaisin</a>
     </form>
 </div>

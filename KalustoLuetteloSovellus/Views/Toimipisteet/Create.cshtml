@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Uusi toimipiste</h1>
 
 <h4>Toimipiste</h4>
 <hr />
@@ -22,9 +22,10 @@
                 <input asp-for="ToimipisteNimi" class="form-control" />
                 <span asp-validation-for="ToimipisteNimi" class="text-danger"></span>
             </div>
+            <div class="d-flex mt-2">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Lisää uusi</button>
-                <a class="btn btn-light" asp-action="Index"><i class="fa-solid fa-circle-left"></i> Takaisin</a>
+                    <a class="btn btn-secondary ms-2" asp-action="Index"><i class="fa-solid fa-circle-left"></i> Takaisin</a>
             </div>
         </form>
     </div>
