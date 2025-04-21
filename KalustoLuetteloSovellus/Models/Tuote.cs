@@ -23,7 +23,7 @@ public partial class Tuote
 
     public DateOnly? Takuu { get; set; }
 
-    public bool Aktiivinen { get; set; }
+    public bool Aktiivinen { get; set; } 
 
     public int ToimipisteId { get; set; }
 

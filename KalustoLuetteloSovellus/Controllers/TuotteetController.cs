@@ -23,27 +23,40 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(int? kategoriaId = null, bool? onAktiivinen = null)
         {
-            ViewData["HintaSortParm"] = string.IsNullOrEmpty(sortOrder) ? "hinta_desc" : "";
-
-            var kaluDbContext = _context.Tuotteet
+            var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)
                 .Include(t => t.Toimipiste)
                 .Include(t => t.Tapahtumat)
+                    .ThenInclude(tap => tap.Status)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(tap => tap.Käyttäjä)
                 .AsQueryable();
 
-            switch (sortOrder)
+            // Laske kaikki tuotteet ja tallenna ViewData
+            ViewData["Kaikki"] = await tuotteet.CountAsync();
+
+            // Suodatus kategorian mukaan (jos kategoriaId annettu)
+            if (kategoriaId.HasValue)
             {
-                case "hinta_desc":
-                    kaluDbContext = kaluDbContext.OrderByDescending(t => t.Hinta ?? 0);
-                    break;
-                default:
-                    kaluDbContext = kaluDbContext.OrderBy(t => t.Hinta ?? 0);
-                    break;
+                tuotteet = tuotteet.Where(t => t.KategoriaId == kategoriaId.Value);
             }
 
-            return View(await kaluDbContext.ToListAsync());
+            // Suodatus aktiivisuuden mukaan (jos onAktiivinen annettu)
+            if (onAktiivinen.HasValue)
+            {
+                tuotteet = tuotteet.Where(t => t.Aktiivinen == onAktiivinen.Value);
+            }
+
+            // Laske suodatetut tuotteet ja tallenna ViewData
+            ViewData["Suodatetut"] = await tuotteet.CountAsync();
+
+            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
+            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
+            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
+
+            return View(await tuotteet.ToListAsync());
         }
 
         // GET: Tuotteet/Details/5
