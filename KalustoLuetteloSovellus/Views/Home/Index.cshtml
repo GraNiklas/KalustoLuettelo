@@ -7,10 +7,37 @@
     var isAdmin = Context.Session.GetInt32("RooliId") == 40000;
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
-<div class="text-center">
+<div class="d-flex flex-column justify-content-center align-items-center text-center">
     <h1 class="display-4">Tervetuloa KaLuun</h1>
+    <hp>Tän infon vois laittaa about sivulle</hp>
     <h5>Kehitys tiimi:</h5>
-    <p style="font-size:15px; font-weight:700; font-family:sans-serif"> Veeti Kauppinen: veeti.a.kauppinen@gmail.com, Niklas Granqvist: niklas.granqvist@student.careeria.fi, Teija Hurme: teija.hurme@student.careeria.fi, lisää omas  </p>
+    <table class="table table-bordered table-hover w-auto text-center ">
+        <thead class="table-light">
+            <tr>
+                <th class="text-start">Nimi</th>
+                <th class="text-start">Sähköposti</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Veeti Kauppinen</td>
+                <td>veeti.a.kauppinen@gmail.com</td>
+            </tr>
+            <tr>
+                <td>Niklas Granqvist</td>
+                <td>niklas.granqvist@student.careeria.fi</td>
+            </tr>
+            <tr>
+                <td>Teija Hurme</td>
+                <td>teija.hurme@student.careeria.fi</td>
+            </tr>
+            <tr>
+                <td>Paula Vekkilä</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
 </div>
 
 @if(isLoggedIn)
@@ -26,7 +53,7 @@
                 <div class="carousel-track" id="carouselTrack">
                     @foreach (var item in Model)
                     {
-                        @await Html.PartialAsync("_TuoteKorttiPartial", item)
+                        @await Html.PartialAsync("_TuoteKorttiPartialSmall", item)
                     }
                 </div>
             </div>

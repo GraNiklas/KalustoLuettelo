@@ -103,7 +103,11 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return View(await tuotteet.ToListAsync());
         }
-
+        public async Task<IActionResult> _StatusPartial(int statusId)
+        {
+            var status = await _context.Statukset.FirstOrDefaultAsync(s => s.StatusId == statusId);
+            return PartialView("_StatusPartial",status);
+        }
         // GET: Tuotteet/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -1,0 +1,20 @@
+﻿@model KalustoLuetteloSovellus.Models.Status
+
+<link rel="stylesheet" href="~/css/statusbadge.css" />
+
+
+@if (Model != null)
+    {
+    <div class="d-flex flex-nowrap align-items-center">
+        @{
+            var css_class = Model.StatusNimi == "Vapaa" ? "status-vapaa" : Model.StatusNimi == "Huollossa" ? "status-huollossa" : "status-other";
+        }
+        <div class="d-flex">
+            <strong style="font-variant-caps:all-small-caps">@Model.StatusNimi</strong>
+        </div>
+    
+        <div class="d-flex ms-2 gap-2">
+            <div class="status-badge @css_class"></div>
+        </div>
+    </div>
+}

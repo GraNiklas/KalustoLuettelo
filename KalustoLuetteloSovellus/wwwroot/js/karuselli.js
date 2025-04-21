@@ -12,11 +12,13 @@ window.onload = function () {
 
     const totalItems = items.length;
 
-    function updateCarousel() {
+    function updateCarousel(itemWidth) {
         // console.log(currentIndex)
-        let itemWidth = 500
-        const offset = currentIndex * itemWidth; // 500px item width * index
+        const offset = currentIndex * itemWidth; 
         track.style.transform = `translateX(-${offset}px)`;
+    }
+    function getItemWidth() {
+        return items[0].offsetWidth; // Get the width of the first item
     }
     function updateButtons(currentIndex) {
         if (currentIndex == 0) {
@@ -38,20 +40,24 @@ window.onload = function () {
         }
     }
 
+
     updateButtons(currentIndex);
 
     btnRight.addEventListener('click', () => {
+        const itemWidth = getItemWidth();
         if (currentIndex < totalItems) {
             currentIndex++;
-            updateCarousel();
+        
+            updateCarousel(itemWidth);
             updateButtons(currentIndex);
         }
     });
 
     btnLeft.addEventListener('click', () => {
+        const itemWidth = getItemWidth();
         if (currentIndex > 0) {
             currentIndex--;
-            updateCarousel();
+            updateCarousel(itemWidth);
             updateButtons(currentIndex);
         }
     });

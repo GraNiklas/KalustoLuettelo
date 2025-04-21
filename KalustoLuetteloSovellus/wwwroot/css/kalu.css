@@ -129,7 +129,7 @@ body {
 
 .carousel-view {
     overflow: hidden;
-    width: 900px; /* 3 items * 300px width */
+    width: auto; /* 3 items * 300px width */
     height: 100%;
     position: relative;
     mask-image: linear-gradient(90deg,transparent 0%,black 10%,black 90%,transparent 100%);
@@ -145,8 +145,8 @@ body {
 
 
 .carousel-item {
-    width: 500px;
-    height: 500px;
+    width: 100px;
+    height: 100px;
     /* margin-left:250px; */
     display: block;
     flex-shrink: 0;
@@ -157,6 +157,10 @@ body {
     margin: 0 5px;
     background-color:white;
 /*    filter: drop-shadow(0 0 8px rgba(0,0,0,0.3))*/
+}
+.carousel-item-small {
+    width: 250px;
+    height: 250px;
 }
 /*KARUSELLI*/
 
