@@ -32,4 +32,6 @@ public partial class Tuote
     public virtual ICollection<Tapahtuma> Tapahtumat { get; set; } = new List<Tapahtuma>();
 
     public virtual Toimipiste? Toimipiste { get; set; } = null!;
+
+    public Tapahtuma? ViimeisinTapahtuma => Tapahtumat.FirstOrDefault();
 }
