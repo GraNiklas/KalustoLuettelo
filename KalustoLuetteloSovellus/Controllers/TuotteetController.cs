@@ -23,7 +23,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index(int? kategoriaId = null, bool? onAktiivinen = null)
+        public async Task<IActionResult> Index(string kuvausHakusanalla = null, int ? kategoriaId = null, bool? onAktiivinen = null)
         {
             var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)
@@ -33,6 +33,11 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Include(t => t.Tapahtumat)
                     .ThenInclude(tap => tap.Käyttäjä)
                 .AsQueryable();
+
+            if (!string.IsNullOrEmpty(kuvausHakusanalla))
+            {
+                tuotteet = tuotteet.Where(t => t.Kuvaus.Contains(kuvausHakusanalla));
+            }
 
             // Laske kaikki tuotteet ja tallenna ViewData
             ViewData["Kaikki"] = await tuotteet.CountAsync();
