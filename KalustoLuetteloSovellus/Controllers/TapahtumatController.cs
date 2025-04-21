@@ -74,6 +74,8 @@ namespace KalustoLuetteloSovellus.Controllers
         {
             var tuote = await _context.Tuotteet
                 .Include(t => t.Kategoria)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(t => t.Status)
                 .Include(t => t.Toimipiste)
                 .FirstOrDefaultAsync(t => t.TuoteId == tuoteId);
             Console.WriteLine("tuoteid create: ", tuoteId);

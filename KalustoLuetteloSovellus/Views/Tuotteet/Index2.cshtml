@@ -43,80 +43,69 @@
 </form>
 
 
-<style>
 
-    tr.clickable-row {
-        cursor: pointer;
-    }
-
-    tr.clickable-row:hover {
-        background-color: #f0f0f0;
-    }
-</style>
 <script>
     
 
 </script>
 
-<table class="table">
-    <div class="container-fluid">
-        <thead>
-            <tr>
-                <th>Tapahtumat</th>
-                <th>@Html.DisplayNameFor(model => model.TuoteId)</th>
-                <th>@Html.DisplayNameFor(model => model.IdNumero)</th>
-                <th>@Html.DisplayNameFor(model => model.Kuva)</th>
-                <th>@Html.DisplayNameFor(model => model.Kuvaus)</th>
-                <th>@Html.DisplayNameFor(model => model.OstoPvm)</th>
-                <th>@Html.DisplayNameFor(model => model.Hinta)</th>
-                <th>@Html.DisplayNameFor(model => model.Takuu)</th>
-                <th>@Html.DisplayNameFor(model => model.Kategoria)</th>
-                <th>@Html.DisplayNameFor(model => model.Toimipiste)</th>
-                <th>@Html.DisplayNameFor(model => model.Aktiivinen)</th>
-                <th>@Html.DisplayNameFor(model => model.Status)</th>
-                <th></th>
-            </tr>
-        </thead>
+<div id="accordion" class="container-fluid table-bordered table-hover align-middle">
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Tapahtumat</th>
+                    <th>@Html.DisplayNameFor(model => model.TuoteId)</th>
+                    <th>@Html.DisplayNameFor(model => model.IdNumero)</th>
+                    <th>@Html.DisplayNameFor(model => model.Kuva)</th>
+                    <th>@Html.DisplayNameFor(model => model.Kuvaus)</th>
+                    <th>@Html.DisplayNameFor(model => model.OstoPvm)</th>
+                    <th>@Html.DisplayNameFor(model => model.Hinta)</th>
+                    <th>@Html.DisplayNameFor(model => model.Takuu)</th>
+                    <th>@Html.DisplayNameFor(model => model.Kategoria)</th>
+                    <th>@Html.DisplayNameFor(model => model.Toimipiste)</th>
+                    <th>@Html.DisplayNameFor(model => model.Aktiivinen)</th>
+                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th></th>
+                </tr>
+            </thead>
 
-        <tbody>
-        <div id="accordion">
-            @foreach (var item in Model) {
+            <tbody>
+                @foreach (var item in Model) {
             
-            <tr class="showItemClass clickable-row" onclick="accordion()" data-itemid ="@item.TuoteId">
-                <td><a style="text-decoration: none; color: inherit;" data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId">Tapahtumat</td>
-                <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
-                <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
-                <td>@if (item.Kuva != null && item.Kuva.Length > 0){<img class="" style="width:25px;height:25px;object-fit:cover" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Kuva)" alt="Tuote kuva" />}</td>
-                <td>@Html.DisplayFor(modelItem => item.Kuvaus)</td>
-                <td>@Html.DisplayFor(modelItem => item.OstoPvm)</td>
-                <td>@Html.DisplayFor(modelItem => item.Hinta)</td>
-                <td>@Html.DisplayFor(modelItem => item.Takuu)</td>
-                <td>@if(item.Kategoria != null)@Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)</td>
-                <td>@if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
-                <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
-                <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
-
-                <td class="d-flex">
-                    <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
-                    <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
-                    <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
-                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i></a>
-                </td>
-                <td>
-
-                <div id="collapse_@item.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item.TuoteId">
-                    <div class="card-body">
-                        <p class="fw-bold"> Tuotteen @item.TuoteId tapahtumarivit </p>
-                            @await Html.PartialAsync("_TapahtumaRivitPartial", item.Tapahtumat)
-                    </div>
-                </div>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </div>
-    </div>
-</table>
+                <tr data-itemid ="@item.TuoteId">
+                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="fas fa-stream" style="color:black"></i></a></td>
+                    <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
+                    <td>@if (item.Kuva != null && item.Kuva.Length > 0){<img class="" style="width:25px;height:25px;object-fit:cover" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Kuva)" alt="Tuote kuva" />}</td>
+                    <td>@Html.DisplayFor(modelItem => item.Kuvaus)</td>
+                    <td>@Html.DisplayFor(modelItem => item.OstoPvm)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Hinta)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Takuu)</td>
+                    <td>@if(item.Kategoria != null)@Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)</td>
+                    <td>@if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
+                    <td>@if (item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
+                    <td class="d-flex gap-2">
+                        <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
+                        <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="13">
+                        <div id="collapse_@item?.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item?.TuoteId">
+                            <div class="card-body">
+                                <p class="fw-bold"> Tuotteen @item?.TuoteId tapahtumarivit </p>
+                                @await Html.PartialAsync("_TapahtumaRivitPartial", item?.Tapahtumat)
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+    </table>
+</div>
  
 
 

@@ -65,6 +65,7 @@
                 <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
                 <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
                 <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                <a class="btn btn-main" title="Tuote details" asp-controller="Tuotteet" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-cube"></i></a>
             </td>
         </tr>
 }
