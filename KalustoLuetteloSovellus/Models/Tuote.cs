@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MimeKit.Encodings;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -33,6 +34,6 @@ public partial class Tuote
 
     public virtual Toimipiste? Toimipiste { get; set; } = null!;
 
-    public virtual Tapahtuma? ViimeisinTapahtuma => Tapahtumat.OrderBy(t=>t.AloitusPvm).FirstOrDefault();
-    [NotMapped] public virtual Status? Status => ViimeisinTapahtuma?.Status ?? new Status();
+    public virtual Tapahtuma? ViimeisinTapahtuma => Tapahtumat.OrderByDescending(t => t.AloitusPvm).FirstOrDefault();
+    [NotMapped] public virtual Status? Status => ViimeisinTapahtuma?.Status ?? new Status { StatusId = 60001, StatusNimi = "Vapaa"};
 }

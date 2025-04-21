@@ -26,7 +26,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Salasana, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Salasana, new { htmlAttributes = new { @class = "form-control Salasana" } })
+                    @Html.PasswordFor(model => model.Salasana, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Salasana, "", new { @class = "text-danger" })
                 </div>
             </div>

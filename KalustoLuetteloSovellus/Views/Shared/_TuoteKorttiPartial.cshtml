@@ -21,7 +21,7 @@
                         var color = Model.Status?.StatusNimi == "Vapaa" ? "chartreuse" : Model.Status?.StatusNimi == "Huollossa" ? "yellow" : "red";
                     }
                     <div class="d-flex">
-                        <strong style="filter:drop-shadow(0px 0px 4px @color);font-variant-caps:all-small-caps">@Model.Status?.StatusNimi</strong>
+                        <strong style="/* filter:drop-shadow(0px 0px 4px @color) */;font-variant-caps:all-small-caps">@Model.Status?.StatusNimi</strong>
                     </div>
                     @if (Model.Status != null)
                     {
