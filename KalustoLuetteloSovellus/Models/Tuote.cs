@@ -23,7 +23,7 @@ public partial class Tuote
 
     public DateOnly? Takuu { get; set; }
 
-    public bool Aktiivinen { get; set; } 
+    public bool Aktiivinen { get; set; }
 
     public int ToimipisteId { get; set; }
 
@@ -33,5 +33,6 @@ public partial class Tuote
 
     public virtual Toimipiste? Toimipiste { get; set; } = null!;
 
-    public Tapahtuma? ViimeisinTapahtuma => Tapahtumat.FirstOrDefault();
+    public virtual Tapahtuma? ViimeisinTapahtuma => Tapahtumat.OrderBy(t=>t.AloitusPvm).FirstOrDefault();
+    [NotMapped] public virtual Status? Status => ViimeisinTapahtuma?.Status ?? new Status();
 }

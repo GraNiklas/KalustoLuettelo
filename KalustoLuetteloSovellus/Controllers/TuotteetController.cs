@@ -74,8 +74,11 @@ namespace KalustoLuetteloSovellus.Controllers
 
             var tuote = await _context.Tuotteet
                 .Include(t => t.Kategoria)
-                .Include(t => t.Tapahtumat)
                 .Include(t => t.Toimipiste)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(t=>t.Status)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(t=>t.Käyttäjä)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
             if (tuote == null)
             {
@@ -99,6 +102,7 @@ namespace KalustoLuetteloSovellus.Controllers
             var tuote = await _context.Tuotteet
                 .Include(t => t.Kategoria)
                 .Include(t => t.Tapahtumat)
+                    .ThenInclude(t => t.Status)
                 .Include(t => t.Toimipiste)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
             if (tuote == null)

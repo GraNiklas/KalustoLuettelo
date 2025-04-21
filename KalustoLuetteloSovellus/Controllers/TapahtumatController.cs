@@ -118,6 +118,7 @@ namespace KalustoLuetteloSovellus.Controllers
             }
             ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "KäyttäjäId", tapahtuma.KäyttäjäId);
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId", tapahtuma.TuoteId);
+            ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tapahtuma.StatusId);
             return View(tapahtuma);
         }
 
@@ -136,6 +137,7 @@ namespace KalustoLuetteloSovellus.Controllers
             }
             ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "Käyttäjätunnus", tapahtuma.KäyttäjäId);
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "Kuvaus", tapahtuma.TuoteId);
+            ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tapahtuma.StatusId);
             return View(tapahtuma);
         }
 
@@ -144,7 +146,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TapahtumaId,TuoteId,AloitusPvm,LopetusPvm,Kommentti,KäyttäjäId")] Tapahtuma tapahtuma)
+        public async Task<IActionResult> Edit(int id, Tapahtuma tapahtuma)
         {
             if (id != tapahtuma.TapahtumaId)
             {

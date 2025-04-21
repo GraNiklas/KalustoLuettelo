@@ -1,14 +1,13 @@
 ﻿@model KalustoLuetteloSovellus.Models.Tuote
 
 @{
-    var statusNimi = ViewBag.status; // tää tulee myöhemmin tohon status palloon, pitää lisätä controllerissa statuksen haku viimeisimmästä tapahtumasta t:Niklas
-    var viimeisinTapahtuma = Model.Tapahtumat.FirstOrDefault();
-    var status = viimeisinTapahtuma?.Status;
-    if (viimeisinTapahtuma == null)
-    {
-        status = new Status();
-        status.StatusNimi = "Vapaa";
-    }
+    //var statusNimi = ViewBag.status; // tää tulee myöhemmin tohon status palloon, pitää lisätä controllerissa statuksen haku viimeisimmästä tapahtumasta t:Niklas
+    
+    // if (Model.ViimeisinTapahtuma == null)
+    // {
+    //     status = new Status();
+    //     status.StatusNimi = "Vapaa";
+    // }
 }
 <div class="carousel-item col-md-4 mb-6" style="border:2px solid gray;border-radius:8px; padding:16px;margin:16px">
     <div>
@@ -18,18 +17,18 @@
                     <h1 style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">
                         @Html.DisplayFor(model => model.Kuvaus)
                     </h1>
+                    @{
+                        var color = Model.Status?.StatusNimi == "Vapaa" ? "chartreuse" : Model.Status?.StatusNimi == "Huollossa" ? "yellow" : "red";
+                    }
                     <div class="d-flex">
-                        <strong>
-                            @* @Model.Status?.StatusNimi *@
-                        </strong>
+                        <strong style="filter:drop-shadow(0px 0px 4px @color);font-variant-caps:all-small-caps">@Model.Status?.StatusNimi</strong>
                     </div>
-                    <div class="d-flex ms-2 gap-2">
-                        @{
-                            var color = status?.StatusNimi == "Vapaa" ? "chartreuse" : status?.StatusNimi == "Huollossa" ? "yellow" : "red";
-                        }
-                        <strong style="filter:drop-shadow(0px 0px 4px @color);font-variant-caps:all-small-caps">@status?.StatusNimi</strong>
-                        <div style="height:24px;width:24px;background-color:@color;border-radius:256px;border:2px solid gray"></div> 
-                    </div>
+                    @if (Model.Status != null)
+                    {
+                        <div class="d-flex ms-2 gap-2">
+                            <div style="height:24px;width:24px;background-color:@color;border-radius:256px;border:2px solid gray"></div> 
+                        </div>
+                    }
                 </div>
                 <hr />
             </div>
@@ -77,10 +76,10 @@
                             @Html.DisplayFor(model => model.Kategoria.KategoriaNimi)
                         </dd>
                          <dt class="col-sm-2"> 
-                             @Html.DisplayNameFor(model => model.ViimeisinTapahtuma.Status) 
+                             @Html.DisplayNameFor(model => model.Status) 
                          </dt>
                          <dd class="col-sm-10"> 
-                             @Html.DisplayFor(model => model.ViimeisinTapahtuma.Status.StatusNimi) 
+                             @Html.DisplayFor(model => model.Status.StatusNimi) 
                         </dd> 
                         <dt class="col-sm-2">
                             @Html.DisplayNameFor(model => model.Toimipiste)
