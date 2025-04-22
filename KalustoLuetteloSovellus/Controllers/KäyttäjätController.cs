@@ -19,12 +19,54 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Käyttäjät
+
+        //[ServiceFilter(typeof(AdminOnlyFilter))]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var kaluDbContext = _context.Käyttäjät.Include(k => k.Rooli);
+        //    return View(await kaluDbContext.ToListAsync());
+        //}
+
         [ServiceFilter(typeof(AdminOnlyFilter))]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string käyttäjäNimi = null, string? rooliId = null)
         {
-            var kaluDbContext = _context.Käyttäjät.Include(k => k.Rooli);
-            return View(await kaluDbContext.ToListAsync());
+            var käyttäjät = _context.Käyttäjät
+                .Include(k => k.Rooli)
+                .AsQueryable();
+
+            // Suodata käyttäjänimellä
+            if (!string.IsNullOrEmpty(käyttäjäNimi))
+            {
+                käyttäjät = käyttäjät.Where(k => k.Käyttäjätunnus.Contains(käyttäjäNimi));
+            }
+
+            // Suodata roolin mukaan (rooliId on string, pitää muuntaa int:ksi tai käyttää suoraan)
+            if (!string.IsNullOrEmpty(rooliId))
+            {
+                käyttäjät = käyttäjät.Where(k => k.Rooli.ToString() == rooliId);
+            }
+
+            ViewData["Kaikki"] = await _context.Käyttäjät.CountAsync();
+            ViewData["Suodatetut"] = await käyttäjät.CountAsync();
+
+            // Täytetään ViewBag rooleilla dropdownia varten
+            ViewBag.Roolit = new SelectList(await _context.Roolit.ToListAsync(), "RooliId", "Nimi", rooliId);
+
+            return View(await käyttäjät.ToListAsync());
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Käyttäjät/Details/5
         [ServiceFilter(typeof(AdminOnlyFilter))]
