@@ -158,7 +158,11 @@ public class HomeController : Controller
                 return View("Login");
             }
         }
-        return View("Index", k‰ytt‰j‰);
+        else
+        {
+            ViewBag.ErrorMessage = "V‰‰r‰ salasana";
+        }
+        return View("Login");
 
     }
 }
