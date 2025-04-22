@@ -26,7 +26,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Kommentti)</td>
                 <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
                 <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
-                <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
+                <td class="ms-auto">@if (item.Status != null)@await Html.PartialAsync("_StatusPartial", item.Status)</td>
                 <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
                 <td class="d-flex gap-2">
                     <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
