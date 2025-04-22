@@ -51,6 +51,11 @@
     color: var(--darkmode-text-sec-color) !important;
 }
 
+.darkMode .card-header {
+    background-color: var(--darkmode-bg-color) !important;
+    color: var(--darkmode-text-sec-color) !important;
+}
+
 /*DARKMODE*/
 
 
