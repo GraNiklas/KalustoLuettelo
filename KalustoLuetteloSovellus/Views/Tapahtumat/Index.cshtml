@@ -4,6 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
+<style>
+.sort-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    white-space:nowrap;
+}
+</style>
 <h1>Tapahtumat</h1>
 
 @* <p> *@
@@ -20,14 +28,14 @@
         <div class="form-group">
             <label>Status</label>
             <select name="statusId" class="form-control" asp-items="ViewBag.Statuses">
-                <option value="">Kaikki statukset</option>
+                <option value="">Kaikki</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Toimipiste</label>
             <select name="toimipisteId" class="form-control" asp-items="ViewBag.Toimipisteet">
-                <option value="">Kaikki toimipisteet</option>
+                <option value="">Kaikki</option>
             </select>
         </div>
 
@@ -37,15 +45,33 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
-            <th>@Html.DisplayNameFor(model => model.Tuote.IdNumero)</th>
-            <th>@Html.DisplayNameFor(model => model.AloitusPvm)</th>
-            <th>@Html.DisplayNameFor(model => model.LopetusPvm)</th>
-            <th>@Html.DisplayNameFor(model => model.Kommentti)</th>
-            <th>@Html.DisplayNameFor(model => model.Käyttäjä)</th>
-            <th>@Html.DisplayNameFor(model => model.Tuote)</th>
-            <th>@Html.DisplayNameFor(model => model.Status)</th>
-            <th>@Html.DisplayNameFor(model => model.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</th>
+            @{
+                var currentSort = Context.Request.Query["sortOrder"].ToString();
+
+                string NextSort(string col)
+                {
+                    return currentSort == col ? col + "_desc" :
+                    currentSort == col + "_desc" ? col :
+                    col;
+                }
+
+                string SortIcon(string col)
+                {
+                    if (currentSort == col) return " ▲";
+                    if (currentSort == col + "_desc") return " ▼";
+                    return "";
+                }
+            }
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Id numero @SortIcon("IdNumero")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Aloitus pvm @SortIcon("AloitusPvm")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Lopetus pvm @SortIcon("LopetusPvm")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
+            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
+
             <th>Toiminnot</th>
         </tr>
     </thead>
