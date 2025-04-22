@@ -13,6 +13,7 @@ namespace KalustoLuetteloSovellus.Controllers
     {
         private readonly KaluDbContext _context;
 
+
         public KäyttäjätController(KaluDbContext context)
         {
             _context = context;
@@ -31,40 +32,27 @@ namespace KalustoLuetteloSovellus.Controllers
         public async Task<IActionResult> Index(string käyttäjäNimi = null, string? rooliId = null)
         {
             var käyttäjät = _context.Käyttäjät
-                .Include(k => k.Rooli)
+                .Include(k => k.Rooli) // navigaatioprop
                 .AsQueryable();
 
-            // Suodata käyttäjänimellä
             if (!string.IsNullOrEmpty(käyttäjäNimi))
             {
                 käyttäjät = käyttäjät.Where(k => k.Käyttäjätunnus.Contains(käyttäjäNimi));
             }
 
-            // Suodata roolin mukaan (rooliId on string, pitää muuntaa int:ksi tai käyttää suoraan)
-            if (!string.IsNullOrEmpty(rooliId))
+            if (!string.IsNullOrEmpty(rooliId) && int.TryParse(rooliId, out int parsedRooliId))
             {
-                käyttäjät = käyttäjät.Where(k => k.Rooli.ToString() == rooliId);
+                käyttäjät = käyttäjät.Where(k => k.RooliId == parsedRooliId);
             }
 
             ViewData["Kaikki"] = await _context.Käyttäjät.CountAsync();
             ViewData["Suodatetut"] = await käyttäjät.CountAsync();
 
-            // Täytetään ViewBag rooleilla dropdownia varten
-            ViewBag.Roolit = new SelectList(await _context.Roolit.ToListAsync(), "RooliId", "Nimi", rooliId);
+            var roolit = await _context.Roolit.ToListAsync();
+            ViewBag.Roolit = new SelectList(roolit, "RooliId", "Rooli", rooliId); // 🟢 ← tämä on oikein nyt!
 
             return View(await käyttäjät.ToListAsync());
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
