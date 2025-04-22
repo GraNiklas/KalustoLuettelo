@@ -1,4 +1,5 @@
 using KalustoLuetteloSovellus.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -17,6 +18,15 @@ builder.Services.AddControllersWithViews(); //
 
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Home/Login";
+        options.LoginPath = "/Home/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7); // Set how long the cookie is valid
+        options.SlidingExpiration = true; // Extends cookie lifetime on activity
+        options.Cookie.IsEssential = true;
+    });
 
 builder.Services.AddSession(options =>
 {
@@ -47,6 +57,7 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

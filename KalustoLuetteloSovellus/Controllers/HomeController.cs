@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace KalustoLuetteloSovellus.Controllers;
 
@@ -29,6 +33,35 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+        if (HttpContext.User.Identity.IsAuthenticated)
+        {
+            // Extract claims from the cookie
+            var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
+            var userNameClaim = HttpContext.User.FindFirst("UserName")?.Value;
+            var userRoleClaim = HttpContext.User.FindFirst("Role")?.Value;
+
+
+            if (!string.IsNullOrEmpty(userIdClaim) && !string.IsNullOrEmpty(userNameClaim) && !string.IsNullOrEmpty(userRoleClaim))
+            {
+                // Only set session variables if the claims are valid
+                HttpContext.Session.SetString("K‰ytt‰j‰tunnus", userNameClaim);
+                HttpContext.Session.SetInt32("K‰ytt‰j‰Id", int.Parse(userIdClaim));
+                HttpContext.Session.SetInt32("RooliId", int.Parse(userRoleClaim));
+            }
+            else
+            {
+                // Handle the case when any of the claims are missing or invalid
+                ViewBag.ErrorMessage = "Failed to retrieve user data from authentication.";
+                return RedirectToAction("Login");  // Redirect to login or show an error page
+            }
+
+            // Continue with logic for logged-in users
+        }
+        else
+        {
+            // User is not logged in
+            return RedirectToAction("Login");
+        }
         // T‰m‰ ottaa nyt vaa 10 ensimm‰ist‰ tuotetta tietokannasta, voidaan keksi‰ joku juttu miss‰ se hakee tapahtumista viimeisimm‰t 10 tapahtumaa ja listaa ne tuotteet, en tied‰.
         //var t = _context.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).Take(10);  // t‰m‰ on nyt vain esimerkki viimeisimmist‰ tapahtumista
 
@@ -108,15 +141,16 @@ public class HomeController : Controller
         }
         return View();
     }
-    public ActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
         HttpContext.Session.Clear();
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index");
     }
 
 
     [HttpPost]
-    public ActionResult Authorize(K‰ytt‰j‰ k‰ytt‰j‰)
+    public async Task<IActionResult> Authorize(K‰ytt‰j‰ k‰ytt‰j‰)
     {
 
         var loggedUser = _context.K‰ytt‰j‰t.SingleOrDefault(x => x.K‰ytt‰j‰tunnus == k‰ytt‰j‰.K‰ytt‰j‰tunnus);
@@ -147,6 +181,27 @@ public class HomeController : Controller
                 HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
                 HttpContext.Session.SetInt32("K‰ytt‰j‰Id", loggedUser.K‰ytt‰j‰Id);
                 HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
+
+
+                var claims = new List<Claim>
+                {
+                    new Claim("UserName", loggedUser.K‰ytt‰j‰tunnus),
+                    new Claim("UserId", loggedUser.K‰ytt‰j‰Id.ToString()),
+                    new Claim("Role", loggedUser.RooliId.ToString())
+                    // add roles/permissions here if needed
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true, // <-- this makes it persist
+                    ExpiresUtc = DateTime.UtcNow.AddDays(14) // optional expiry
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+
                 return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
             }
             else
