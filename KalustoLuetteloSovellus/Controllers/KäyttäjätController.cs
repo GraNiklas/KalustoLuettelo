@@ -40,16 +40,12 @@ namespace KalustoLuetteloSovellus.Controllers
                 käyttäjät = käyttäjät.Where(k => k.Käyttäjätunnus.Contains(käyttäjäNimi));
             }
 
-            if (!string.IsNullOrEmpty(rooliId) && int.TryParse(rooliId, out int parsedRooliId))
-            {
-                käyttäjät = käyttäjät.Where(k => k.RooliId == parsedRooliId);
-            }
 
             ViewData["Kaikki"] = await _context.Käyttäjät.CountAsync();
             ViewData["Suodatetut"] = await käyttäjät.CountAsync();
 
             var roolit = await _context.Roolit.ToListAsync();
-            ViewBag.Roolit = new SelectList(roolit, "RooliId", "Rooli", rooliId); // 🟢 ← tämä on oikein nyt!
+
 
             return View(await käyttäjät.ToListAsync());
         }
