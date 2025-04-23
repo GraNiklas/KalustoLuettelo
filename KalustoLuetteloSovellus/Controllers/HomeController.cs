@@ -66,13 +66,20 @@ public class HomeController : Controller
         //var t = _context.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).Take(10);  // tämä on nyt vain esimerkki viimeisimmistä tapahtumista
 
 
-        var kaluDbContext = _context.Tuotteet
+        var tuotteet = await _context.Tuotteet
             .Include(t => t.Kategoria)
             .Include(t => t.Toimipiste)
             .Include(t => t.Tapahtumat)
                 .ThenInclude(t => t.Status)
-            .Take(10); 
-        return View(await kaluDbContext.ToListAsync());
+            .ToListAsync();
+
+            var viimeiset10 = tuotteet
+            .AsEnumerable()
+            .Reverse()
+            .Take(10)
+            .ToList();
+
+        return View(viimeiset10);
     }
 
     public async Task<IActionResult> User()

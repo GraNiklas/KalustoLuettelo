@@ -77,7 +77,7 @@ namespace KalustoLuetteloSovellus.Controllers
                     .ThenInclude(tap => tap.Käyttäjä)
                 .AsQueryable();
 
-            ;
+            
 
             if (!string.IsNullOrEmpty(kuvausHakusanalla))
             {
@@ -135,12 +135,8 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-
             return View(tuote);
         }
-
-        
-        
 
         
         public async Task<IActionResult> DetailsPartial(int? id)
