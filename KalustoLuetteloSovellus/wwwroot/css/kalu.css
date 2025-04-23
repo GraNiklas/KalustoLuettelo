@@ -55,9 +55,14 @@
     background-color: var(--darkmode-bg-color) !important;
     color: var(--darkmode-text-sec-color) !important;
 }
+.darkmode-switch {
+    white-space: nowrap;
 
+}
 /*DARKMODE*/
-
+.nav-link {
+    white-space: nowrap;
+}
 
 .navbar {
 /*    position: fixed !important;*/

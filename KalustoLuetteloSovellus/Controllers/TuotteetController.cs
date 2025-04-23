@@ -34,6 +34,8 @@ namespace KalustoLuetteloSovellus.Controllers
                     .ThenInclude(tap => tap.Käyttäjä)
                 .AsQueryable();
 
+            
+
             if (!string.IsNullOrEmpty(kuvausHakusanalla))
             {
                 tuotteet = tuotteet.Where(t => t.Kuvaus.Contains(kuvausHakusanalla));
@@ -61,6 +63,7 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
             ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
 
+            
             return View(await tuotteet.ToListAsync());
         }
         public async Task<IActionResult> Index2(string kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null)
@@ -74,6 +77,8 @@ namespace KalustoLuetteloSovellus.Controllers
                     .ThenInclude(tap => tap.Käyttäjä)
                 .AsQueryable();
 
+            ;
+
             if (!string.IsNullOrEmpty(kuvausHakusanalla))
             {
                 tuotteet = tuotteet.Where(t => t.Kuvaus.Contains(kuvausHakusanalla));
@@ -101,7 +106,9 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
             ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
 
-            return View(await tuotteet.ToListAsync());
+            var tuoteList = await tuotteet.ToListAsync();
+            tuoteList = tuoteList.AsEnumerable().Reverse().ToList();
+            return View(tuoteList);
         }
         public async Task<IActionResult> _StatusPartial(int statusId)
         {
