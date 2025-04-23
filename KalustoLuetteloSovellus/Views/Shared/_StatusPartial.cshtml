@@ -5,16 +5,16 @@
 
 @if (Model != null)
     {
-    <div class="d-flex flex-nowrap align-items-end ms-auto justify-content-end">
+    <div class="d-flex flex-nowrap">
         @{
             var css_class = Model.StatusNimi == "Vapaa" ? "status-vapaa" : Model.StatusNimi == "Huollossa" ? "status-huollossa" : "status-other";
         }
-        <div class="d-flex">
-            <strong style="font-variant-caps:all-small-caps">@Model.StatusNimi</strong>
-        </div>
+        @* <div class="d-flex"> *@
+        @*     <strong style="font-variant-caps:all-small-caps">@Model.StatusNimi</strong> *@
+        @* </div> *@
     
-        <div class="d-flex ms-2">
-            <div class="status-badge @css_class"></div>
+        <div class="d-flex">
+            <div class="status-badge @css_class" title="@Model.StatusNimi"></div>
         </div>
     </div>
 }

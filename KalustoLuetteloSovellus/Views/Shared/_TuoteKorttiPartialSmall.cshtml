@@ -3,6 +3,7 @@
 @{
     var kuvaKokoW = 250;
     var kuvaKokoH = 250;
+    // var kuvaKokoH = 350;
 
     string imageSrc;
     if (Model.Kuva != null && Model.Kuva.Length > 0)
@@ -14,35 +15,34 @@
         imageSrc = Url.Content("~/Images/OletusKuva.png");
     }
 }
-<a style="color:var(--text-color)" asp-controller="Tuotteet" asp-action="Details" asp-route-id="@Model.TuoteId">
 
-<div class="carousel-item carousel-item-small col-md-4 mb-6" style="display: flex; flex-direction: column; height: @(kuvaKokoH + 100)px; width: @(kuvaKokoW)px;">
+<a style="color: var(--text-color); text-decoration: none;"
+   asp-controller="Tuotteet"
+   asp-action="Details"
+   asp-route-id="@Model.TuoteId">
 
-    <!-- Image Section -->
-    <div style="flex-shrink: 0; height: @(kuvaKokoH)px; position: relative; overflow: hidden; border-radius: 0px;">
-        <img src="@imageSrc"
-             alt="Tuote kuva"
-             style="width: 100%; height: 100%; object-fit: cover;" />
-        <!-- Gradient Overlay -->
-        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%,transparent 50%, white 100%);"></div>
-    </div>
+    <div class="carousel-item carousel-item-small col-md-4 mb-6"
+         style="display: flex; flex-direction: column; height: @(kuvaKokoH)px; width: @(kuvaKokoW)px;
+                position: relative; background-image: url('@imageSrc');
+                background-size: cover; background-position: center; overflow: hidden; border-radius: 0px;">
 
-    <!-- Product Details Section -->
-    <div class="d-flex flex-column p-2" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; overflow: hidden;">
-        <div class="d-flex">
-            <h1 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; font-size: 1.2rem;">
+        <!-- Gradient overlay -->
+        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+                    background: linear-gradient(to bottom, transparent 0%,white 80%, white 100%); z-index: 1;"></div>
+
+        <!-- Content -->
+        <div class="d-flex ms-auto p-4" style="z-index: 2;">
+            @await Html.PartialAsync("_StatusPartial", Model.Status)
+        </div>
+
+        <div class="d-flex flex-column p-2 mt-auto" style="z-index: 2;">
+            <h1 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.2rem;" title="@Model.Kuvaus">
                 @Html.DisplayFor(model => model.Kuvaus)
             </h1>
-            <hr />
-        </div>
-        <div class="d-flex flex-column">
-            <div class="d-flex flex-column">
+            <div>
                 @Html.DisplayFor(model => model.IdNumero)
             </div>
         </div>
-        <div class="d-flex ms-auto">@await Html.PartialAsync("_StatusPartial", Model.Status)</div>
+
     </div>
-
-</div>
-
 </a>

@@ -211,7 +211,7 @@ body {
     bottom: 0;
     left: 0;
     width: 0%;
-    height: 3px;
+    height: 3px; 
     background-color: #EFC356;
     transition: width 0.3s ease-in-out;
 }
