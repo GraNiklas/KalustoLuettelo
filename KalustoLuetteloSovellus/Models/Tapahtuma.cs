@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace KalustoLuetteloSovellus.Models;
 
@@ -9,8 +10,10 @@ public partial class Tapahtuma
 
     public int TuoteId { get; set; }
 
+    [Display(Name = "Alku pvm")]
     public DateOnly AloitusPvm { get; set; }
 
+    [Display(Name = "Loppu pvm")]
     public DateOnly? LopetusPvm { get; set; }
 
     public string? Kommentti { get; set; }

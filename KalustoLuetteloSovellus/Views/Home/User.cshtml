@@ -7,8 +7,12 @@
 <h1>Omat sivut</h1>
 
 
+<br />
+<a class="btn btn-main float-end" asp-controller="Home" onclick="return confirm('Haluatko varmasti poistaa tilin?')" asp-action="DeleteAccount" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-trash"></i> Poista tili</a>
+<h2 >Käyttäjätunnus: @Model.Käyttäjätunnus</h2>
+<h3>Rooli: @Model.Rooli.RooliNimi</h3>
+
+
+<br />
 <h5>Käyttäjän edelliset tapahtumat</h5>
-
-<h6>Rooli: @Model.RooliId</h6>
-
 @await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat)

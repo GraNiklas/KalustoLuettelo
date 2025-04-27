@@ -85,8 +85,36 @@ public class HomeController : Controller
     public async Task<IActionResult> User()
     {
         var k‰ytt‰j‰Id = HttpContext.Session.GetInt32("K‰ytt‰j‰Id");
-        var k‰ytt‰j‰ = await _context.K‰ytt‰j‰t.Include(k => k.Tapahtumat).ThenInclude(k => k.Status).Include(k => k.Tapahtumat).ThenInclude(t => t.Tuote).ThenInclude(t => t.Toimipiste).FirstOrDefaultAsync(k => k.K‰ytt‰j‰Id == k‰ytt‰j‰Id);
+        var k‰ytt‰j‰ = await _context.K‰ytt‰j‰t
+            .Include(k => k.Rooli)
+            .Include(k => k.Tapahtumat)
+                .ThenInclude(k => k.Status)
+            .Include(k => k.Tapahtumat)
+                .ThenInclude(t => t.Tuote)
+                .ThenInclude(t => t.Toimipiste)
+            .FirstOrDefaultAsync(k => k.K‰ytt‰j‰Id == k‰ytt‰j‰Id);
         return View(k‰ytt‰j‰);
+    }
+    [HttpGet]
+    public async Task<IActionResult> DeleteAccount(int k‰ytt‰j‰Id)
+    {
+        var poistettavaK‰ytt‰j‰ = await _context.K‰ytt‰j‰t.FindAsync(k‰ytt‰j‰Id);
+        if (poistettavaK‰ytt‰j‰ != null)
+        {
+
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            _context.K‰ytt‰j‰t.Remove(poistettavaK‰ytt‰j‰);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Index");
+
+        }
+        else
+        {
+            return View("User");
+        }
     }
 
     public IActionResult Privacy()

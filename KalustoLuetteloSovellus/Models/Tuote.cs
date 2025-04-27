@@ -1,6 +1,7 @@
 ﻿using MimeKit.Encodings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KalustoLuetteloSovellus.Models;
@@ -18,6 +19,7 @@ public partial class Tuote
     public byte[]? Kuva { get; set; }
     [NotMapped] public IFormFile? KuvaFile { get; set; }
 
+    [Display(Name = "Osto pvm")]
     public DateOnly? OstoPvm { get; set; }
 
     public int? Hinta { get; set; }
@@ -34,6 +36,7 @@ public partial class Tuote
 
     public virtual Toimipiste? Toimipiste { get; set; } = null!;
 
+    [Display(Name = "Viimeisin tapahtuma")]
     public virtual Tapahtuma? ViimeisinTapahtuma => Tapahtumat.OrderByDescending(t => t.AloitusPvm).FirstOrDefault();
     [NotMapped] public virtual Status? Status => ViimeisinTapahtuma?.Status ?? new Status { StatusId = 60001, StatusNimi = "Vapaa"};
 }

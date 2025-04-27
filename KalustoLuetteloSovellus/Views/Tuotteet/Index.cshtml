@@ -53,7 +53,7 @@
     <table class="table table-hover table-bordered align-middle">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Tapahtumat</th>
                     <th>@Html.DisplayNameFor(model => model.TuoteId)</th>
                     <th>@Html.DisplayNameFor(model => model.Status)</th>
                     <th>@Html.DisplayNameFor(model => model.IdNumero)</th>
@@ -81,7 +81,7 @@
                     imageSrc = Url.Content("~/Images/OletusKuva.png");
                 }
                 <tr data-itemid ="@item.TuoteId">
-                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="fas fa-stream" style="color:black"></i></a></td>
+                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-stream" style="color:black"></i></a></td>
                     <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
                     <td class="ms-auto">@if (item.Status != null) @await Html.PartialAsync("_StatusPartial", item.Status) </td>
                     <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
@@ -98,13 +98,14 @@
                         <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
                         <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
                         <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
-                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i></a>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="13">
                         <div id="collapse_@item?.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item?.TuoteId">
                             <div class="card-body">
+                                <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i> Luo uusi tapahtuma</a>
+                                <hr />
                                 <p class="fw-bold"> Tuotteen @item?.TuoteId tapahtumarivit </p>
                                 @await Html.PartialAsync("_TapahtumaRivitPartial", item?.Tapahtumat)
                             </div>
