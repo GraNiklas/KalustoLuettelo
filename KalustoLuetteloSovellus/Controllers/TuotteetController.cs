@@ -135,6 +135,9 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
+
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tuote);
         }
 
@@ -192,6 +195,9 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewData["KategoriaId"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaId", tuote.KategoriaId);
             //ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusId", tuote.StatusId);
             ViewData["ToimipisteId"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "ToimipisteId", tuote.ToimipisteId);
+
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tuote);
         }
 
@@ -209,10 +215,13 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-                    
+                   
             ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi",tuote.KategoriaId);
             //ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tuote.StatusId);
             ViewData["ToimipisteNimi"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi", tuote.ToimipisteId);
+
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tuote);
         }
         
@@ -300,6 +309,8 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tuote);
         }
 
@@ -331,5 +342,21 @@ namespace KalustoLuetteloSovellus.Controllers
             return PartialView("_TapahtumaRivitPartial", tapahtumat);
         }
 
+
+        public ActionResult ReturnToPreviousPage()
+        {
+            // katotaan onko täällä mitään
+            var returnUrl = TempData["ReturnUrl"]?.ToString();
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                // jos on niin palataan sinne
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                // muuten palataan index sivulle
+                return RedirectToAction("Index", "Tuotteet");
+            }
+        }
     }
 }

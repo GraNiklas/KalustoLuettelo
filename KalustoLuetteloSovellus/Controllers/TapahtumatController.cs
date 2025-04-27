@@ -104,6 +104,8 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tapahtuma);
         }
 
@@ -140,6 +142,9 @@ namespace KalustoLuetteloSovellus.Controllers
             tapahtuma.Tuote = tuote;
             tapahtuma.AloitusPvm = DateOnly.FromDateTime(DateTime.Today);
             tapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today.AddDays(7)); // lisätään vaikka viikko lopetuspäivään defaultiks
+
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tapahtuma);
         }
 
@@ -178,6 +183,9 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "Käyttäjätunnus", tapahtuma.KäyttäjäId);
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "Kuvaus", tapahtuma.TuoteId);
             ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tapahtuma.StatusId);
+
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tapahtuma);
         }
 
@@ -236,6 +244,8 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
+            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+
             return View(tapahtuma);
         }
 
@@ -259,5 +269,21 @@ namespace KalustoLuetteloSovellus.Controllers
         {
             return _context.Tapahtumat.Any(e => e.TapahtumaId == id);
         }
+        public ActionResult ReturnToPreviousPage()
+        {
+            // katotaan onko täällä mitään
+            var returnUrl = TempData["ReturnUrl"]?.ToString();
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                // jos on niin palataan sinne
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                // muuten palataan index sivulle
+                return RedirectToAction("Index", "Tapahtumat");
+            }
+        }
     }
+
 }
