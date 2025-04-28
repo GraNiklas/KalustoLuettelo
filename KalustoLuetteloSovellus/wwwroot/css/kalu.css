@@ -62,8 +62,12 @@
     color: var(--darkmode-text-color) !important;
     border-color: var(--darkmode-text-sec-color) !important;
 }
+.darkMode thead {
+    background-color: var(--darkmode-text-sec-color);
+/*    color:var(--text-color);*/
+}
 thead{
-    background-color:var(--main-color-hover);
+    background-color:var(--secondary-color);
 }
 .darkMode tr:hover {
     background-color: var(--darkmode-bg-color) !important;
