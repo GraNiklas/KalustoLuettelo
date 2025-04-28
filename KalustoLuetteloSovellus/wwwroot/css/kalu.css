@@ -7,8 +7,9 @@
     --text-color: #1F1F1F;
 
     --darkmode-bg-color: #1F1F1F;
+    --darkmode-bg-sec-color: #1B1B1B;
     --darkmode-text-color: #D9D9D9;
-    --darkmode-text-sec-color: #B3B3B3;
+    --darkmode-text-sec-color: #6C6C6C;
 }
 /*VÄRIT*/
 
@@ -24,11 +25,11 @@
 }
 .darkMode .nav-link { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
     color: var(--darkmode-text-color)!important;
-    background-color: var(--darkmode-bg-color)!important;
+    background-color: transparent !important;
 }
 .darkMode .navbar-brand { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
-    color: var(--darkmode-text-color)!important;
-    background-color: var(--darkmode-bg-color)!important;
+    color: var(--darkmode-text-color) !important;
+    background-color: transparent !important;
 }
 .darkMode .careeria-logo {
     filter:invert();
@@ -39,7 +40,7 @@
 }
 .darkMode .navbar{
 /*    position: fixed !important;*/
-    background-color: var(--darkmode-bg-color) !important;
+    background-color: var(--darkmode-bg-sec-color) !important;
     filter: drop-shadow(0 0 40px rgba(0,0,0,0.2))
 
 }
@@ -48,13 +49,27 @@
 }
 .darkMode .form-control {
     background-color: var(--darkmode-bg-color) !important;
-    color: var(--darkmode-text-sec-color) !important;
+    color: var(--darkmode-text-color) !important;
+    border-color: var(--darkmode-text-sec-color) !important;
 }
 
 .darkMode .card-header {
     background-color: var(--darkmode-bg-color) !important;
     color: var(--darkmode-text-sec-color) !important;
 }
+.darkMode .table {
+    background-color: var(--darkmode-bg-sec-color) !important;
+    color: var(--darkmode-text-color) !important;
+    border-color: var(--darkmode-text-sec-color) !important;
+}
+thead{
+    background-color:var(--main-color-hover);
+}
+.darkMode tr:hover {
+    background-color: var(--darkmode-bg-color) !important;
+    color: white !important;
+}
+
 .darkmode-switch {
     white-space: nowrap;
 
@@ -73,7 +88,7 @@
 }
 
 body {
-
+font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 .careeria-logo {
@@ -174,8 +189,7 @@ body {
     border:2px solid gray;
     padding: 0px;
     border-radius:0px;
-    margin:16px
-
+    margin:16px;
 }
 .carousel-item-small:hover {
     border-color: white;
