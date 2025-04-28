@@ -66,50 +66,7 @@ namespace KalustoLuetteloSovellus.Controllers
             
             return View(await tuotteet.ToListAsync());
         }
-        public async Task<IActionResult> Index2(string kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null)
-        {
-            var tuotteet = _context.Tuotteet
-                .Include(t => t.Kategoria)
-                .Include(t => t.Toimipiste)
-                .Include(t => t.Tapahtumat)
-                    .ThenInclude(tap => tap.Status)
-                .Include(t => t.Tapahtumat)
-                    .ThenInclude(tap => tap.Käyttäjä)
-                .AsQueryable();
 
-            
-
-            if (!string.IsNullOrEmpty(kuvausHakusanalla))
-            {
-                tuotteet = tuotteet.Where(t => t.Kuvaus.Contains(kuvausHakusanalla));
-            }
-
-            // Laske kaikki tuotteet ja tallenna ViewData
-            ViewData["Kaikki"] = await tuotteet.CountAsync();
-
-            // Suodatus kategorian mukaan (jos kategoriaId annettu)
-            if (kategoriaId.HasValue)
-            {
-                tuotteet = tuotteet.Where(t => t.KategoriaId == kategoriaId.Value);
-            }
-
-            // Suodatus aktiivisuuden mukaan (jos onAktiivinen annettu)
-            if (onAktiivinen.HasValue)
-            {
-                tuotteet = tuotteet.Where(t => t.Aktiivinen == onAktiivinen.Value);
-            }
-
-            // Laske suodatetut tuotteet ja tallenna ViewData
-            ViewData["Suodatetut"] = await tuotteet.CountAsync();
-
-            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
-            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
-            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
-
-            var tuoteList = await tuotteet.ToListAsync();
-            tuoteList = tuoteList.AsEnumerable().Reverse().ToList();
-            return View(tuoteList);
-        }
         public async Task<IActionResult> _StatusPartial(int statusId)
         {
             var status = await _context.Statukset.FirstOrDefaultAsync(s => s.StatusId == statusId);
