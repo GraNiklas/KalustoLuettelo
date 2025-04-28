@@ -169,9 +169,9 @@ public class HomeController : Controller
                 await _context.K‰ytt‰j‰t.AddAsync(k‰ytt‰j‰);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Login");
+                await AuthorizeUser(k‰ytt‰j‰); // t‰m‰ autorisoi k‰ytt‰j‰n heti rekisterˆinnin j‰lkeen
 
-                //return RedirectToAction("Authorize",k‰ytt‰j‰); // koitin autorisoida, registerin j‰lkeen mutta t‰m‰ ei toiminnut 
+                return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun rekisterˆinti onnistuu
             }
         }
         return View();
@@ -183,7 +183,6 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
 
-
     [HttpPost]
     public async Task<IActionResult> Authorize(K‰ytt‰j‰ k‰ytt‰j‰)
     {
@@ -193,7 +192,7 @@ public class HomeController : Controller
         {
             ViewBag.ErrorMessage = "Tuntematon k‰ytt‰j‰tunnus";
             return View("Login");
-        }
+        } 
 
         var hasher = new PasswordHasher<K‰ytt‰j‰>();
         if (string.IsNullOrEmpty(k‰ytt‰j‰.Salasana))
@@ -210,34 +209,7 @@ public class HomeController : Controller
 
             if (loggedUser != null)
             {
-                ViewBag.LoginMessage = "Successful login";
-                ViewBag.LoggedStatus = "In";
-                ViewBag.LoginError = 0;
-                HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
-                HttpContext.Session.SetInt32("K‰ytt‰j‰Id", loggedUser.K‰ytt‰j‰Id);
-                HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
-
-
-                var claims = new List<Claim>
-                {
-                    new Claim("UserName", loggedUser.K‰ytt‰j‰tunnus),
-                    new Claim("UserId", loggedUser.K‰ytt‰j‰Id.ToString()),
-                    new Claim("Role", loggedUser.RooliId.ToString())
-                    // add roles/permissions here if needed
-                };
-
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true, // <-- this makes it persist
-                    ExpiresUtc = DateTime.UtcNow.AddDays(14) // optional expiry
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
-
-                return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
+                return await AuthorizeUser(loggedUser);
             }
             else
             {
@@ -254,5 +226,37 @@ public class HomeController : Controller
         }
         return View("Login");
 
+    }
+
+    private async Task<IActionResult> AuthorizeUser(K‰ytt‰j‰ loggedUser)
+    {
+        ViewBag.LoginMessage = "Successful login";
+        ViewBag.LoggedStatus = "In";
+        ViewBag.LoginError = 0;
+        HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
+        HttpContext.Session.SetInt32("K‰ytt‰j‰Id", loggedUser.K‰ytt‰j‰Id);
+        HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
+
+
+        var claims = new List<Claim>
+                {
+                    new Claim("UserName", loggedUser.K‰ytt‰j‰tunnus),
+                    new Claim("UserId", loggedUser.K‰ytt‰j‰Id.ToString()),
+                    new Claim("Role", loggedUser.RooliId.ToString())
+                    // add roles/permissions here if needed
+                };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+
+        var authProperties = new AuthenticationProperties
+        {
+            IsPersistent = true, // <-- this makes it persist
+            ExpiresUtc = DateTime.UtcNow.AddDays(14) // optional expiry
+        };
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
+
+        return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
     }
 }
