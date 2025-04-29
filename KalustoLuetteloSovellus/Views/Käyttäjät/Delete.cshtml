@@ -35,6 +35,10 @@
         <input type="hidden" asp-for="KäyttäjäId" />
         <div class="d-flex mt-2">
         <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Poista</button>
+            <div class="form-group">
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i> Takaisin
+                </button>
+            </div>
     </form>
-    <button class="btn btn-secondary ms-2" onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
 </div>
