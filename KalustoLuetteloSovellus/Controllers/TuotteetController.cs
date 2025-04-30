@@ -294,7 +294,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
         public async Task<IActionResult> _TapahtumaRivitPartial()
         {
-            var tapahtumat = await _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste).ToListAsync();
+            var tapahtumat = await _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste).OrderBy(t=>t.AloitusPvm).ToListAsync();
             
             return PartialView("_TapahtumaRivitPartial", tapahtumat);
         }

@@ -49,7 +49,14 @@
     </dl>
 </div>
 <div>
-
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TapahtumaId"><i class="fas fa-edit"></i>Muokkaa</a>
+    @if (RoleHelper.IsUser(Model.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context))
+    {
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TapahtumaId"><i class="fas fa-edit"></i>Muokkaa</a>
+    }
+    else
+    {
+        <a class="btn btn-primary disabled" asp-action="Edit" asp-route-id="@Model?.TapahtumaId"><i class="fas fa-edit"></i>Muokkaa</a>
+            
+    }
     <button class="btn btn-secondary ms-2" onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
 </div>

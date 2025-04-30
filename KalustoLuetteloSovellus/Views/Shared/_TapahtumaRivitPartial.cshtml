@@ -30,9 +30,22 @@
                 @* <td class="ms-auto">@if (item.Status != null)@await Html.PartialAsync("_StatusPartial", item.Status)</td> *@
                 <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
                 <td class="d-flex gap-2">
-                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    @if (RoleHelper.IsUser(item.KäyttäjäId,Context) || RoleHelper.IsAdmin(Context))
+                    {
+                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    }
                     <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
-                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                    @if (RoleHelper.IsAdmin(Context))
+                    {
+                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                    }else
+                    {
+                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                    }
                 </td>
             </tr>
         }

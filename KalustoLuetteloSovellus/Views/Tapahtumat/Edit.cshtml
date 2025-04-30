@@ -15,13 +15,13 @@
             <input type="hidden" asp-for="TapahtumaId" />
             <div class="form-group">
                 @* <label asp-for="TuoteId" class="control-label"></label> *@
-                <p class="m-0">Tuotekuvaus</p>
-                <select asp-for="TuoteId" class="form-control" asp-items="ViewBag.TuoteId"></select>
+                @* <p class="m-0">Tuotekuvaus</p> *@
+                <select asp-for="TuoteId" hidden class="form-control" asp-items="ViewBag.TuoteId"></select>
                 <span asp-validation-for="TuoteId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AloitusPvm" class="control-label"></label>
-                <input asp-for="AloitusPvm" class="form-control" type="date" />
+                @* <label asp-for="AloitusPvm" class="control-label"></label> *@
+                <input asp-for="AloitusPvm" hidden class="form-control" type="date" />
                 <span asp-validation-for="AloitusPvm" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,12 +31,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Kommentti" class="control-label"></label>
-                <input asp-for="Kommentti" class="form-control" />
+                <textarea asp-for="Kommentti" class="form-control" ></textarea>
                 <span asp-validation-for="Kommentti" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="KäyttäjäId" class="control-label"></label>
-                <select asp-for="KäyttäjäId" class="form-control" asp-items="ViewBag.KäyttäjäId"></select>
+                @* <label asp-for="KäyttäjäId" class="control-label"></label> *@
+                <select asp-for="KäyttäjäId" hidden class="form-control" asp-items="ViewBag.KäyttäjäId"></select>
                 <span asp-validation-for="KäyttäjäId" class="text-danger"></span>
             </div>
             <div class="form-group">
