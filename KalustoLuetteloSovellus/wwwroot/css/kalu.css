@@ -10,6 +10,7 @@
     --darkmode-bg-sec-color: #1B1B1B;
     --darkmode-text-color: #D9D9D9;
     --darkmode-text-sec-color: #6C6C6C;
+    --btn-disabled: #363636;
 }
 /*VÄRIT*/
 
@@ -102,6 +103,10 @@ font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans 
 .btn-main {
     background-color: var(--main-color);
     border-radius: 2px;
+}
+.btn.disabled {
+    background-color: var(--darkmode-text-sec-color);
+    color: var(--btn-disabled);
 }
 .btn-main:hover{
     background-color:var(--main-color-hover);
