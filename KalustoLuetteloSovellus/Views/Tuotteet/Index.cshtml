@@ -110,7 +110,15 @@
                     <td colspan="13">
                         <div id="collapse_@item?.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item?.TuoteId">
                             <div class="card-body">
-                                <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i> Luo uusi tapahtuma</a>
+                                @{
+                                    var tuoteVapaa =  item?.Status?.StatusNimi != "Varattu";
+                                    var dis = (@tuoteVapaa ? "" : "disabled");
+                                    if (!tuoteVapaa)
+                                    {
+                                        <p class="text-danger">Tuote on varattu...</p>
+                                    }
+                                    <a class="btn btn-main mt-2 mb-2 @dis" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i> Luo uusi tapahtuma</a>
+                                }
                                 <hr />
                                 <p class="fw-bold"> Tuotteen @item?.TuoteId tapahtumarivit </p>
                                 @await Html.PartialAsync("_TapahtumaRivitPartial", item?.Tapahtumat.OrderByDescending(t=>t.AloitusPvm))

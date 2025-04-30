@@ -91,9 +91,12 @@ thead{
     z-index: 1000;
 /*    filter: drop-shadow(0 0 40px #FFD7AF4D)*/
 }
+.sort-link{
+    color:black!important;
+}
 
 body {
-font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 .careeria-logo {
