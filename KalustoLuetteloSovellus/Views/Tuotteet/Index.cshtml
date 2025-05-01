@@ -115,7 +115,7 @@
                                     var dis = (@tuoteVapaa ? "" : "disabled");
                                     if (!tuoteVapaa)
                                     {
-                                        <p class="text-danger">Tuote on varattu...</p>
+                                        <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
                                     }
                                     <a class="btn btn-main mt-2 mb-2 @dis" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i> Luo uusi tapahtuma</a>
                                 }
