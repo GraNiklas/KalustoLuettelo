@@ -31,6 +31,37 @@ public class HomeController : Controller
         _emailService = emailService;
     }
 
+    public async Task<IActionResult> About()
+    {
+        if (HttpContext.User.Identity.IsAuthenticated)
+        {
+            // Extract claims from the cookie
+            var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
+            var userNameClaim = HttpContext.User.FindFirst("UserName")?.Value;
+            var userRoleClaim = HttpContext.User.FindFirst("Role")?.Value;
+
+            if (!string.IsNullOrEmpty(userIdClaim) &&
+                !string.IsNullOrEmpty(userNameClaim) &&
+                !string.IsNullOrEmpty(userRoleClaim))
+            {
+                // Set session variables
+                HttpContext.Session.SetString("K‰ytt‰j‰tunnus", userNameClaim);
+                HttpContext.Session.SetInt32("K‰ytt‰j‰Id", int.Parse(userIdClaim));
+                HttpContext.Session.SetInt32("RooliId", int.Parse(userRoleClaim));
+                                
+                return View(); // N‰yt‰ About-n‰kym‰
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Failed to retrieve user data from authentication.";
+                return RedirectToAction("Login");
+            }
+        }
+        else
+        {
+            return RedirectToAction("Login");
+        }         
+    }
     public async Task<IActionResult> Index()
     {
         if (HttpContext.User.Identity.IsAuthenticated)
