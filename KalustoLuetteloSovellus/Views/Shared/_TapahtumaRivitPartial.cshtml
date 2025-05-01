@@ -20,15 +20,15 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Id numero @SortIcon("IdNumero")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Palautus pvm @SortIcon("LopetusPvm")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
-            <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Id numero @SortIcon("IdNumero")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Palautus pvm @SortIcon("LopetusPvm")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
             @* TÄMÄ ON VANHA NÄKYMÄ MISSÄ OTSIKOILLA EI OLE LAJITTELUA. JÄTÄN TÄHÄN JOS TARVITSEE PALATA VANHAAN KOSKA, UUDESSA SYSTEEMISSÄ ON ONGELMA ETTÄ SE LATAA SIVUN UUDELLEEN KUN PAINAA OTSIKOITA, TOIMII MUTTA HUONO KÄYTTÄJÄKOKEMUS. T :NIKLAS
             <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
             <th>@Html.DisplayNameFor(model => model.Tuote.IdNumero)</th>
@@ -39,7 +39,7 @@
             <th>@Html.DisplayNameFor(model => model.Tuote)</th>
             <th>@Html.DisplayNameFor(model => model.Status)</th>
             <th>@Html.DisplayNameFor(model => model.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</th>*@
-            <th>Toiminnot</th>
+            <th style="vertical-align: top;">Toiminnot</th>
         </tr>
     </thead>
     <tbody>
