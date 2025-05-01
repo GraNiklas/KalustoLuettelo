@@ -283,7 +283,6 @@ namespace KalustoLuetteloSovellus.Controllers
                 // muuten palataan index sivulle
                 return RedirectToAction("Index", "Tapahtumat");
             }
-        }
+        }        
     }
-
 }
