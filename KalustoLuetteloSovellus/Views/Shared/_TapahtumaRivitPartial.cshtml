@@ -20,6 +20,7 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">TapahtumaId @SortIcon("TapahtumaId")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Id numero @SortIcon("IdNumero")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
@@ -46,6 +47,7 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.TapahtumaId)</td>
                 <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
                 <td>@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td>
                 <td>@Html.DisplayFor(modelItem => item.AloitusPvm)</td>
