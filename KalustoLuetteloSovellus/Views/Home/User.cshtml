@@ -12,11 +12,6 @@
 <h2 >Käyttäjätunnus: @Model.Käyttäjätunnus</h2>
 <h3>Rooli: @Model.Rooli.RooliNimi</h3>
 
-@foreach (var tapahtuma in Model.Tapahtumat)
-{
-    <a class="btn btn-success" asp-action="LuoPalautusTapahtuma" asp-route-alkuperäinenTapahtumaId="@tapahtuma.TapahtumaId"><i class="fa fa-plus-circle"></i> Luo palautustapahtuma</a>
-}
 
-<br />
 <h5>Käyttäjän luomat tapahtumat</h5>
 @await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat)
