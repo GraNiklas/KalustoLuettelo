@@ -83,7 +83,14 @@
                 <tr data-itemid ="@item.TuoteId">
                     <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-stream" style="color:black"></i></a></td>
                     <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
-                    <td class="ms-auto">@if (item.Status != null) @await Html.PartialAsync("_StatusPartial", item.Status) </td>
+                    @if (item.Aktiivinen == true)
+                    {
+                        <td class="ms-auto">@if (item.Status != null) @await Html.PartialAsync("_StatusPartial", item.Status) </td>
+                    }
+                    else
+                    {
+                        <td class="ms-auto"><i class="fas fa-circle-xmark"></i></td>
+                    }
                     <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
                     <td><img class="" style="width:25px;height:25px;object-fit:cover" src="@imageSrc" alt="Tuote kuva" /></td>
                     <td>@Html.DisplayFor(modelItem => item.Kuvaus)</td>
