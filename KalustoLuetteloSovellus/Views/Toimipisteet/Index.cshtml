@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.ToimipisteId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Oppilaitos)
             </th>
             <th>
@@ -27,6 +30,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToimipisteId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Oppilaitos)
             </td>
