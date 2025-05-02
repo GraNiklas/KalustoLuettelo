@@ -20,15 +20,15 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">TapahtumaId @SortIcon("TapahtumaId")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Id numero @SortIcon("IdNumero")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Palautus pvm @SortIcon("LopetusPvm")</a></th>
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th> 
             <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
             @* TÄMÄ ON VANHA NÄKYMÄ MISSÄ OTSIKOILLA EI OLE LAJITTELUA. JÄTÄN TÄHÄN JOS TARVITSEE PALATA VANHAAN KOSKA, UUDESSA SYSTEEMISSÄ ON ONGELMA ETTÄ SE LATAA SIVUN UUDELLEEN KUN PAINAA OTSIKOITA, TOIMII MUTTA HUONO KÄYTTÄJÄKOKEMUS. T :NIKLAS
             <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
@@ -47,15 +47,15 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.Status.StatusNimi)</td>
                 <td>@Html.DisplayFor(modelItem => item.TapahtumaId)</td>
                 <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
                 <td>@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td>
                 <td>@Html.DisplayFor(modelItem => item.AloitusPvm)</td>
                 <td>@Html.DisplayFor(modelItem => item.LopetusPvm)</td>
                 <td>@Html.DisplayFor(modelItem => item.Kommentti)</td>
-                <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
-                <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
-                <td>@Html.DisplayFor(modelItem => item.Tuote.Status.StatusNimi)</td>
+                <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td> 
                 @* <td class="ms-auto">@if (item.Status != null)@await Html.PartialAsync("_StatusPartial", item.Status)</td> *@
                 <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
                 <td class="d-flex gap-2">
