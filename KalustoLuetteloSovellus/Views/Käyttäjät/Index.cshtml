@@ -36,6 +36,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.KäyttäjäId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Käyttäjätunnus)
             </th>
             @* <th> *@
@@ -50,6 +53,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.KäyttäjäId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Käyttäjätunnus)
             </td>
