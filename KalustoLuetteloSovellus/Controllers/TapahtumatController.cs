@@ -21,29 +21,49 @@ namespace KalustoLuetteloSovellus.Controllers
         // GET: Tapahtumat
         public async Task<IActionResult> Index(int? statusId = null,int? toimipisteId = null,string? sortOrder = null)
         {
-            //LAJITTELU
-            ViewData["TuoteIdSortParam"] = String.IsNullOrEmpty(sortOrder) ? "TuoteId" : "";
-            ViewData["KuvausSortParam"] = String.IsNullOrEmpty(sortOrder) ? "Tuote" : "";
-            ViewData["StatusSortParam"] = String.IsNullOrEmpty(sortOrder) ? "Status" : "";
-            ViewData["AloitusSortParam"] = String.IsNullOrEmpty(sortOrder) ? "AloitusPvm" : "";
-            ViewData["KommenttiSortParam"] = String.IsNullOrEmpty(sortOrder) ? "Kommentti" : "";
-            ViewData["LopetusSortParam"] = String.IsNullOrEmpty(sortOrder) ? "LopetusPvm" : "";
-            ViewData["IdNumeroSortParam"] = String.IsNullOrEmpty(sortOrder) ? "IdNumero" : "";
-            ViewData["KäyttäjäSortParam"] = String.IsNullOrEmpty(sortOrder) ? "Käyttäjä" : "";
-            ViewData["ToimipisteSortParam"] = String.IsNullOrEmpty(sortOrder) ? "Toimipiste" : "";
-
-            // Parse field and direction
-            string sortField = sortOrder?.EndsWith("_desc") == true
-                ? sortOrder[..^5] // remove "_desc"
-                : sortOrder;
-
+            string sortField = sortOrder?.EndsWith("_desc") == true ? sortOrder?[..^5] : sortOrder;
             bool descending = sortOrder?.EndsWith("_desc") == true;
+
             //LAJITTELU
+            ViewData["TuoteIdSortParam"] = sortField == "TuoteId" && !descending ? "TuoteId_desc" : "TuoteId";
+            ViewData["KuvausSortParam"] = sortField == "Tuote" && !descending ? "Tuote_desc" : "Tuote";
+            ViewData["StatusSortParam"] = sortField == "Status" && !descending ? "Status_desc" : "Status";
+            ViewData["AloitusSortParam"] = sortField == "AloitusPvm" && !descending ? "AloitusPvm_desc" : "AloitusPvm";
+            ViewData["KommenttiSortParam"] = sortField == "Kommentti" && !descending ? "Kommentti_desc" : "Kommentti";
+            ViewData["LopetusSortParam"] = sortField == "LopetusPvm" && !descending ? "LopetusPvm_desc" : "LopetusPvm";
+            ViewData["IdNumeroSortParam"] = sortField == "IdNumero" && !descending ? "IdNumero_desc" : "IdNumero";
+            ViewData["KäyttäjäSortParam"] = sortField == "Käyttäjä" && !descending ? "Käyttäjä_desc" : "Käyttäjä";
+            ViewData["ToimipisteSortParam"] = sortField == "Toimipiste" && !descending ? "Toimipiste_desc" : "Toimipiste";
 
 
-            IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste);
+            //LAJITTELU
+            IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat
+                .Include(t => t.Käyttäjä)
+                .Include(t => t.Status)
+                .Include(t => t.Tuote)
+                .ThenInclude(tu => tu.Toimipiste);
 
-            ViewData["Kaikki"] = tapahtumat.Count();
+            ViewData["Kaikki"] = await tapahtumat.CountAsync();
+
+            //LAJITTELU
+            if (!string.IsNullOrEmpty(sortField))
+            {
+                tapahtumat = sortField switch
+                {
+                    "TapahtumaId" => descending ? tapahtumat.OrderByDescending(t => t.TapahtumaId) : tapahtumat.OrderBy(t => t.TapahtumaId),
+                    "TuoteId" => descending ? tapahtumat.OrderByDescending(t => t.TuoteId) : tapahtumat.OrderBy(t => t.TuoteId),
+                    "Tuote" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Kuvaus) : tapahtumat.OrderBy(t => t.Tuote.Kuvaus),
+                    "AloitusPvm" => descending ? tapahtumat.OrderByDescending(t => t.AloitusPvm) : tapahtumat.OrderBy(t => t.AloitusPvm),
+                    "LopetusPvm" => descending ? tapahtumat.OrderByDescending(t => t.LopetusPvm) : tapahtumat.OrderBy(t => t.LopetusPvm),
+                    "Status" => descending ? tapahtumat.OrderByDescending(t => t.Status.StatusNimi) : tapahtumat.OrderBy(t => t.Status.StatusNimi),
+                    "Kommentti" => descending ? tapahtumat.OrderByDescending(t => t.Kommentti) : tapahtumat.OrderBy(t => t.Kommentti),
+                    "IdNumero" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.IdNumero) : tapahtumat.OrderBy(t => t.Tuote.IdNumero),
+                    "Käyttäjä" => descending ? tapahtumat.OrderByDescending(t => t.Käyttäjä.Käyttäjätunnus) : tapahtumat.OrderBy(t => t.Käyttäjä.Käyttäjätunnus),
+                    "Toimipiste" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Toimipiste.ToimipisteNimi) : tapahtumat.OrderBy(t => t.Tuote.Toimipiste.ToimipisteNimi),
+                    _ => tapahtumat.OrderByDescending(t => t.AloitusPvm),
+                };
+            }
+
 
             //FILTERÖINTI
             //STATUS
@@ -56,25 +76,8 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 tapahtumat = tapahtumat.Where(t => t.Tuote.ToimipisteId == toimipisteId.Value);
             }
-            //LAJITTELU
-            if (!string.IsNullOrEmpty(sortField))
-            {
-                tapahtumat = sortField switch
-                {
-                    "TuoteId" => descending ? tapahtumat.OrderByDescending(t => t.TuoteId) : tapahtumat.OrderBy(t => t.TuoteId),
-                    "Tuote" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Kuvaus) : tapahtumat.OrderBy(t => t.Tuote.Kuvaus),
-                    "AloitusPvm" => descending ? tapahtumat.OrderByDescending(t => t.AloitusPvm) : tapahtumat.OrderBy(t => t.AloitusPvm),
-                    "LopetusPvm" => descending ? tapahtumat.OrderByDescending(t => t.LopetusPvm) : tapahtumat.OrderBy(t => t.LopetusPvm),
-                    "Status" => descending ? tapahtumat.OrderByDescending(t => t.Status.StatusNimi) : tapahtumat.OrderBy(t => t.Status.StatusNimi),
-                    "Kommentti" => descending ? tapahtumat.OrderByDescending(t => t.Kommentti) : tapahtumat.OrderBy(t => t.Kommentti),
-                    "IdNumero" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.IdNumero) : tapahtumat.OrderBy(t => t.Tuote.IdNumero),
-                    "Käyttäjä" => descending ? tapahtumat.OrderByDescending(t => t.Käyttäjä.Käyttäjätunnus) : tapahtumat.OrderBy(t => t.Käyttäjä.Käyttäjätunnus),
-                    "Toimipiste" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.ToimipisteId) : tapahtumat.OrderBy(t => t.Tuote.ToimipisteId),
-                    _ => tapahtumat.OrderByDescending(t => t.AloitusPvm),
-                };
-            }
 
-
+            // viewbagit
             var statukset = await _context.Statukset.ToListAsync();
             var toimpisteet = await _context.Toimipisteet.ToListAsync();
 
@@ -82,9 +85,11 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewBag.Toimipisteet = new SelectList(toimpisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi",toimipisteId);
 
             
-            ViewData["Suodatetut"] = tapahtumat.Count();
+            ViewData["Suodatetut"] = await tapahtumat.CountAsync();
 
-            return View(await tapahtumat.ToListAsync());
+            var tapahtumatLista = await tapahtumat.ToListAsync();
+
+            return View(tapahtumatLista);
         }
 
         // GET: Tapahtumat/Details/5

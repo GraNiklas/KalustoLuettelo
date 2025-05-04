@@ -135,7 +135,7 @@
                                 }
                                 <hr />
                                 <p class="fw-bold"> Tuotteen @item?.TuoteId tapahtumarivit </p>
-                                @await Html.PartialAsync("_TapahtumaRivitPartial", item?.Tapahtumat.OrderByDescending(t=>t.AloitusPvm))
+                                @await Html.PartialAsync("_TapahtumaRivitPartial", item?.Tapahtumat)
                             </div>
                         </div>
                     </td>
