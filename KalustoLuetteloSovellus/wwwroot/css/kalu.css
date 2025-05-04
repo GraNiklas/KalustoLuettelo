@@ -314,3 +314,21 @@ select{
 .hidden {
     visibility: hidden !important;
 }
+
+
+/*TAULU KENTÄN SUURENNUS ANIMAATIO*/
+.table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    transition: max-width 1s ease, background 1s ease, white-space 1s ease;
+    position: relative;
+}
+
+.table td:hover {
+    max-width: 500px;
+    overflow: visible;
+    z-index: 1;
+    background: #f9f9f9;
+}

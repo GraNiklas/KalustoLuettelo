@@ -23,7 +23,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index(string kuvausHakusanalla = null, int ? kategoriaId = null, bool? onAktiivinen = null)
+        public async Task<IActionResult> Index(string kuvausHakusanalla = null, int ? kategoriaId = null, bool? onAktiivinen = null,int? toimipisteId = null)
         {
             var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)
@@ -55,12 +55,18 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 tuotteet = tuotteet.Where(t => t.Aktiivinen == onAktiivinen.Value);
             }
+            // Suodatus toimipisteen mukaan (jos toimipisteId annettu)
+            if (toimipisteId.HasValue)
+            {
+                tuotteet = tuotteet.Where(t => t.ToimipisteId == toimipisteId.Value);
+            }
 
             // Laske suodatetut tuotteet ja tallenna ViewData
             ViewData["Suodatetut"] = await tuotteet.CountAsync();
 
             // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
             ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
+            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
             ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
 
             
