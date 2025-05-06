@@ -95,20 +95,16 @@ public class HomeController : Controller
         }
         // Tämä ottaa nyt vaa 10 ensimmäistä tuotetta tietokannasta, voidaan keksiä joku juttu missä se hakee tapahtumista viimeisimmät 10 tapahtumaa ja listaa ne tuotteet, en tiedä.
         //var t = _context.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).Take(10);  // tämä on nyt vain esimerkki viimeisimmistä tapahtumista
-        
 
-        var tuotteet = await _context.Tuotteet
+
+        var viimeiset10 = await _context.Tuotteet
             .Include(t => t.Kategoria)
             .Include(t => t.Toimipiste)
             .Include(t => t.Tapahtumat)
                 .ThenInclude(t => t.Status)
-            .ToListAsync();
-
-            var viimeiset10 = tuotteet
-            .AsEnumerable()
-            .Reverse()
+            .OrderByDescending(t => t.TuoteId) 
             .Take(10)
-            .ToList();
+            .ToListAsync();
 
         return View(viimeiset10);
     }
