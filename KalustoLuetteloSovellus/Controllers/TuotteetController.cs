@@ -32,6 +32,8 @@ namespace KalustoLuetteloSovellus.Controllers
             // Ensure currentPage is within bounds
             currentPage = Math.Max(0, Math.Min(currentPage, totalPages - 1));
 
+
+
             // Get the products for the current page
             var tuotteet = _context.Tuotteet
                 .Skip(currentPage * pageSize)
@@ -70,6 +72,11 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Skip(currentPage * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
+            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
+            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
+            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
 
             ViewData["PageSize"] = pageSize;
             ViewData["CurrentPage"] = currentPage;

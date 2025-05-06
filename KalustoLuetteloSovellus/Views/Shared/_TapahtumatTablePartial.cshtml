@@ -1,0 +1,98 @@
+﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tapahtuma>
+
+@{
+    var currentSort = Context.Request.Query["sortOrder"].ToString();
+
+    string NextSort(string col)
+    {
+        return currentSort == col ? col + "_desc" :
+        currentSort == col + "_desc" ? col :
+        col;
+    }
+
+    string SortIcon(string col)
+    {
+        if (currentSort == col) return " ▲";
+        if (currentSort == col + "_desc") return " ▼";
+        return "";
+    }
+
+}
+<div class="d-flex gap-2">
+    <p>Kaikki tapahtumat: <strong>@ViewData["Kaikki"]</strong></p>
+    <p>Näytetyt tapahtumat: <strong>@ViewData["Suodatetut"]</strong></p>
+</div>
+
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">TapahtumaId @SortIcon("TapahtumaId")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Tunnistenro. @SortIcon("IdNumero")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Palautus pvm @SortIcon("LopetusPvm")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
+            @* TÄMÄ ON VANHA NÄKYMÄ MISSÄ OTSIKOILLA EI OLE LAJITTELUA. JÄTÄN TÄHÄN JOS TARVITSEE PALATA VANHAAN KOSKA, UUDESSA SYSTEEMISSÄ ON ONGELMA ETTÄ SE LATAA SIVUN UUDELLEEN KUN PAINAA OTSIKOITA, TOIMII MUTTA HUONO KÄYTTÄJÄKOKEMUS. T :NIKLAS
+            <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
+            <th>@Html.DisplayNameFor(model => model.Tuote.IdNumero)</th>
+            <th>@Html.DisplayNameFor(model => model.AloitusPvm)</th>
+            <th>@Html.DisplayNameFor(model => model.LopetusPvm)</th>
+            <th>@Html.DisplayNameFor(model => model.Kommentti)</th>
+            <th>@Html.DisplayNameFor(model => model.Käyttäjä)</th>
+            <th>@Html.DisplayNameFor(model => model.Tuote)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th>@Html.DisplayNameFor(model => model.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</th>*@
+            <th style="vertical-align: top;">Toiminnot</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
+                <td>@Html.DisplayFor(modelItem => item.TapahtumaId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td>
+                <td>@Html.DisplayFor(modelItem => item.AloitusPvm)</td>
+                <td>@Html.DisplayFor(modelItem => item.LopetusPvm)</td>
+                <td>@Html.DisplayFor(modelItem => item.Kommentti)</td>
+                <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
+                @* <td class="ms-auto">@if (item.Status != null)@await Html.PartialAsync("_StatusPartial", item.Status)</td> *@
+                <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
+                <td class="d-flex gap-2">
+                    @if (RoleHelper.IsUser(item.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context))
+                    {
+                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
+                    }
+                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
+                    @if (RoleHelper.IsAdmin(Context))
+                    {
+                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@* <div class="pagination"> *@
+@*     <button id="prevPage" class="btn btn-primary" @(ViewData["CurrentPage"] as int? > 0 ? "" : "disabled")>Previous</button> *@
+@*     <button id="nextPage" class="btn btn-primary" @(ViewData["CurrentPage"] as int? < ((int)ViewData["TotalPages"])? -1 ? "" : "disabled")>Next</button> *@
+@* </div> *@
+

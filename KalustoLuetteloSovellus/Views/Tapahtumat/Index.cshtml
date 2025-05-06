@@ -2,29 +2,20 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    int currentPage = (int)ViewData["CurrentPage"];
+    int totalPages = (int)ViewData["TotalPages"];
+    int pageSize = (int)ViewData["PageSize"];
 }
 
-<style>
-.sort-link {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    white-space:nowrap;
-}
-</style>
+
 <h1>Tapahtumat</h1>
 
-@* <p> *@
-@*     <a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a> *@
-@* </p> *@
 <h5 class="pb-4">Uuden tapahtuman luonti tuotteen kautta</h5>
 
+
 <div class="d-flex gap-2">
-    <p>Kaikki tapahtumat: <strong>@ViewData["Kaikki"]</strong></p>
-    <p>Näytetyt tapahtumat: <strong>@ViewData["Suodatetut"]</strong></p>
-</div>
-<div class="d-flex gap-2">
-    <form method="get" class="d-flex gap-2 mb-2">
+    <form method="get" class="d-flex gap-2 mb-2" id="filterForm">
         <div class="form-group">
             <label>Status</label>
             <select name="statusId" class="form-control" asp-items="ViewBag.Statuses">
@@ -45,63 +36,104 @@
                 <option value="">Kaikki</option>
             </select>
         </div>
-
         <button type="submit" class="btn btn-main mt-4"><i class="fas fa-filter"></i> Suodata</button>
     </form>
 </div>
-@await Html.PartialAsync("_TapahtumaRivitPartial", Model)
-@* <table class="table table-hover table-bordered"> *@
-@*     <thead> *@
-@*         <tr> *@
-@*             @{ *@
-@*                 var currentSort = Context.Request.Query["sortOrder"].ToString(); *@
 
-@*                 string NextSort(string col) *@
-@*                 { *@
-@*                     return currentSort == col ? col + "_desc" : *@
-@*                     currentSort == col + "_desc" ? col : *@
-@*                     col; *@
-@*                 } *@
+<div id="tapahtumat-container">
+    <p>Ladataan tapahtumia...</p>
+    <div class="skeleton-list">
+        @for (int i = 0; i < 5; i++)
+        {
+            <div class="skeleton-item mb-3 p-3 rounded bg-light"></div>
+        }
+    </div>
+</div>
+<!-- Hidden totalPages value -->
+<span id="totalPages" style="display:none;">@totalPages</span>
 
-@*                 string SortIcon(string col) *@
-@*                 { *@
-@*                     if (currentSort == col) return " ▲"; *@
-@*                     if (currentSort == col + "_desc") return " ▼"; *@
-@*                     return ""; *@
-@*                 } *@
-@*             } *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Id numero @SortIcon("IdNumero")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Aloitus pvm @SortIcon("AloitusPvm")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Lopetus pvm @SortIcon("LopetusPvm")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th> *@
-@*             <th><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th> *@
+<!-- Pagination Buttons -->
+<nav aria-label="Sivutus" class="mt-4">
+    <ul class="pagination justify-content-start">
+        <li class="page-item">
+            <button class="page-link" id="prevPage">Edellinen</button>
+        </li>
 
-@*             <th>Toiminnot</th> *@
-@*         </tr> *@
-@*     </thead> *@
-@*     <tbody> *@
-@* @foreach (var item in Model) { *@
-@*         <tr> *@
-@*             <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.AloitusPvm)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.LopetusPvm)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.Kommentti)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td> *@
-@*             <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td> *@
-@*             <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td> *@
-@*             <td class="d-flex gap-2"> *@
-@*                 <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a> *@
-@*                 <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a> *@
-@*                 <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a> *@
-@*                 <a class="btn btn-main" title="Tuote details" asp-controller="Tuotteet" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-cube"></i></a> *@
-@*             </td> *@
-@*         </tr> *@
-@* } *@
-@*     </tbody> *@
-@* </table> *@
+        @for (int i = 0; i < totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <button class="page-link page-number" data-page="@i">@(i + 1)</button>
+            </li>
+        }
+
+        <li class="page-item">
+            <button class="page-link" id="nextPage">Seuraava</button>
+        </li>
+    </ul>
+</nav>
+
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+        let currentPage = 0;
+        const pageSize = parseInt('@ViewData["PageSize"]');
+        const totalPages = parseInt('@ViewData["TotalPages"]');
+
+        function loadPage(page) {
+            const formData = new FormData(document.getElementById("filterForm"));
+            const statusId = formData.get("statusId");
+            const toimipisteId = formData.get("toimipisteId");
+            const sortOrder = formData.get("sortOrder"); // Add this for sorting
+
+            const url = `/Tapahtumat/GetTapahtumatPartial?pageSize=${pageSize}&currentPage=${page}&statusId=${statusId}&toimipisteId=${toimipisteId}&sortOrder=${sortOrder}`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('tapahtumat-container').innerHTML = html;
+                });
+        }
+
+        // Load the first page
+        loadPage(currentPage);
+
+        // Handle pagination button clicks
+        document.getElementById('prevPage').addEventListener('click', function () {
+            if (currentPage > 0) {
+                currentPage--;
+                updateActivePageButton();
+                loadPage(currentPage);
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', function () {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updateActivePageButton();
+                loadPage(currentPage);
+            }
+        });
+
+            // Handle page number button clicks
+        document.querySelectorAll('.page-number').forEach(button => {
+            button.addEventListener('click', function () {
+                currentPage = parseInt(button.getAttribute('data-page'));
+                updateActivePageButton();
+                loadPage(currentPage);
+            });
+        });
+
+        // Update active pagination button
+        function updateActivePageButton() {
+            document.querySelectorAll('.page-item').forEach(li => li.classList.remove('active'));
+            document.querySelector(`.page-number[data-page="${currentPage}"]`)?.closest('li')?.classList.add('active');
+        }
+
+        // Handle form submission for filtering
+        document.getElementById('filterForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            loadPage(0); // Load the first page after applying the filter
+        });
+    });
+
+</script>

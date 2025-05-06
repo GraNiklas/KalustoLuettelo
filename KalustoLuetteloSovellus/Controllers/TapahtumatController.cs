@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KalustoLuetteloSovellus.Models;
+using System.Drawing.Printing;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -19,78 +20,102 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tapahtumat
-        public async Task<IActionResult> Index(int? statusId = null,int? toimipisteId = null,string? sortOrder = null)
+        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0)
         {
-            string sortField = sortOrder?.EndsWith("_desc") == true ? sortOrder?[..^5] : sortOrder;
-            bool descending = sortOrder?.EndsWith("_desc") == true;
-
-            //LAJITTELU
-            ViewData["TuoteIdSortParam"] = sortField == "TuoteId" && !descending ? "TuoteId_desc" : "TuoteId";
-            ViewData["KuvausSortParam"] = sortField == "Tuote" && !descending ? "Tuote_desc" : "Tuote";
-            ViewData["StatusSortParam"] = sortField == "Status" && !descending ? "Status_desc" : "Status";
-            ViewData["AloitusSortParam"] = sortField == "AloitusPvm" && !descending ? "AloitusPvm_desc" : "AloitusPvm";
-            ViewData["KommenttiSortParam"] = sortField == "Kommentti" && !descending ? "Kommentti_desc" : "Kommentti";
-            ViewData["LopetusSortParam"] = sortField == "LopetusPvm" && !descending ? "LopetusPvm_desc" : "LopetusPvm";
-            ViewData["IdNumeroSortParam"] = sortField == "IdNumero" && !descending ? "IdNumero_desc" : "IdNumero";
-            ViewData["KäyttäjäSortParam"] = sortField == "Käyttäjä" && !descending ? "Käyttäjä_desc" : "Käyttäjä";
-            ViewData["ToimipisteSortParam"] = sortField == "Toimipiste" && !descending ? "Toimipiste_desc" : "Toimipiste";
-
-
-            //LAJITTELU
+            // For the initial page load, set up filters and pagination info
             IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat
                 .Include(t => t.Käyttäjä)
                 .Include(t => t.Status)
                 .Include(t => t.Tuote)
                 .ThenInclude(tu => tu.Toimipiste);
 
-            ViewData["Kaikki"] = await tapahtumat.CountAsync();
+            var totalTapahtumat = _context.Tapahtumat.Count();
+            var totalPages = (int)Math.Ceiling((double)totalTapahtumat / pageSize);
+            // Return the shell view
+            ViewData["PageSize"] = pageSize;
+            ViewData["CurrentPage"] = currentPage;
+            ViewData["TotalPages"] = totalPages;
 
-            //LAJITTELU
-            if (!string.IsNullOrEmpty(sortField))
+            
+
+            // Set ViewBag for dropdowns
+            ViewBag.Statuses = new SelectList(await _context.Statukset.ToListAsync(), "StatusId", "StatusNimi");
+            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi");
+            ViewBag.Tuotteet = new SelectList(await _context.Tuotteet.ToListAsync(), "TuoteId", "Kuvaus");
+
+            return View();
+        }
+
+        private IQueryable<Tapahtuma> ApplySorting(IQueryable<Tapahtuma> tapahtumat, string sortField, bool descending)
+        {
+            return sortField switch
             {
-                tapahtumat = sortField switch
-                {
-                    "TapahtumaId" => descending ? tapahtumat.OrderByDescending(t => t.TapahtumaId) : tapahtumat.OrderBy(t => t.TapahtumaId),
-                    "TuoteId" => descending ? tapahtumat.OrderByDescending(t => t.TuoteId) : tapahtumat.OrderBy(t => t.TuoteId),
-                    "Tuote" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Kuvaus) : tapahtumat.OrderBy(t => t.Tuote.Kuvaus),
-                    "AloitusPvm" => descending ? tapahtumat.OrderByDescending(t => t.AloitusPvm) : tapahtumat.OrderBy(t => t.AloitusPvm),
-                    "LopetusPvm" => descending ? tapahtumat.OrderByDescending(t => t.LopetusPvm) : tapahtumat.OrderBy(t => t.LopetusPvm),
-                    "Status" => descending ? tapahtumat.OrderByDescending(t => t.Status.StatusNimi) : tapahtumat.OrderBy(t => t.Status.StatusNimi),
-                    "Kommentti" => descending ? tapahtumat.OrderByDescending(t => t.Kommentti) : tapahtumat.OrderBy(t => t.Kommentti),
-                    "IdNumero" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.IdNumero) : tapahtumat.OrderBy(t => t.Tuote.IdNumero),
-                    "Käyttäjä" => descending ? tapahtumat.OrderByDescending(t => t.Käyttäjä.Käyttäjätunnus) : tapahtumat.OrderBy(t => t.Käyttäjä.Käyttäjätunnus),
-                    "Toimipiste" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Toimipiste.ToimipisteNimi) : tapahtumat.OrderBy(t => t.Tuote.Toimipiste.ToimipisteNimi),
-                    _ => tapahtumat.OrderByDescending(t => t.AloitusPvm),
-                };
+                "TapahtumaId" => descending ? tapahtumat.OrderByDescending(t => t.TapahtumaId) : tapahtumat.OrderBy(t => t.TapahtumaId),
+                "TuoteId" => descending ? tapahtumat.OrderByDescending(t => t.TuoteId) : tapahtumat.OrderBy(t => t.TuoteId),
+                "Tuote" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Kuvaus) : tapahtumat.OrderBy(t => t.Tuote.Kuvaus),
+                "AloitusPvm" => descending ? tapahtumat.OrderByDescending(t => t.AloitusPvm) : tapahtumat.OrderBy(t => t.AloitusPvm),
+                "LopetusPvm" => descending ? tapahtumat.OrderByDescending(t => t.LopetusPvm) : tapahtumat.OrderBy(t => t.LopetusPvm),
+                "Status" => descending ? tapahtumat.OrderByDescending(t => t.Status.StatusNimi) : tapahtumat.OrderBy(t => t.Status.StatusNimi),
+                "Kommentti" => descending ? tapahtumat.OrderByDescending(t => t.Kommentti) : tapahtumat.OrderBy(t => t.Kommentti),
+                "IdNumero" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.IdNumero) : tapahtumat.OrderBy(t => t.Tuote.IdNumero),
+                "Käyttäjä" => descending ? tapahtumat.OrderByDescending(t => t.Käyttäjä.Käyttäjätunnus) : tapahtumat.OrderBy(t => t.Käyttäjä.Käyttäjätunnus),
+                "Toimipiste" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Toimipiste.ToimipisteNimi) : tapahtumat.OrderBy(t => t.Tuote.Toimipiste.ToimipisteNimi),
+                _ => tapahtumat.OrderByDescending(t => t.AloitusPvm),
+            };
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetTapahtumatPartial(int pageSize = 10, int currentPage = 0, int? statusId = null, int? toimipisteId = null, string? sortOrder = null)
+        {
+            IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat
+                .Include(t => t.Käyttäjä)
+                .Include(t => t.Status)
+                .Include(t => t.Tuote)
+                .ThenInclude(tu => tu.Toimipiste);
+
+            // Apply sorting
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                bool descending = sortOrder?.EndsWith("_desc") == true;
+                string sortField = sortOrder?.EndsWith("_desc") == true ? sortOrder?[..^5] : sortOrder;
+                tapahtumat = ApplySorting(tapahtumat, sortField, descending);
             }
 
-
-            //FILTERÖINTI
-            //STATUS
+            // Apply filtering
             if (statusId.HasValue)
             {
                 tapahtumat = tapahtumat.Where(t => t.StatusId == statusId.Value);
             }
-            //TOIMIPISTE
+
             if (toimipisteId.HasValue)
             {
                 tapahtumat = tapahtumat.Where(t => t.Tuote.ToimipisteId == toimipisteId.Value);
             }
 
-            // viewbagit
-            var statukset = await _context.Statukset.ToListAsync();
-            var toimpisteet = await _context.Toimipisteet.ToListAsync();
+            // Get total filtered count
+            var totalTapahtumat = await _context.Tapahtumat.CountAsync();
+            var totalFiltered = await tapahtumat.CountAsync();
 
-            ViewBag.Statuses = new SelectList(statukset, "StatusId", "StatusNimi",statusId);
-            ViewBag.Toimipisteet = new SelectList(toimpisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi",toimipisteId);
+            // Apply pagination
+            var tapahtumatPaged = await tapahtumat
+                .Skip(currentPage * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
-            
-            ViewData["Suodatetut"] = await tapahtumat.CountAsync();
 
-            var tapahtumatLista = await tapahtumat.ToListAsync();
+            ViewData["Kaikki"] = totalTapahtumat;
+            ViewData["Suodatetut"] = totalFiltered;
 
-            return View(tapahtumatLista);
+            ViewData["CurrentPage"] = currentPage;
+            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalFiltered / pageSize);
+            ViewData["PageSize"] = pageSize;
+
+            return PartialView("_TapahtumatTablePartial", tapahtumatPaged);
         }
+
+
+
 
         // GET: Tapahtumat/Details/5
         public async Task<IActionResult> Details(int? id)
