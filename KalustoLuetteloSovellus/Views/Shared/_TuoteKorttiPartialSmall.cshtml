@@ -17,18 +17,23 @@
 }
 
 <a style="color: var(--text-color); text-decoration: none;"
-   asp-controller="Tuotteet"
-   asp-action="Details"
-   asp-route-id="@Model.TuoteId">
+asp-controller="Tuotteet"
+asp-action="Details"
+asp-route-id="@Model.TuoteId">
+    @{
+        var filter = "";
+        // if (imageSrc == Url.Content("~/Images/OletusKuva.png"))
+        // {
+        //     filter = "filter:invert()";
+        // }
 
-    <div class="carousel-item carousel-item-small col-md-4 mb-6"
-         style="display: flex; flex-direction: column; height: @(kuvaKokoH)px; width: @(kuvaKokoW)px;
+    }
+    <div class="carousel-item carousel-item-small col-md-4 mb-6" style="@filter;display: flex; flex-direction: column; height: @(kuvaKokoH)px; width: @(kuvaKokoW)px;
                 position: relative; background-image: url('@imageSrc');
-                background-size: cover; background-position: center; overflow: hidden; border-radius: 0px;">
-
-        <!-- Gradient overlay -->
-        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
-                    background: linear-gradient(to bottom, transparent 0%,white 90%, white 100%); z-index: 1;"></div>
+                background-size: cover; background-position: center; overflow: hidden;">
+        
+         <!-- Gradient overlay -->
+        <div class="karuselli-gradientti"></div>
 
         <!-- Content -->
         <div class="d-flex ms-auto p-4" style="z-index: 2;">
