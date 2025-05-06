@@ -342,6 +342,9 @@ select{
     background: #f9f9f9;
 }
 
+.th{
+    white-space:nowrap!important;
+}
 
 .skeleton-item {
     height: 30px;

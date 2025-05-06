@@ -48,7 +48,7 @@
         </dd>
     </dl>
 </div>
-<div>
+<div class="mb-4">
     @if (RoleHelper.IsUser(Model.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context))
     {
         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TapahtumaId"><i class="fas fa-edit"></i>Muokkaa</a>
@@ -58,5 +58,5 @@
         <a class="btn btn-primary disabled" asp-action="Edit" asp-route-id="@Model?.TapahtumaId"><i class="fas fa-edit"></i>Muokkaa</a>
             
     }
-    <button class="btn btn-secondary mt-2 gap-2 mb-4" onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
+    <button class="btn btn-secondary " onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
 </div>
