@@ -341,3 +341,21 @@ select{
     z-index: 1;
     background: #f9f9f9;
 }
+
+
+.skeleton-item {
+    height: 30px;
+    width: 100%;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 37%, #e0e0e0 63%);
+    background-size: 200% 100%; 
+    animation: shimmer 1.4s ease infinite; 
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}

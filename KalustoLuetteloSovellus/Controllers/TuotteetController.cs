@@ -23,53 +23,48 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index(int pageSize = 10,int currentPage = 0,string? kuvausHakusanalla = null, int ? kategoriaId = null, bool? onAktiivinen = null,int? toimipisteId = null)
+        public IActionResult Index(int currentPage = 0, int pageSize = 10)
+        {
+            // Get the total number of products
+            var totalTuotteet = _context.Tuotteet.Count();
+            var totalPages = (int)Math.Ceiling((double)totalTuotteet / pageSize);
+
+            // Ensure currentPage is within bounds
+            currentPage = Math.Max(0, Math.Min(currentPage, totalPages - 1));
+
+            // Get the products for the current page
+            var tuotteet = _context.Tuotteet
+                .Skip(currentPage * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewData["CurrentPage"] = currentPage;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["PageSize"] = pageSize;
+
+            return View(tuotteet);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
         {
             var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)
                 .Include(t => t.Toimipiste)
-                .Include(t => t.Tapahtumat)
-                    .ThenInclude(tap => tap.Status)
-                .Include(t => t.Tapahtumat)
-                    .ThenInclude(tap => tap.Käyttäjä)
+                .Include(t => t.Tapahtumat).ThenInclude(t => t.Status)
+                .Include(t => t.Tapahtumat).ThenInclude(t => t.Käyttäjä)
                 .AsQueryable();
 
-            
-
             if (!string.IsNullOrEmpty(kuvausHakusanalla))
-            {
                 tuotteet = tuotteet.Where(t => t.Kuvaus.Contains(kuvausHakusanalla));
-            }
-
-            // Laske kaikki tuotteet ja tallenna ViewData
-            ViewData["Kaikki"] = await tuotteet.CountAsync();
-
-            // Suodatus kategorian mukaan (jos kategoriaId annettu)
             if (kategoriaId.HasValue)
-            {
                 tuotteet = tuotteet.Where(t => t.KategoriaId == kategoriaId.Value);
-            }
-
-            // Suodatus aktiivisuuden mukaan (jos onAktiivinen annettu)
             if (onAktiivinen.HasValue)
-            {
                 tuotteet = tuotteet.Where(t => t.Aktiivinen == onAktiivinen.Value);
-            }
-            // Suodatus toimipisteen mukaan (jos toimipisteId annettu)
             if (toimipisteId.HasValue)
-            {
                 tuotteet = tuotteet.Where(t => t.ToimipisteId == toimipisteId.Value);
-            }
 
-            // Laske suodatetut tuotteet ja tallenna ViewData
             var totalFiltered = await tuotteet.CountAsync();
-            ViewData["Suodatetut"] = totalFiltered;
-
-
-            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
-            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
-            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
-            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
 
             var tuotteetPaged = await tuotteet
                 .Skip(currentPage * pageSize)
@@ -80,10 +75,8 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewData["CurrentPage"] = currentPage;
             ViewData["TotalPages"] = (int)Math.Ceiling((double)totalFiltered / pageSize);
 
-
-            return View(tuotteetPaged);
+            return PartialView("_TuotteetPartial", tuotteetPaged);
         }
-
         public async Task<IActionResult> _StatusPartial(int statusId)
         {
             var status = await _context.Statukset.FirstOrDefaultAsync(s => s.StatusId == statusId);

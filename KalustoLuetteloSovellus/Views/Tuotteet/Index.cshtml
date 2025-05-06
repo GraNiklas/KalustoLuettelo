@@ -53,127 +53,81 @@
     </div>
 </form>
 
+<div id="tuotteet-container">
+    <p>Ladataan tuotteita...</p>
+    <div class="skeleton-list">
+        @for (int i = 0; i < 5; i++)
+        {
+            <div class="skeleton-item mb-3 p-3 rounded bg-light"></div>
+        }
+    </div>
+</div>
+
+
+<!-- Hidden totalPages value -->
+<span id="totalPages" style="display:none;">@totalPages</span>
+
+<!-- Pagination Buttons -->
+<nav aria-label="Sivutus" class="mt-4">
+    <ul class="pagination justify-content-start">
+        <li class="page-item">
+            <button class="page-link" id="prevPage">Edellinen</button>
+        </li>
+
+        @for (int i = 0; i < totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <button class="page-link page-number" data-page="@i">@(i + 1)</button>
+            </li>
+        }
+
+        <li class="page-item">
+            <button class="page-link" id="nextPage">Seuraava</button>
+        </li>
+    </ul>
+</nav>
+
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let currentPage = parseInt(@ViewData["CurrentPage"]);
+        const pageSize = @ViewData["PageSize"];
+        const totalPages = @ViewData["TotalPages"];
 
+        function loadPage(page) {
+            fetch(`/Tuotteet/GetTuotteetPartial?pageSize=${pageSize}&currentPage=${page}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('tuotteet-container').innerHTML = html;
+                    currentPage = page;
+                    updatePagination();
+                });
+        }
 
+        function updatePagination() {
+            document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
+            const pageButtons = document.querySelectorAll('.page-number');
+            if (pageButtons[currentPage])
+                pageButtons[currentPage].closest('li').classList.add('active');
+        }
+
+        document.querySelectorAll('.page-number').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = parseInt(btn.getAttribute('data-page'));
+                loadPage(page);
+            });
+        });
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 0) loadPage(currentPage - 1);
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages - 1) loadPage(currentPage + 1);
+        });
+
+        // Load first page on initial load
+        loadPage(currentPage);
+    });
 </script>
-
-<div id="accordion" class="container-fluid">
-    <table class="table table-hover table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>Tapahtumat</th>
-                <th>TuoteId@* (@Html.DisplayNameFor(model => model.TuoteId)) *@</th>
-                <th>Status@* (@Html.DisplayNameFor(model => model.Status)) *@</th>
-                <th>Tunnistenro.@* (@Html.DisplayNameFor(model => model.IdNumero)) *@</th>
-                <th>Kuva@* (@Html.DisplayNameFor(model => model.Kuva)) *@</th>
-                <th>Kuvaus@* (@Html.DisplayNameFor(model => model.Kuvaus)) *@</th>
-                <th>OstoPvm.@* (@Html.DisplayNameFor(model => model.OstoPvm)) *@</th>
-                <th>Hinta@* (@Html.DisplayNameFor(model => model.Hinta)) *@</th>
-                <th>Takuu@* (@Html.DisplayNameFor(model => model.Takuu)) *@</th>
-                <th>Kategoria@* (@Html.DisplayNameFor(model => model.Kategoria)) *@</th>
-                <th>Toimipiste@* (@Html.DisplayNameFor(model => model.Toimipiste)) *@</th>
-                <th>Aktiivinen@* (@Html.DisplayNameFor(model => model.Aktiivinen)) *@</th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var item in Model) {
-                string imageSrc;
-                if (item.Kuva != null && item.Kuva.Length > 0)
-                {
-                    imageSrc = $"data:image/jpeg;base64,{Convert.ToBase64String(item.Kuva)}";
-                }
-                else
-                {
-                    imageSrc = Url.Content("~/Images/OletusKuva.png");
-                }
-                <tr data-itemid ="@item.TuoteId">
-                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-stream" style="color:black"></i></a></td>
-                    <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
-                    @if (item.Aktiivinen == true)
-                    {
-                        <td class="ms-auto">@if (item.Status != null) @await Html.PartialAsync("_StatusPartial", item.Status) </td>
-                    }
-                    else
-                    {
-                        <td class="ms-auto"><i class="fas fa-circle-xmark"></i></td>
-                    }
-                    <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
-                    <td><img class="" style="width:25px;height:25px;object-fit:cover" src="@imageSrc" alt="Tuote kuva" /></td>
-                    <td>@Html.DisplayFor(modelItem => item.Kuvaus)</td>
-                    <td>@Html.DisplayFor(modelItem => item.OstoPvm)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Hinta)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Takuu)</td>
-                    <td>@if(item.Kategoria != null)@Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi)</td>
-                    <td>@if(item.Toimipiste != null)@Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
-                    @* <td>@if (item.Status != null)@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td> *@
-                    <td class="d-flex gap-2">
-                        <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
-                        @if(KalustoLuetteloSovellus.RoleHelper.IsAdmin(Context)){
-                            <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-main disabled" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="13">
-                        <div id="collapse_@item?.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item?.TuoteId">
-                            <div class="card-body">
-                                @{
-                                    var tuoteVapaa =  item?.Status?.StatusNimi != "Varattu";
-                                    var dis = (@tuoteVapaa ? "" : "disabled");
-                                    if (!tuoteVapaa)
-                                    {
-                                        <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
-                                    }
-                                    <a class="btn btn-main mt-2 mb-2 @dis" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item?.TuoteId"><i class="fas fa-calendar-check"></i> Luo uusi tapahtuma</a>
-                                }
-                                <hr />
-                                <p class="fw-bold"> Tuotteen @item?.TuoteId tapahtumarivit </p>
-                                @await Html.PartialAsync("_TapahtumaRivitPartial", item?.Tapahtumat)
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                }
-            </tbody>
-    </table>
-        
-    <nav aria-label="Sivutus">
-        <ul class="pagination">
-            @if (currentPage > 0)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { currentPage = currentPage - 1, pageSize = pageSize })">Edellinen</a>
-                </li>
-            }
-
-            @for (int i = 0; i < totalPages; i++)
-            {
-                <li class="page-item @(i == currentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { currentPage = i, pageSize = pageSize })">@(i + 1)</a>
-                </li>
-            }
-
-            @if (currentPage < totalPages - 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { currentPage = currentPage + 1, pageSize = pageSize })">Seuraava</a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>
- 
-
-
-
