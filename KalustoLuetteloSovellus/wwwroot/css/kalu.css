@@ -80,6 +80,15 @@ thead{
 
 }
 /*DARKMODE*/
+.page-link{
+/*    background-color:var(--main-color);*/
+    color:var(--text-color);
+}
+.page-item.active .page-link{
+    background-color: var(--main-color)!important;
+    border-color: var(--main-color-hover)!important;
+}
+
 .nav-link {
     white-space: nowrap;
 }

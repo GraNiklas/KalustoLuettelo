@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    int currentPage = (int)ViewData["CurrentPage"];
+    int totalPages = (int)ViewData["TotalPages"];
+    int pageSize = (int)ViewData["PageSize"];
 }
 
 
@@ -143,6 +147,31 @@
                 }
             </tbody>
     </table>
+        
+    <nav aria-label="Sivutus">
+        <ul class="pagination">
+            @if (currentPage > 0)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { currentPage = currentPage - 1, pageSize = pageSize })">Edellinen</a>
+                </li>
+            }
+
+            @for (int i = 0; i < totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { currentPage = i, pageSize = pageSize })">@(i + 1)</a>
+                </li>
+            }
+
+            @if (currentPage < totalPages - 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { currentPage = currentPage + 1, pageSize = pageSize })">Seuraava</a>
+                </li>
+            }
+        </ul>
+    </nav>
 </div>
  
 
