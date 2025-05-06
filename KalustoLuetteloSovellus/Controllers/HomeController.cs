@@ -287,3 +287,9 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home"); // mihin menn‰‰n kun login onnistuu
     }
 }
+
+
+
+
+
+
