@@ -1,9 +1,18 @@
 ﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
 
+<link rel="stylesheet" href="~/css/statusbadge.css" />
+
+
 <div class="row justify-content-center text-center">
     <div class="col-md-4 mb-3">
         <div class="card h-100 d-flex align-items-center justify-content-center">
             <div class="card-body">
+                <div style="position: absolute; top: 10px; right: 20px;">
+                @{
+                    var statusVarattu = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Varattu" };
+                }
+                @await Html.PartialAsync("_StatusPartial", statusVarattu)
+                </div>
                 <h5 class="card-title">Varatut</h5>
                 <p class="card-text">Katso varatut tuotteet</p>
                 <a class="btn btn-primary" asp-action="Varatuttuotteet" asp-controller="Tuotteet">Valitse</a>
@@ -13,6 +22,12 @@
     <div class="col-md-4 mb-3">
         <div class="card h-100 d-flex align-items-center justify-content-center">
             <div class="card-body">
+                <div style="position: absolute; top: 10px; right: 20px;">                
+                @{
+                    var statusHuollossa = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Huollossa" };
+                }
+                @await Html.PartialAsync("_StatusPartial", statusHuollossa)
+                </div>
                 <h5 class="card-title">Huollossa</h5>
                 <p class="card-text">Katso huollossa olevat tuotteet</p>
                 <a class="btn btn-primary" asp-action="Huollossatuotteet" asp-controller="Tuotteet">Valitse</a>
@@ -22,6 +37,12 @@
     <div class="col-md-4 mb-3">
         <div class="card h-100 d-flex align-items-center justify-content-center">
             <div class="card-body">
+                <div style="position: absolute; top: 10px; right: 20px;">
+                @{
+                    var statusVapaa = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Vapaa" };
+                }
+                @await Html.PartialAsync("_StatusPartial", statusVapaa)
+                </div>
                 <h5 class="card-title">Vapaana</h5>
                 <p class="card-text">Katso vapaana olevat tuotteet</p>
                 <a class="btn btn-primary" asp-action="Vapaanatuotteet" asp-controller="Tuotteet">Valitse</a>
