@@ -135,9 +135,52 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+            
 
             return View(tapahtuma);
+        }
+
+        public async Task<IActionResult> Palauta(int tuoteId)
+        {
+            var tuote = await _context.Tuotteet
+                .Include(t => t.Kategoria)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(t => t.Status)
+                .Include(t => t.Toimipiste)
+                .FirstOrDefaultAsync(t => t.TuoteId == tuoteId);
+
+            if (tuote == null)
+            {
+                Console.WriteLine("tuote on null ");
+                return RedirectToAction("Index", "Home");
+            }
+            ViewData["Käyttäjätunnus"] = HttpContext.Session.GetString("käyttäjätunnus");
+            ViewData["TuoteId"] = tuote.TuoteId;
+            ViewData["IdNumero"] = tuote.IdNumero;
+            ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi");
+
+            var käyttäjäId = HttpContext.Session.GetInt32("KäyttäjäId");
+            var käyttäjä = await _context.Käyttäjät.FirstOrDefaultAsync(k => k.KäyttäjäId == käyttäjäId);
+            if (käyttäjä == null || käyttäjäId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var tapahtumat = await _context.Tapahtumat
+                .Where(t => t.TuoteId == tuoteId)
+                .OrderByDescending(t => t.AloitusPvm)
+                .ToListAsync();
+
+            //ensin lajitellaan että saadaan viimeisin sitten haetaan käyttäjän tekemä tapahtuma tuotteelle niin olisi mahdollisesti viimesiin tapahtuma
+            var tapahtuma = tapahtumat
+                .FirstOrDefault(t => RoleHelper.IsUser(t.KäyttäjäId, HttpContext) || RoleHelper.IsAdmin(HttpContext)); // katotaan onko käyttäjän tekemä tai oletko admin
+
+            if (tapahtuma == null) return View("Error"); // error jos ei löydy tapahtumaa
+            
+            tapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today); // en tiedä tarviiko muuttaa lopetus päivää palautuspäiväksi mutta ehkäpä.
+            tapahtuma.StatusId = 60001;
+
+            return View("Create",tapahtuma);
         }
 
         // GET: Tapahtumat/Create
@@ -174,7 +217,7 @@ namespace KalustoLuetteloSovellus.Controllers
             tapahtuma.AloitusPvm = DateOnly.FromDateTime(DateTime.Today);
             tapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today.AddDays(7)); // lisätään vaikka viikko lopetuspäivään defaultiks
 
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+            
 
             return View(tapahtuma);
         }
@@ -215,7 +258,7 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "Kuvaus", tapahtuma.TuoteId);
             ViewData["StatusId"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tapahtuma.StatusId);
 
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+            
 
             return View(tapahtuma);
         }
@@ -275,7 +318,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
+            
 
             return View(tapahtuma);
         }
