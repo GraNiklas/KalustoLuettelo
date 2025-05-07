@@ -16,6 +16,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -47,6 +48,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return View();
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
@@ -157,8 +159,39 @@ namespace KalustoLuetteloSovellus.Controllers
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        await tuote.KuvaFile.CopyToAsync(memoryStream);
-                        tuote.Kuva = memoryStream.ToArray();
+                        // Lataa kuva ImageSharpilla
+                        using var image = await Image.LoadAsync(tuote.KuvaFile.OpenReadStream());
+
+                        // Pienennetään kuvaa, säilytetään max-koko 800x800
+                        image.Mutate(x => x.Resize(new ResizeOptions
+                        {
+                            Size = new Size(800, 800), // Maksimi koko 800x800
+                            Mode = ResizeMode.Max       // Pienennetään niin, että molemmat ulottuvuudet mahtuvat maxiin
+                        }));
+
+                        // Tarkistetaan kuvatiedoston tyyppi ja pakataan sen mukaan
+                        var extension = Path.GetExtension(tuote.KuvaFile.FileName).ToLower();
+
+                        using var ms = new MemoryStream();
+                        if (extension == ".jpg" || extension == ".jpeg")
+                        {
+                            // JPEG-pakkaus, voidaan säätää laatua
+                            await image.SaveAsJpegAsync(ms, new JpegEncoder
+                            {
+                                Quality = 50 // Alhaisempi laatu vähentää tiedostokokoa (50% laatu on usein riittävä)
+                            });
+                        }
+                        else if (extension == ".png")
+                        {
+                            // PNG-pakkaus, voi käyttää parempaa optimointia
+                            await image.SaveAsPngAsync(ms, new PngEncoder
+                            {
+                                CompressionLevel = PngCompressionLevel.BestCompression // Paras pakkaus
+                            });
+                        }
+
+                        // Tallennetaan pienennetty ja pakattu kuva byte array -muodossa
+                        tuote.Kuva = ms.ToArray();
                     }
                 }
                 _context.Add(tuote);
@@ -178,6 +211,7 @@ namespace KalustoLuetteloSovellus.Controllers
         //[ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -227,17 +261,59 @@ namespace KalustoLuetteloSovellus.Controllers
                 olemassaOlevaTuote.Takuu = tuote.Takuu;
                 olemassaOlevaTuote.Aktiivinen = tuote.Aktiivinen;
                 olemassaOlevaTuote.ToimipisteId = tuote.ToimipisteId;
+                // Jos kuva on valittu, käsitellään ja tallennetaan
                 if (tuote.KuvaFile != null)
                 {
-                    // Convert uploaded file to byte array
+                    try
+                    {
                     using (var memoryStream = new MemoryStream())
                     {
-                        await tuote.KuvaFile.CopyToAsync(memoryStream);
-                        olemassaOlevaTuote.Kuva = memoryStream.ToArray();
-                    }
+                        using var image = await Image.LoadAsync(tuote.KuvaFile.OpenReadStream());
 
-                    // Explicitly mark ProfilePicture as modified
-                    _context.Entry(olemassaOlevaTuote).Property(p => p.Kuva).IsModified = true;
+                        // Pienennetään kuvaa, säilytetään max-koko 800x800
+                        image.Mutate(x => x.Resize(new ResizeOptions
+                        {
+                            Size = new Size(800, 800),
+                            Mode = ResizeMode.Max
+                        }));
+
+                        // Tarkistetaan kuvatiedoston tyyppi ja pakataan sen mukaan
+                        var extension = Path.GetExtension(tuote.KuvaFile.FileName).ToLower();
+
+                        using var ms = new MemoryStream();
+                        if (extension == ".jpg" || extension == ".jpeg")
+                        {
+                            // Tallennetaan JPEG-kuva 50% laadulla
+                            await image.SaveAsJpegAsync(ms, new JpegEncoder
+                            {
+                                Quality = 50
+                            });
+                        }
+                        else if (extension == ".png")
+                        {
+                            // Tallennetaan PNG-kuva parhaalla pakkaustasolla
+                            await image.SaveAsPngAsync(ms, new PngEncoder
+                            {
+                                CompressionLevel = PngCompressionLevel.BestCompression
+                            });
+                        }
+                        else
+                        {
+                            // Jos ei ole JPEG tai PNG, ilmoita virheestä
+                            ModelState.AddModelError("KuvaFile", "Vain JPG ja PNG kuvat hyväksytään.");
+                            return View(tuote);  // Palautetaan takaisin muokkausnäkymään
+                        }
+
+                        // Tallennetaan kuva tietokantaan
+                        olemassaOlevaTuote.Kuva = ms.ToArray();
+                    }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Jos kuvan käsittelyssä tapahtuu virhe, lisätään virhemalliin ja palataan takaisin
+                        ModelState.AddModelError("", "Virhe kuvan käsittelyssä: " + ex.Message);
+                        return View(tuote);
+                    }
                 }
                 try
                 {
@@ -333,30 +409,29 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CropExistingImage(int productId, IFormFile file)
+        public async Task<IActionResult> DowngradeExistingImage(int productId)
         {
-            // Oletetaan, että meillä on tiedot jo olemassa olevasta kuvasta, joka on tallennettu tietokantaan.
-            var existingImagePath = Path.Combine("wwwroot/images", "existing_image.jpg"); // Tai hae polku tietokannasta
+            var tuote = await _context.Tuotteet.FindAsync(productId);
+            if (tuote == null || tuote.Kuva == null)
+                return NotFound("Tuotetta tai kuvaa ei löytynyt.");
 
-            // Lataa olemassa oleva kuva
-            using var image = await Image.LoadAsync(existingImagePath);
+            using var originalStream = new MemoryStream(tuote.Kuva);
+            using var image = await Image.LoadAsync(originalStream);
 
-            // Rajaa kuva (tässä esimerkissä rajataan alue 100px x 100px ja 300px x 300px)
-            var cropRectangle = new Rectangle(100, 100, 300, 300);
-            image.Mutate(x => x.Crop(cropRectangle));
-
-            // Tallenna kuva uudelleen
-            var fileName = Guid.NewGuid().ToString() + ".jpg";
-            var savePath = Path.Combine("wwwroot/images", fileName);
-            Directory.CreateDirectory(Path.GetDirectoryName(savePath));
-
-            await image.SaveAsJpegAsync(savePath, new JpegEncoder
+            image.Mutate(x => x.Resize(new ResizeOptions
             {
-                Quality = 75 // Voit säätää laatua
-            });
+                Size = new Size(800, 800), // tai haluamasi maksimi
+                Mode = ResizeMode.Max // säilyttää kuvasuhteen, skaalaa niin että kumpikaan puoli ei ylitä kokoa
+            }));
 
-            // Palauta uusi polku tai vaihtoehtoisesti voit tallentaa tietokantaan uuden kuvan polun
-            return Ok(new { ImagePath = "/images/" + fileName });
+            using var outputStream = new MemoryStream();
+            await image.SaveAsJpegAsync(outputStream, new JpegEncoder { Quality = 75 });
+
+            tuote.Kuva = outputStream.ToArray();
+            _context.Tuotteet.Update(tuote);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Kuva skaalattu ja tallennettu onnistuneesti." });
         }
     }
 }
