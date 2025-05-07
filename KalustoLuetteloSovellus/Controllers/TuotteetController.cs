@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +15,6 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using System.IO;
 using System.Threading.Tasks;
 using System;
-using SixLabors.ImageSharp.Formats.Png;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -30,25 +28,29 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
+        public IActionResult Index(int currentPage = 0, int pageSize = 10)
         {
             // Get the total number of products
             var totalTuotteet = _context.Tuotteet.Count();
             var totalPages = (int)Math.Ceiling((double)totalTuotteet / pageSize);
 
-            ViewData["PageSize"] = pageSize;
+            // Ensure currentPage is within bounds
+            currentPage = Math.Max(0, Math.Min(currentPage, totalPages - 1));
+
+
+
+            // Get the products for the current page
+            var tuotteet = _context.Tuotteet
+                .Skip(currentPage * pageSize)
+                .Take(pageSize)
+                .ToList();
+
             ViewData["CurrentPage"] = currentPage;
             ViewData["TotalPages"] = totalPages;
+            ViewData["PageSize"] = pageSize;
 
-
-            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
-            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
-            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
-            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
-
-            return View();
+            return View(tuotteet);
         }
-
 
         [HttpGet]
         public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
@@ -70,25 +72,27 @@ namespace KalustoLuetteloSovellus.Controllers
                 tuotteet = tuotteet.Where(t => t.ToimipisteId == toimipisteId.Value);
 
             var totalFiltered = await tuotteet.CountAsync();
-            var totalTuotteet = await _context.Tuotteet.CountAsync();
 
             var tuotteetPaged = await tuotteet
                 .Skip(currentPage * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            
+            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
+            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
+            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
+            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
 
-            ViewData["Kaikki"] = totalTuotteet;
-            ViewData["Suodatetut"] = totalFiltered;
-
+            ViewData["PageSize"] = pageSize;
+            ViewData["CurrentPage"] = currentPage;
+            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalFiltered / pageSize);
 
             return PartialView("_TuotteetPartial", tuotteetPaged);
         }
         public async Task<IActionResult> _StatusPartial(int statusId)
         {
             var status = await _context.Statukset.FirstOrDefaultAsync(s => s.StatusId == statusId);
-            return PartialView("_StatusPartial",status);
+            return PartialView("_StatusPartial", status);
         }
         // GET: Tuotteet/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -102,9 +106,9 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Include(t => t.Kategoria)
                 .Include(t => t.Toimipiste)
                 .Include(t => t.Tapahtumat)
-                    .ThenInclude(t=>t.Status)
+                    .ThenInclude(t => t.Status)
                 .Include(t => t.Tapahtumat)
-                    .ThenInclude(t=>t.Käyttäjä)
+                    .ThenInclude(t => t.Käyttäjä)
                 .FirstOrDefaultAsync(m => m.TuoteId == id);
             if (tuote == null)
             {
@@ -116,7 +120,7 @@ namespace KalustoLuetteloSovellus.Controllers
             return View(tuote);
         }
 
-        
+
         public async Task<IActionResult> DetailsPartial(int? id)
         {
             if (id == null)
@@ -135,7 +139,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
-            return PartialView("_TuoteKorttiPartial",tuote);
+            return PartialView("_TuoteKorttiPartial", tuote);
         }
         // GET: Tuotteet/Create
         public IActionResult Create()
@@ -151,47 +155,16 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Tuote tuote)
+        public async Task<IActionResult> Create(Tuote tuote)
         {
             if (ModelState.IsValid)
             {
-                if(tuote.KuvaFile != null)
+                if (tuote.KuvaFile != null)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        // Lataa kuva ImageSharpilla
-                        using var image = await Image.LoadAsync(tuote.KuvaFile.OpenReadStream());
-
-                        // Pienennetään kuvaa, säilytetään max-koko 800x800
-                        image.Mutate(x => x.Resize(new ResizeOptions
-                        {
-                            Size = new Size(800, 800), // Maksimi koko 800x800
-                            Mode = ResizeMode.Max       // Pienennetään niin, että molemmat ulottuvuudet mahtuvat maxiin
-                        }));
-
-                        // Tarkistetaan kuvatiedoston tyyppi ja pakataan sen mukaan
-                        var extension = Path.GetExtension(tuote.KuvaFile.FileName).ToLower();
-
-                        using var ms = new MemoryStream();
-                        if (extension == ".jpg" || extension == ".jpeg")
-                        {
-                            // JPEG-pakkaus, voidaan säätää laatua
-                            await image.SaveAsJpegAsync(ms, new JpegEncoder
-                            {
-                                Quality = 50 // Alhaisempi laatu vähentää tiedostokokoa (50% laatu on usein riittävä)
-                            });
-                        }
-                        else if (extension == ".png")
-                        {
-                            // PNG-pakkaus, voi käyttää parempaa optimointia
-                            await image.SaveAsPngAsync(ms, new PngEncoder
-                            {
-                                CompressionLevel = PngCompressionLevel.BestCompression // Paras pakkaus
-                            });
-                        }
-
-                        // Tallennetaan pienennetty ja pakattu kuva byte array -muodossa
-                        tuote.Kuva = ms.ToArray();
+                        await tuote.KuvaFile.CopyToAsync(memoryStream);
+                        tuote.Kuva = memoryStream.ToArray();
                     }
                 }
                 _context.Add(tuote);
@@ -211,7 +184,6 @@ namespace KalustoLuetteloSovellus.Controllers
         //[ServiceFilter(typeof(AdminOnlyFilter))]
         public async Task<IActionResult> Edit(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -222,8 +194,8 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-                   
-            ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi",tuote.KategoriaId);
+
+            ViewData["KategoriaNimi"] = new SelectList(_context.Kategoriat, "KategoriaId", "KategoriaNimi", tuote.KategoriaId);
             //ViewData["StatusNimi"] = new SelectList(_context.Statukset, "StatusId", "StatusNimi", tuote.StatusId);
             ViewData["ToimipisteNimi"] = new SelectList(_context.Toimipisteet, "ToimipisteId", "KaupunkiJaToimipisteNimi", tuote.ToimipisteId);
 
@@ -231,7 +203,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return View(tuote);
         }
-        
+
         // POST: Tuotteet/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -261,59 +233,17 @@ namespace KalustoLuetteloSovellus.Controllers
                 olemassaOlevaTuote.Takuu = tuote.Takuu;
                 olemassaOlevaTuote.Aktiivinen = tuote.Aktiivinen;
                 olemassaOlevaTuote.ToimipisteId = tuote.ToimipisteId;
-                // Jos kuva on valittu, käsitellään ja tallennetaan
                 if (tuote.KuvaFile != null)
                 {
-                    try
-                    {
+                    // Convert uploaded file to byte array
                     using (var memoryStream = new MemoryStream())
                     {
-                        using var image = await Image.LoadAsync(tuote.KuvaFile.OpenReadStream());
-
-                        // Pienennetään kuvaa, säilytetään max-koko 800x800
-                        image.Mutate(x => x.Resize(new ResizeOptions
-                        {
-                            Size = new Size(800, 800),
-                            Mode = ResizeMode.Max
-                        }));
-
-                        // Tarkistetaan kuvatiedoston tyyppi ja pakataan sen mukaan
-                        var extension = Path.GetExtension(tuote.KuvaFile.FileName).ToLower();
-
-                        using var ms = new MemoryStream();
-                        if (extension == ".jpg" || extension == ".jpeg")
-                        {
-                            // Tallennetaan JPEG-kuva 50% laadulla
-                            await image.SaveAsJpegAsync(ms, new JpegEncoder
-                            {
-                                Quality = 50
-                            });
-                        }
-                        else if (extension == ".png")
-                        {
-                            // Tallennetaan PNG-kuva parhaalla pakkaustasolla
-                            await image.SaveAsPngAsync(ms, new PngEncoder
-                            {
-                                CompressionLevel = PngCompressionLevel.BestCompression
-                            });
-                        }
-                        else
-                        {
-                            // Jos ei ole JPEG tai PNG, ilmoita virheestä
-                            ModelState.AddModelError("KuvaFile", "Vain JPG ja PNG kuvat hyväksytään.");
-                            return View(tuote);  // Palautetaan takaisin muokkausnäkymään
-                        }
-
-                        // Tallennetaan kuva tietokantaan
-                        olemassaOlevaTuote.Kuva = ms.ToArray();
+                        await tuote.KuvaFile.CopyToAsync(memoryStream);
+                        olemassaOlevaTuote.Kuva = memoryStream.ToArray();
                     }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Jos kuvan käsittelyssä tapahtuu virhe, lisätään virhemalliin ja palataan takaisin
-                        ModelState.AddModelError("", "Virhe kuvan käsittelyssä: " + ex.Message);
-                        return View(tuote);
-                    }
+
+                    // Explicitly mark ProfilePicture as modified
+                    _context.Entry(olemassaOlevaTuote).Property(p => p.Kuva).IsModified = true;
                 }
                 try
                 {
@@ -386,8 +316,8 @@ namespace KalustoLuetteloSovellus.Controllers
 
         public async Task<IActionResult> _TapahtumaRivitPartial()
         {
-            var tapahtumat = await _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste).OrderBy(t=>t.AloitusPvm).ToListAsync();
-            
+            var tapahtumat = await _context.Tapahtumat.Include(t => t.Käyttäjä).Include(t => t.Status).Include(t => t.Tuote).ThenInclude(tu => tu.Toimipiste).OrderBy(t => t.AloitusPvm).ToListAsync();
+
             return PartialView("_TapahtumaRivitPartial", tapahtumat);
         }
 
@@ -408,30 +338,27 @@ namespace KalustoLuetteloSovellus.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DowngradeExistingImage(int productId)
+        [HttpGet]
+        public async Task<IActionResult> GetCompressedImage(int id)
         {
-            var tuote = await _context.Tuotteet.FindAsync(productId);
+            var tuote = await _context.Tuotteet.FindAsync(id);
             if (tuote == null || tuote.Kuva == null)
-                return NotFound("Tuotetta tai kuvaa ei löytynyt.");
+                return NotFound();
 
             using var originalStream = new MemoryStream(tuote.Kuva);
             using var image = await Image.LoadAsync(originalStream);
 
             image.Mutate(x => x.Resize(new ResizeOptions
             {
-                Size = new Size(800, 800), // tai haluamasi maksimi
-                Mode = ResizeMode.Max // säilyttää kuvasuhteen, skaalaa niin että kumpikaan puoli ei ylitä kokoa
+                Size = new Size(256, 256), // Näyttökoon rajoitus
+                Mode = ResizeMode.Max
             }));
 
-            using var outputStream = new MemoryStream();
-            await image.SaveAsJpegAsync(outputStream, new JpegEncoder { Quality = 75 });
+            var ms = new MemoryStream();
+            await image.SaveAsJpegAsync(ms, new JpegEncoder { Quality = 50 });
+            ms.Seek(0, SeekOrigin.Begin);
 
-            tuote.Kuva = outputStream.ToArray();
-            _context.Tuotteet.Update(tuote);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "Kuva skaalattu ja tallennettu onnistuneesti." });
+            return File(ms.ToArray(), "image/jpeg");
         }
     }
 }
