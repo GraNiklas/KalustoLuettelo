@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
 
 <div id="accordion" class="container-fluid">
-    <table class="table table-hover table-bordered align-middle">
+    <table class="table table-hover table-bordered align-middle table-responsive">
         <thead>
             <tr>
                 <th>Tapahtumat</th>
@@ -75,13 +75,27 @@
                         <div id="collapse_@item.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item.TuoteId">
                             <div class="card-body">
                                 @{
-                                    var tuoteVapaa = item?.Status?.StatusNimi != "Varattu";
-                                    var dis = tuoteVapaa ? "" : "disabled";
-                                    if (!tuoteVapaa)
-                                    {
-                                        <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
-                                    }
-                                    <a class="btn btn-main mt-2 mb-2 @dis" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId"><i class="fas fa-calendar-check"></i> Luo uusi tapahtuma</a>
+                                    var isVarattu = item?.Status?.StatusNimi == "Varattu";
+                                    var userIsOwner = item.ViimeisinTapahtuma != null && RoleHelper.IsUser(item.ViimeisinTapahtuma.KäyttäjäId, Context);
+                                    var userIsAdmin = RoleHelper.IsAdmin(Context);
+                                }
+
+                                @if (isVarattu)
+                                {
+                                    <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId">
+                                        <i class="fas fa-calendar-check"></i> Luo uusi tapahtuma
+                                    </a>
+                                }
+
+                                @if (isVarattu && (userIsOwner || userIsAdmin))
+                                {
+                                    <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
+                                        <i class="fas fa-handshake"></i> Palauta tuote
+                                    </a>
                                 }
                                 <hr />
                                 <p class="fw-bold"> Tuotteen @item.TuoteId tapahtumarivit </p>
