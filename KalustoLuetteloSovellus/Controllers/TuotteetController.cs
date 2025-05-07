@@ -10,6 +10,12 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Routing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using System.IO;
+using System.Threading.Tasks;
+using System;
 
 namespace KalustoLuetteloSovellus.Controllers
 {
@@ -333,5 +339,31 @@ namespace KalustoLuetteloSovellus.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CropExistingImage(int productId, IFormFile file)
+        {
+            // Oletetaan, että meillä on tiedot jo olemassa olevasta kuvasta, joka on tallennettu tietokantaan.
+            var existingImagePath = Path.Combine("wwwroot/images", "existing_image.jpg"); // Tai hae polku tietokannasta
+
+            // Lataa olemassa oleva kuva
+            using var image = await Image.LoadAsync(existingImagePath);
+
+            // Rajaa kuva (tässä esimerkissä rajataan alue 100px x 100px ja 300px x 300px)
+            var cropRectangle = new Rectangle(100, 100, 300, 300);
+            image.Mutate(x => x.Crop(cropRectangle));
+
+            // Tallenna kuva uudelleen
+            var fileName = Guid.NewGuid().ToString() + ".jpg";
+            var savePath = Path.Combine("wwwroot/images", fileName);
+            Directory.CreateDirectory(Path.GetDirectoryName(savePath));
+
+            await image.SaveAsJpegAsync(savePath, new JpegEncoder
+            {
+                Quality = 75 // Voit säätää laatua
+            });
+
+            // Palauta uusi polku tai vaihtoehtoisesti voit tallentaa tietokantaan uuden kuvan polun
+            return Ok(new { ImagePath = "/images/" + fileName });
+        }
     }
 }
