@@ -361,10 +361,20 @@ namespace KalustoLuetteloSovellus.Controllers
             return File(ms.ToArray(), "image/jpeg");
         }
 
-        //public async Task<IActionResult> Huollossa(int id)
-        //{
-            
-        //}
+        public async Task<IActionResult> Huollossatuotteet()
+        {
+            var tuotteet = _context.Tuotteet
+            .Include(t => t.Kategoria)
+            .Include(t => t.Toimipiste)
+            .Include(t => t.Tapahtumat)
+                .ThenInclude(t => t.Käyttäjä)
+            .Include(t => t.Tapahtumat)
+                .ThenInclude(t => t.Status)
+            .AsQueryable();
+
+            return View(await tuotteet.ToListAsync());
+        }
+        
 
 
     }
