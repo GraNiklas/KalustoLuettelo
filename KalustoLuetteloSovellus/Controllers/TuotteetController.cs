@@ -29,28 +29,23 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public IActionResult Index(int currentPage = 0, int pageSize = 10)
+        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
         {
             // Get the total number of products
             var totalTuotteet = _context.Tuotteet.Count();
             var totalPages = (int)Math.Ceiling((double)totalTuotteet / pageSize);
 
-            // Ensure currentPage is within bounds
-            currentPage = Math.Max(0, Math.Min(currentPage, totalPages - 1));
-
-
-
-            // Get the products for the current page
-            var tuotteet = _context.Tuotteet
-                .Skip(currentPage * pageSize)
-                .Take(pageSize)
-                .ToList();
-
+            ViewData["PageSize"] = pageSize;
             ViewData["CurrentPage"] = currentPage;
             ViewData["TotalPages"] = totalPages;
-            ViewData["PageSize"] = pageSize;
 
-            return View(tuotteet);
+
+            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
+            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
+            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
+            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
+
+            return View();
         }
 
         [HttpGet]
@@ -73,20 +68,18 @@ namespace KalustoLuetteloSovellus.Controllers
                 tuotteet = tuotteet.Where(t => t.ToimipisteId == toimipisteId.Value);
 
             var totalFiltered = await tuotteet.CountAsync();
+            var totalTuotteet = await _context.Tuotteet.CountAsync();
 
             var tuotteetPaged = await tuotteet
                 .Skip(currentPage * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
-            ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
-            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
-            ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
+            
 
-            ViewData["PageSize"] = pageSize;
-            ViewData["CurrentPage"] = currentPage;
-            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalFiltered / pageSize);
+            ViewData["Kaikki"] = totalTuotteet;
+            ViewData["Suodatetut"] = totalFiltered;
+
 
             return PartialView("_TuotteetPartial", tuotteetPaged);
         }

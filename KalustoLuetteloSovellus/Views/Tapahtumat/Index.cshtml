@@ -13,6 +13,10 @@
 
 <h5 class="pb-4">Uuden tapahtuman luonti tuotteen kautta</h5>
 
+<div class="d-flex gap-2">
+    <p>Kaikki tapahtumat: <strong>@ViewData["Kaikki"]</strong></p>
+    <p>Näytetyt tapahtumat: <strong>@ViewData["Suodatetut"]</strong></p>
+</div>
 
 <div class="d-flex gap-2">
     <form method="get" class="d-flex gap-2 mb-2" id="filterForm">
@@ -39,16 +43,17 @@
         <button type="submit" class="btn btn-main mt-4"><i class="fas fa-filter"></i> Suodata</button>
     </form>
 </div>
-
+@* <label> *@
+@*     <input type="checkbox" id="colorToggle" /> *@
+@*     Värikoodaus *@
+@* </label> *@
 <div id="tapahtumat-container">
-    <p>Ladataan tapahtumia...</p>
-    <div class="skeleton-list">
-        @for (int i = 0; i < 5; i++)
-        {
-            <div class="skeleton-item mb-3 p-3 rounded bg-light"></div>
-        }
+    <p>Haetaan tapahtumia tietokannasta...</p>
+    <div class="loading-container">
+        <div class="loading"></div>
     </div>
 </div>
+
 <!-- Hidden totalPages value -->
 <span id="totalPages" style="display:none;">@totalPages</span>
 
@@ -72,68 +77,115 @@
     </ul>
 </nav>
 
-
 <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        let currentPage = 0;
-        const pageSize = parseInt('@ViewData["PageSize"]');
-        const totalPages = parseInt('@ViewData["TotalPages"]');
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById('tapahtumat-container');
+        const form = document.getElementById('filterForm');
 
+        let currentPage = parseInt(@ViewData["CurrentPage"]);
+        const pageSize = @ViewData["PageSize"];
+        const totalPages = @ViewData["TotalPages"];
+        let currentSortOrder = null;
+
+        // Pagination
         function loadPage(page) {
-            const formData = new FormData(document.getElementById("filterForm"));
-            const statusId = formData.get("statusId");
-            const toimipisteId = formData.get("toimipisteId");
-            const sortOrder = formData.get("sortOrder"); // Add this for sorting
-
-            const url = `/Tapahtumat/GetTapahtumatPartial?pageSize=${pageSize}&currentPage=${page}&statusId=${statusId}&toimipisteId=${toimipisteId}&sortOrder=${sortOrder}`;
-
-            fetch(url)
+            fetch(`/Tapahtumat/GetTapahtumatPartial?pageSize=${pageSize}&currentPage=${page}`)
                 .then(response => response.text())
                 .then(html => {
-                    document.getElementById('tapahtumat-container').innerHTML = html;
+                    container.innerHTML = html;
+                    currentPage = page;
+                    updatePagination();
+                    attachSortHandlers(); // Reattach sorting after pagination
                 });
         }
 
-        // Load the first page
-        loadPage(currentPage);
-
-        // Handle pagination button clicks
-        document.getElementById('prevPage').addEventListener('click', function () {
-            if (currentPage > 0) {
-                currentPage--;
-                updateActivePageButton();
-                loadPage(currentPage);
+        function updatePagination() {
+            document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
+            const pageButtons = document.querySelectorAll('.page-number');
+            if (pageButtons[currentPage]) {
+                pageButtons[currentPage].closest('li').classList.add('active');
             }
-        });
-
-        document.getElementById('nextPage').addEventListener('click', function () {
-            if (currentPage < totalPages - 1) {
-                currentPage++;
-                updateActivePageButton();
-                loadPage(currentPage);
-            }
-        });
-
-            // Handle page number button clicks
-        document.querySelectorAll('.page-number').forEach(button => {
-            button.addEventListener('click', function () {
-                currentPage = parseInt(button.getAttribute('data-page'));
-                updateActivePageButton();
-                loadPage(currentPage);
-            });
-        });
-
-        // Update active pagination button
-        function updateActivePageButton() {
-            document.querySelectorAll('.page-item').forEach(li => li.classList.remove('active'));
-            document.querySelector(`.page-number[data-page="${currentPage}"]`)?.closest('li')?.classList.add('active');
         }
 
-        // Handle form submission for filtering
-        document.getElementById('filterForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            loadPage(0); // Load the first page after applying the filter
-        });
-    });
+        // Sorting and Filters
+        function getFilterParams() {
+            const formData = new FormData(form);
+            return {
+                statusId: formData.get("statusId"),
+                toimipisteId: formData.get("toimipisteId"),
+                tuoteId: formData.get("tuoteId")
+            };
+        }
 
+        function loadTapahtumat({ sortOrder = null, page = currentPage } = {}) {
+            const filters = getFilterParams();
+            if (sortOrder !== null) currentSortOrder = sortOrder;
+
+            const params = new URLSearchParams({
+                pageSize,
+                currentPage: page,
+                ...filters
+            });
+
+            if (currentSortOrder) params.append("sortOrder", currentSortOrder);
+
+            fetch(`/Tapahtumat/GetTapahtumatPartial?${params.toString()}`)
+                .then(res => res.text())
+                .then(html => {
+                    container.innerHTML = html;
+                    attachSortHandlers(); // Reattach after partial update
+                });
+        }
+
+        // Attach sorting handlers to sort links
+        function attachSortHandlers() {
+            container.querySelectorAll('.sort-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const field = this.dataset.sort;
+                    let sortOrder = field;
+
+                    if (currentSortOrder === field) {
+                        sortOrder = `${field}_desc`;
+                        currentSortOrder = `${field}_desc`;
+                    } else {
+                        currentSortOrder = field;
+                    }
+
+                    loadTapahtumat({ sortOrder });
+                });
+            });
+        }
+
+        // Event listeners for pagination buttons
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 0) loadPage(currentPage - 1);
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages - 1) loadPage(currentPage + 1);
+        });
+
+        // Filter form submission
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            loadTapahtumat(); // Uses currentSortOrder
+        });
+
+        // Initial load of the first page
+        loadPage(currentPage);
+    });
 </script>
+
+@* <script> *@
+@*     document.addEventListener("DOMContentLoaded", () => { *@
+@*         const checkbox = document.getElementById("colorToggle"); *@
+@*         if (checkbox) { *@
+@*             checkbox.addEventListener("change", () => { *@
+@*                 // Call the function from the partial view *@
+@*                 SetColorCoding(checkbox.checked); *@
+@*             }); *@
+@*             SetColorCoding(checkbox.checked);  // Run on page load if needed *@
+@*         } *@
+@*     }); *@
+@* </script> *@

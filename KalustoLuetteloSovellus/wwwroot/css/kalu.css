@@ -400,3 +400,30 @@ select{
         background-position: 200% 0;
     }
 }
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* or any height that fits your layout */
+    width: 100vh; /* or any height that fits your layout */
+}
+.loading {
+    display: inline-block;
+    height: 256px;
+    width: 256px;
+    border: 16px double #ccc;
+    border-top: 16px solid var(--main-color);
+    border-radius: 50%;
+    animation: rotate 1.0s ease infinite;
+}
+ 
+
+@keyframes rotate {
+    0% {
+        transform:rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -15,17 +15,51 @@
     <a class="btn btn-main" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
 </p>
 
-
-<div id="tuotteet-container">
-    <p>Ladataan tuotteita...</p>
-    <div class="skeleton-list">
-        @for (int i = 0; i < 5; i++)
-        {
-            <div class="skeleton-item mb-3 p-3 rounded bg-light"></div>
-        }
-    </div>
+<div class="d-flex gap-2">
+    <p>Kaikki tuotteet: <strong>@ViewData["Kaikki"]</strong></p>
+    <p>Näytetyt tuotteet: <strong>@ViewData["Suodatetut"]</strong></p>
 </div>
 
+<form method="get" class="d-flex gap-2 mb-4">
+
+    <div class="form-group">
+        <label>Kuvaus</label>
+        <input type="text" name="kuvausHakusanalla" class="form-control" value="@(Context.Request.Query["kuvausHakusanalla"])" placeholder="Etsi kuvauksesta..." />
+    </div>
+
+
+    <div class="form-group">
+        <label>Kategoria</label>
+        <select name="kategoriaId" class="form-control" asp-items="ViewBag.Kategoriat">
+            <option value="">Kaikki kategoriat</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Aktiivisuus</label>
+        <select name="onAktiivinen" class="form-control" asp-items="ViewBag.Aktiiviset">
+            <option value="">Kaikki tilat</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Toimipiste</label>
+        <select name="toimipisteId" class="form-control" asp-items="ViewBag.Toimipisteet">
+            <option value="">Kaikki Toimipisteet</option>
+        </select>
+    </div>
+
+    <div class="form-group align-self-end">
+        <button type="submit" class="btn btn-main"><i class="fas fa-filter"></i> Suodata</button>
+    </div>
+</form>
+
+<div id="tuotteet-container">
+    <p>Haetaan tuotteita tietokannasta...</p>
+    <div class="loading-container">
+        <div class="loading"></div>
+    </div>
+</div>
 
 <!-- Hidden totalPages value -->
 <span id="totalPages" style="display:none;">@totalPages</span>
@@ -51,13 +85,14 @@
 </nav>
 
 
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let currentPage = parseInt(@ViewData["CurrentPage"]);
-        const pageSize = @ViewData["PageSize"];
-        const totalPages = @ViewData["TotalPages"];
+        let currentPage = parseInt('@ViewData["CurrentPage"]');
+        const pageSize = parseInt('@ViewData["PageSize"]');
+        let totalPages = parseInt('@ViewData["TotalPages"]');
+        const form = document.querySelector('form'); // Define form element
 
+        // Function to load a specific page
         function loadPage(page) {
             fetch(`/Tuotteet/GetTuotteetPartial?pageSize=${pageSize}&currentPage=${page}`)
                 .then(response => response.text())
@@ -68,29 +103,74 @@
                 });
         }
 
+        // Update the pagination buttons based on the current page
         function updatePagination() {
             document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
             const pageButtons = document.querySelectorAll('.page-number');
-            if (pageButtons[currentPage])
+            if (pageButtons[currentPage]) {
                 pageButtons[currentPage].closest('li').classList.add('active');
+            }
         }
 
-        document.querySelectorAll('.page-number').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const page = parseInt(btn.getAttribute('data-page'));
-                loadPage(page);
+        // Add event listeners for page number buttons
+        function attachPaginationHandlers() {
+            document.querySelectorAll('.page-number').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    loadPage(page);
+                });
             });
-        });
+        }
 
+        // Get filter parameters from the form
+        function getFilterParams() {
+            const formData = new FormData(form);
+            return {
+                kuvausHakusanalla: formData.get("kuvausHakusanalla"),
+                toimipisteId: formData.get("toimipisteId"),
+                kategoriaId: formData.get("kategoriaId"),
+                onAktiivinen: formData.get("onAktiivinen")
+            };
+        }
+
+        // Function to load filtered and sorted items
+        function loadTuotteet({ sortOrder = null, page = currentPage } = {}) {
+            const filters = getFilterParams();
+            let params = new URLSearchParams({
+                pageSize,
+                currentPage: page,
+                ...filters
+            });
+
+            if (sortOrder) {
+                params.append("sortOrder", sortOrder);
+            }
+
+            fetch(`/Tuotteet/GetTuotteetPartial?${params.toString()}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('tuotteet-container').innerHTML = html;
+                    attachPaginationHandlers(); // Reattach pagination handlers after loading new content
+                });
+        }
+
+        // Previous page button functionality
         document.getElementById('prevPage').addEventListener('click', () => {
             if (currentPage > 0) loadPage(currentPage - 1);
         });
 
+        // Next page button functionality
         document.getElementById('nextPage').addEventListener('click', () => {
             if (currentPage < totalPages - 1) loadPage(currentPage + 1);
         });
 
-        // Load first page on initial load
+        // Filter form submission
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            loadTuotteet(); // Load items with current filters
+        });
+
+        // Load the first page on initial load
         loadPage(currentPage);
     });
 </script>

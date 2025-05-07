@@ -18,42 +18,31 @@
     }
 
 }
-<div class="d-flex gap-2">
-    <p>Kaikki tapahtumat: <strong>@ViewData["Kaikki"]</strong></p>
-    <p>Näytetyt tapahtumat: <strong>@ViewData["Suodatetut"]</strong></p>
-</div>
+
 
 
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">TapahtumaId @SortIcon("TapahtumaId")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Tunnistenro. @SortIcon("IdNumero")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Palautus pvm @SortIcon("LopetusPvm")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
-            @* TÄMÄ ON VANHA NÄKYMÄ MISSÄ OTSIKOILLA EI OLE LAJITTELUA. JÄTÄN TÄHÄN JOS TARVITSEE PALATA VANHAAN KOSKA, UUDESSA SYSTEEMISSÄ ON ONGELMA ETTÄ SE LATAA SIVUN UUDELLEEN KUN PAINAA OTSIKOITA, TOIMII MUTTA HUONO KÄYTTÄJÄKOKEMUS. T :NIKLAS
-            <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
-            <th>@Html.DisplayNameFor(model => model.Tuote.IdNumero)</th>
-            <th>@Html.DisplayNameFor(model => model.AloitusPvm)</th>
-            <th>@Html.DisplayNameFor(model => model.LopetusPvm)</th>
-            <th>@Html.DisplayNameFor(model => model.Kommentti)</th>
-            <th>@Html.DisplayNameFor(model => model.Käyttäjä)</th>
-            <th>@Html.DisplayNameFor(model => model.Tuote)</th>
-            <th>@Html.DisplayNameFor(model => model.Status)</th>
-            <th>@Html.DisplayNameFor(model => model.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</th>*@
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="Status">Status @SortIcon("Status")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="TapahtumaId">TapahtumaId @SortIcon("TapahtumaId")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="TuoteId">TuoteId @SortIcon("TuoteId")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="Tuote">Tuote @SortIcon("Tuote")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="IdNumero">Tunnistenro. @SortIcon("IdNumero")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="AloitusPvm">Luonti pvm @SortIcon("AloitusPvm")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="LopetusPvm">Palautus pvm @SortIcon("LopetusPvm")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="Kommentti">Kommentti @SortIcon("Kommentti")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="Käyttäjä">Käyttäjä @SortIcon("Käyttäjä")</a></th>
+            <th style="vertical-align: top;"><a class="sort-link" href="#" data-sort="Toimipiste">Toimipiste @SortIcon("Toimipiste")</a></th>
+
             <th style="vertical-align: top;">Toiminnot</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+
+                <tr data-status="@item.Status?.StatusNimi ?? " Tuntematon"">
                 <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
                 <td>@Html.DisplayFor(modelItem => item.TapahtumaId)</td>
                 <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
@@ -88,11 +77,42 @@
         }
     </tbody>
 </table>
+@*
+<script>
+function SetColorCoding(checked) {
+        console.log("SetColorCoding called, checked:", checked);
+        const rows = document.querySelectorAll("table tbody tr");
 
+        rows.forEach(row => {
+            const status = row.dataset.status?.trim(); // Trim to remove leading/trailing spaces
+            console.log("Row status:", status);
 
-
-@* <div class="pagination"> *@
-@*     <button id="prevPage" class="btn btn-primary" @(ViewData["CurrentPage"] as int? > 0 ? "" : "disabled")>Previous</button> *@
-@*     <button id="nextPage" class="btn btn-primary" @(ViewData["CurrentPage"] as int? < ((int)ViewData["TotalPages"])? -1 ? "" : "disabled")>Next</button> *@
-@* </div> *@
-
+            if (checked) {
+                let color = "white"; // Default color
+                switch (status) {
+                    case "Vapaa":
+                        color = "#EEFFEC";
+                        break;
+                    case "Varattu":
+                        color = "#FFEFEF";
+                        break;
+                    case "Huollossa":
+                        color = "#FEFFEF";
+                        break;
+                    case "Kadonnut":
+                        color = "#D6D4D4";
+                        break;
+                    case "Poistettu":
+                        color = "#7F7F7F";
+                        break;
+                    default:
+                        color = "white"; // Fallback for unknown statuses
+                }
+                row.style.backgroundColor = color;
+            } else {
+                row.style.backgroundColor = ""; // Reset to default
+            }
+        });
+    }
+</script>
+*@

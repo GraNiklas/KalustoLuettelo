@@ -20,28 +20,24 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tapahtumat
-        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0)
+        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0, int? statusId = null, int? toimipisteId = null, int? tuoteId = null, string? sortOrder = null)
         {
             // For the initial page load, set up filters and pagination info
-            IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat
-                .Include(t => t.Käyttäjä)
-                .Include(t => t.Status)
-                .Include(t => t.Tuote)
-                .ThenInclude(tu => tu.Toimipiste);
 
             var totalTapahtumat = _context.Tapahtumat.Count();
             var totalPages = (int)Math.Ceiling((double)totalTapahtumat / pageSize);
+            
             // Return the shell view
             ViewData["PageSize"] = pageSize;
             ViewData["CurrentPage"] = currentPage;
             ViewData["TotalPages"] = totalPages;
 
-            
+
 
             // Set ViewBag for dropdowns
-            ViewBag.Statuses = new SelectList(await _context.Statukset.ToListAsync(), "StatusId", "StatusNimi");
-            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi");
-            ViewBag.Tuotteet = new SelectList(await _context.Tuotteet.ToListAsync(), "TuoteId", "Kuvaus");
+            ViewBag.Statuses = new SelectList(await _context.Statukset.ToListAsync(), "StatusId", "StatusNimi",statusId);
+            ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi",toimipisteId);
+            ViewBag.Tuotteet = new SelectList(await _context.Tuotteet.ToListAsync(), "TuoteId", "Kuvaus", tuoteId);
 
             return View();
         }
@@ -66,7 +62,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetTapahtumatPartial(int pageSize = 10, int currentPage = 0, int? statusId = null, int? toimipisteId = null, string? sortOrder = null)
+        public async Task<IActionResult> GetTapahtumatPartial(int pageSize = 10, int currentPage = 0, int? statusId = null, int? toimipisteId = null, int? tuoteId = null, string? sortOrder = null)
         {
             IQueryable<Tapahtuma> tapahtumat = _context.Tapahtumat
                 .Include(t => t.Käyttäjä)
@@ -75,11 +71,15 @@ namespace KalustoLuetteloSovellus.Controllers
                 .ThenInclude(tu => tu.Toimipiste);
 
             // Apply sorting
-            if (!string.IsNullOrEmpty(sortOrder))
-            {
-                bool descending = sortOrder?.EndsWith("_desc") == true;
-                string sortField = sortOrder?.EndsWith("_desc") == true ? sortOrder?[..^5] : sortOrder;
-                tapahtumat = ApplySorting(tapahtumat, sortField, descending);
+            if(!string.IsNullOrEmpty(sortOrder))
+{
+                bool descending = sortOrder.EndsWith("_desc");
+                string sortField = descending ? sortOrder[..^5] : sortOrder;
+
+                if (!string.IsNullOrEmpty(sortField))
+                {
+                    tapahtumat = ApplySorting(tapahtumat, sortField, descending);
+                }
             }
 
             // Apply filtering
@@ -91,6 +91,10 @@ namespace KalustoLuetteloSovellus.Controllers
             if (toimipisteId.HasValue)
             {
                 tapahtumat = tapahtumat.Where(t => t.Tuote.ToimipisteId == toimipisteId.Value);
+            }
+            if (tuoteId.HasValue)
+            {
+                tapahtumat = tapahtumat.Where(t => t.TuoteId == tuoteId.Value);
             }
 
             // Get total filtered count
@@ -107,9 +111,6 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewData["Kaikki"] = totalTapahtumat;
             ViewData["Suodatetut"] = totalFiltered;
 
-            ViewData["CurrentPage"] = currentPage;
-            ViewData["TotalPages"] = (int)Math.Ceiling((double)totalFiltered / pageSize);
-            ViewData["PageSize"] = pageSize;
 
             return PartialView("_TapahtumatTablePartial", tapahtumatPaged);
         }
