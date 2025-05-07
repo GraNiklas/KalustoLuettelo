@@ -92,13 +92,30 @@ thead {
 .darkMode .carousel-item-small {
     color: var(--darkmode-text-color) !important;
 }
+.darkMode .page-link {
+    background-color: var(--darkmode-bg-color);
+    color: var(--darkmode-text-color);
+    border-color: var(--darkmode-text-sec-color);
+}
+.darkMode .dropdown-menu {
+    background-color: var(--darkmode-bg-color);
+    color: var(--darkmode-text-color);
+    border-color: var(--darkmode-text-sec-color);
+}
+.darkMode .dropdown-item {
+    color: var(--darkmode-text-color);
+}
+    .darkMode .dropdown-item:hover {
+        background-color: var(--darkmode-text-sec-color);
+        color: var(--darkmode-text-color);
+    }
 .darkmode-switch {
     white-space: nowrap;
 
 }
 /*DARKMODE*/
 .page-link{
-/*    background-color:var(--main-color);*/
+    background-color:var(--bg-color);
     color:var(--text-color);
 }
 .page-item.active .page-link{
