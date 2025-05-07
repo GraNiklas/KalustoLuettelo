@@ -360,5 +360,12 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return File(ms.ToArray(), "image/jpeg");
         }
+
+        //public async Task<IActionResult> Huollossa(int id)
+        //{
+            
+        //}
+
+
     }
 }
