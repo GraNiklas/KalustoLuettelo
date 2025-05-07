@@ -22,6 +22,10 @@
         <tbody>
             @foreach (var item in Model)
             {
+                if (item.Status.StatusId != 60000)
+                {
+                    continue;
+                }
                 string imageSrc;
                 if (item.Kuva != null && item.Kuva.Length > 0)
                 {

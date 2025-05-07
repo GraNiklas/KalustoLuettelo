@@ -372,7 +372,33 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return View(await tuotteet.ToListAsync());
         }
-        
+
+        public async Task<IActionResult> Varatuttuotteet()
+        {
+            var tuotteet = _context.Tuotteet
+            .Include(t => t.Kategoria)
+            .Include(t => t.Toimipiste)
+            .Include(t => t.Tapahtumat)
+                .ThenInclude(t => t.Käyttäjä)
+            .Include(t => t.Tapahtumat)
+                .ThenInclude(t => t.Status)
+            .AsQueryable();
+
+            return View(await tuotteet.ToListAsync());
+        }
+        public async Task<IActionResult> Vapaanatuotteet()
+        {
+            var tuotteet = _context.Tuotteet
+            .Include(t => t.Kategoria)
+            .Include(t => t.Toimipiste)
+            .Include(t => t.Tapahtumat)
+                .ThenInclude(t => t.Käyttäjä)
+            .Include(t => t.Tapahtumat)
+                .ThenInclude(t => t.Status)
+            .AsQueryable();
+
+            return View(await tuotteet.ToListAsync());
+        }
 
 
     }
