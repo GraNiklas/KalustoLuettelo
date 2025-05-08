@@ -11,7 +11,7 @@
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="About" >KalustoLuetteloSovellus</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
         aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <i class="fa fa-bars" style="color:var(--text-color)"></i>
         </button>
 
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -19,7 +19,8 @@
                 @if(!isLoggedIn) // ei kirjautunut
                 {
                     <li class="nav-item"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Koti</a></li>
-                    <li class="nav-item ms-auto"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Register">Rekisteröidy</a></li>
+                    <li class="ms-auto"></li>
+                    <li class="nav-item"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Register">Rekisteröidy</a></li>
                     <li class="nav-item"><a class="nav-link " asp-area="" asp-controller="Home" asp-action="Login">Kirjaudu sisään</a></li>
                 }
                 else // kirjautunut
@@ -43,10 +44,11 @@
                         </li>
                     }
                     @* <li class="nav-item"><a class="nav-link p-2 m-0" asp-controller="Home" asp-action="About">About</a></li> *@
-                    <li class="nav-item ms-auto"><a class="nav-link p-2 m-0">Tervetuloa @käyttäjä!</a></li>
-                    <li class="nav-item ms-2 me-4"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Kirjaudu ulos</a></li>
+                    <li class="ms-auto"></li>
+                    <li class="nav-item"><a class="nav-link pt-2 pb-2  m-0">Tervetuloa @käyttäjä!</a></li>
+                    <li class="nav-item "><a class="nav-link ps-0 ms-0 me-4" asp-area="" asp-controller="Home" asp-action="Logout">Kirjaudu ulos</a></li>
                 }
-                <li class="nav-item ms-2 me-2 align-content-center">
+                <li class="nav-item ms-2 me-2 align-content-center pt-2 pb-2">
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <div class="form-check form-switch darkmode-switch">
                             <input class="form-check-input" type="checkbox" id="theme-toggle">

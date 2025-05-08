@@ -26,7 +26,10 @@
     --btn-disabled: #8A8A8A;
 }
 
-
+navbar-toggler-icon{
+    color:red!important;
+    background-color:red!important;
+}
 
 body { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
     color: var(--text-color);
@@ -461,6 +464,7 @@ select{
     align-items: center;
     height: 50vh; /* or any height that fits your layout */
     width: 100vh; /* or any height that fits your layout */
+/*    filter: drop-shadow(0 0 16px var(--main-color));*/
 }
 .loading {
     display: inline-block;
@@ -469,16 +473,18 @@ select{
     border: 16px double #ccc;
     border-top: 16px solid var(--main-color);
     border-radius: 50%;
-    animation: rotate 1.0s ease infinite;
+    animation: rotate 1.0s ease-in-out infinite;
 }
  
 
 @keyframes rotate {
     0% {
-        transform:rotate(0deg);
+        transform: rotate(0deg) scale(1);
     }
-
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
     100% {
-        transform: rotate(360deg);
+        transform: rotate(360deg) scale(1);
     }
 }
