@@ -67,6 +67,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Include(t => t.Tapahtumat).ThenInclude(t => t.Status)
                 .Include(t => t.Tapahtumat).ThenInclude(t => t.Käyttäjä)
                 .AsQueryable();
+            var tuotteetCount = await tuotteet.CountAsync();
 
             if (!string.IsNullOrEmpty(kuvausHakusanalla))
                 tuotteet = tuotteet.Where(t => t.Kuvaus.Contains(kuvausHakusanalla));
@@ -83,6 +84,9 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Skip(currentPage * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            ViewData["Kaikki"] = tuotteetCount; 
+            ViewData["Suodatetut"] = totalFiltered;
 
             Response.Headers["X-TotalPages"] = Math.Ceiling((double)totalFiltered / pageSize).ToString();
 

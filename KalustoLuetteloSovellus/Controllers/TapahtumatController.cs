@@ -100,6 +100,10 @@ namespace KalustoLuetteloSovellus.Controllers
             // Get total filtered count
             var totalTapahtumat = await _context.Tapahtumat.CountAsync();
             var totalFiltered = await tapahtumat.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalFiltered / pageSize);
+
+            // lähetä suodatettujen sivujen määrä
+            Response.Headers["X-TotalPages"] = totalPages.ToString();
 
             // Apply pagination
             var tapahtumatPaged = await tapahtumat

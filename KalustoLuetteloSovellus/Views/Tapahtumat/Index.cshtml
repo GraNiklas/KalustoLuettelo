@@ -13,10 +13,7 @@
 
 <h5 class="pb-4">Uuden tapahtuman luonti tuotteen kautta</h5>
 
-<div class="d-flex gap-2">
-    <p>Kaikki tapahtumat: <strong>@ViewData["Kaikki"]</strong></p>
-    <p>Näytetyt tapahtumat: <strong>@ViewData["Suodatetut"]</strong></p>
-</div>
+
 
 <div class="d-flex gap-2">
     <form method="get" class="d-flex gap-2 mb-2" id="filterForm">
@@ -84,7 +81,7 @@
 
         let currentPage = parseInt(@ViewData["CurrentPage"]);
         const pageSize = @ViewData["PageSize"];
-        const totalPages = @ViewData["TotalPages"];
+        let totalPages = @ViewData["TotalPages"];
         let currentSortOrder = null;
 
         // Pagination
@@ -130,10 +127,16 @@
             if (currentSortOrder) params.append("sortOrder", currentSortOrder);
 
             fetch(`/Tapahtumat/GetTapahtumatPartial?${params.toString()}`)
-                .then(res => res.text())
+                .then(res => {
+                    const headerPages = parseInt(res.headers.get("X-TotalPages"));
+                    totalPages = isNaN(headerPages) ? 1 : headerPages;
+                    return res.text();
+                })
                 .then(html => {
                     container.innerHTML = html;
-                    attachSortHandlers(); // Reattach after partial update
+                    currentPage = page;
+                    renderPagination();
+                    attachSortHandlers();
                 });
         }
 
@@ -173,8 +176,49 @@
         });
 
         // Initial load of the first page
-        loadPage(currentPage);
+        loadTapahtumat({ page: currentPage });
+
+
+        function renderPagination() {
+            const paginationContainer = document.querySelector(".pagination");
+            let html = `
+                <li class="page-item">
+                    <button class="page-link" id="prevPage">Edellinen</button>
+                </li>`;
+
+            for (let i = 0; i < totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? "active" : ""}">
+                        <button class="page-link page-number" data-page="${i}">${i + 1}</button>
+                    </li>`;
+            }
+
+            html += `
+                <li class="page-item">
+                    <button class="page-link" id="nextPage">Seuraava</button>
+                </li>`;
+
+            paginationContainer.innerHTML = html;
+
+            // Reattach pagination handlers
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 0) loadTapahtumat({ page: currentPage - 1 });
+            });
+            document.getElementById('nextPage').addEventListener('click', () => {
+                if (currentPage < totalPages - 1) loadTapahtumat({ page: currentPage + 1 });
+            });
+            document.querySelectorAll('.page-number').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    loadTapahtumat({ page });
+                });
+            });
+        }
+
     });
+
+
+
 </script>
 
 @* <script> *@
