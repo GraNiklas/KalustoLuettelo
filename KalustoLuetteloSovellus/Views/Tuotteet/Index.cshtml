@@ -103,10 +103,10 @@
 
         // Load tuotteet with optional filters and pagination
         function loadTuotteet({ page = currentPage, sortOrder = null } = {}) {
-            const filters = getFilterParams();
-            let params = new URLSearchParams({
+            const params = new URLSearchParams({
                 pageSize,
                 currentPage: page,
+                sortOrder: "asc", // Pysyvä järjestys(asc)
                 ...filters
             });
 

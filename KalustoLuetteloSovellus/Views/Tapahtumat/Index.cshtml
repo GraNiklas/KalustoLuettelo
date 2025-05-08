@@ -114,17 +114,15 @@
             };
         }
 
-        function loadTapahtumat({ sortOrder = null, page = currentPage } = {}) {
+        function loadTapahtumat({ page = currentPage } = {}) {
             const filters = getFilterParams();
-            if (sortOrder !== null) currentSortOrder = sortOrder;
 
             const params = new URLSearchParams({
                 pageSize,
                 currentPage: page,
+                sortOrder: "asc", // Järjestys on vanhimmasta uusimpaan
                 ...filters
             });
-
-            if (currentSortOrder) params.append("sortOrder", currentSortOrder);
 
             fetch(`/Tapahtumat/GetTapahtumatPartial?${params.toString()}`)
                 .then(res => {
@@ -136,7 +134,7 @@
                     container.innerHTML = html;
                     currentPage = page;
                     renderPagination();
-                    attachSortHandlers();
+                   
                 });
         }
 
