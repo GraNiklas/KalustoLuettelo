@@ -6,9 +6,11 @@
     // var kuvaKokoH = 350;
 
     string imageSrc;
+
     if (Model.Kuva != null && Model.Kuva.Length > 0)
     {
-        imageSrc = $"data:image/jpeg;base64,{Convert.ToBase64String(Model.Kuva)}";
+        imageSrc = Url.Action("GetCompressedImage", "Tuotteet", new { id = Model.TuoteId })
+                   ?? Url.Content("~/Images/OletusKuva.png");
     }
     else
     {
