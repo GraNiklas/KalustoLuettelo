@@ -14,7 +14,7 @@
 }
 /*VÄRIT*/
 .darkMode {
-    --bg-color: #1E1E1E;
+    --bg-color: #1D1D1D;
     --bg-sec-color: #1B1B1B;
     --main-color: #d7af4d;
     --main-color-hover: #EFC356;
@@ -78,23 +78,29 @@ body { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
 hr{
     background-color:var(--main-color-hover)!important;
 }
-
 thead {
     background-color: var(--footer-color) !important;
-    color: var(--text-color);
+    color: var(--bg-color);
 }
+.darkMode thead {
+    background-color: var(--footer-color) !important;
+    color: white;
+}
+/*
 thead:hover {
     background-color: var(--footer-color) !important;
+    color: var(--bg-color) !important;
 }
 tr:hover {
     background-color: var(--bg-color) !important;
-    color: white !important;
+    color: var(--bg-color) !important;
 }
 
 .table-hover thead tr:hover {
     background-color: var(--footer-color) !important;
+    color:var(--bg-color)!important;
 }
-
+*/
 
 .dropdown-menu {
     background-color: var(--bg-color);

@@ -11,10 +11,10 @@ public partial class Tapahtuma
     public int TuoteId { get; set; }
 
     [Display(Name = "Luonti pvm")]
-    public DateOnly AloitusPvm { get; set; }
+    public DateTime AloitusPvm { get; set; }
 
     [Display(Name = "Palautus pvm")]
-    public DateOnly? LopetusPvm { get; set; }
+    public DateTime? LopetusPvm { get; set; }
 
     public string? Kommentti { get; set; }
 

@@ -196,8 +196,8 @@ namespace KalustoLuetteloSovellus.Controllers
             palautusTapahtuma.KäyttäjäId = tapahtuma.KäyttäjäId; 
             palautusTapahtuma.Kommentti = tapahtuma.Kommentti + "\n" + "PALAUTUS";
 
-            palautusTapahtuma.AloitusPvm = DateOnly.FromDateTime(DateTime.Today);
-            palautusTapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today); // en tiedä tarviiko muuttaa lopetus päivää palautuspäiväksi mutta ehkäpä.
+            palautusTapahtuma.AloitusPvm = DateTime.Now;
+            palautusTapahtuma.LopetusPvm = DateTime.Now; // en tiedä tarviiko muuttaa lopetus päivää palautuspäiväksi mutta ehkäpä.
             palautusTapahtuma.StatusId = 60001; // status vapaa
 
 
@@ -235,8 +235,8 @@ namespace KalustoLuetteloSovellus.Controllers
             tapahtuma.Käyttäjä = käyttäjä;
             tapahtuma.TuoteId = tuoteId;
             tapahtuma.Tuote = tuote;
-            tapahtuma.AloitusPvm = DateOnly.FromDateTime(DateTime.Today);
-            tapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today.AddDays(7)); // lisätään vaikka viikko lopetuspäivään defaultiks
+            tapahtuma.AloitusPvm = DateTime.Now;
+            tapahtuma.LopetusPvm = DateTime.Now.AddDays(7); // lisätään vaikka viikko lopetuspäivään defaultiks
 
             
 
@@ -252,6 +252,10 @@ namespace KalustoLuetteloSovellus.Controllers
         {
             if (ModelState.IsValid)
             {
+                tapahtuma.AloitusPvm = tapahtuma.AloitusPvm.AddHours(DateTime.Now.Hour);
+                tapahtuma.AloitusPvm = tapahtuma.AloitusPvm.AddMinutes(DateTime.Now.Minute);
+                tapahtuma.AloitusPvm = tapahtuma.AloitusPvm.AddSeconds(DateTime.Now.Second);
+
                 _context.Add(tapahtuma);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
