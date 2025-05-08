@@ -70,9 +70,6 @@ body { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
 }
 
 
-thead:hover {
-
-}
 
 .border-top {
     border-color:var(--main-color-hover)!important;
@@ -84,14 +81,19 @@ hr{
 
 thead {
     background-color: var(--footer-color) !important;
-    color: white;
+    color: var(--text-color);
+}
+thead:hover {
+    background-color: var(--footer-color) !important;
 }
 tr:hover {
     background-color: var(--bg-color) !important;
     color: white !important;
 }
 
-
+.table-hover thead tr:hover {
+    background-color: var(--footer-color) !important;
+}
 
 
 .dropdown-menu {
@@ -428,6 +430,7 @@ select{
 
 .table .th{
     white-space:nowrap!important;
+    background-color:var(--footer-color);
 }
 
 .skeleton-item {
