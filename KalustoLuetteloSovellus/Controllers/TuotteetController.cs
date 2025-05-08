@@ -50,9 +50,10 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
             ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
             ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
+            
             ViewData["PageSize"] = pageSize;
             ViewData["CurrentPage"] = currentPage;
-            ViewData["TotalPages"] = totalPages / pageSize;
+            ViewData["TotalPages"] = totalPages;
 
             return View(tuotteet);
         }
@@ -83,7 +84,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-           
+            Response.Headers["X-TotalPages"] = Math.Ceiling((double)totalFiltered / pageSize).ToString();
 
             return PartialView("_TuotteetPartial", tuotteetPaged);
         }

@@ -90,37 +90,8 @@
         let currentPage = parseInt('@ViewData["CurrentPage"]');
         const pageSize = parseInt('@ViewData["PageSize"]');
         let totalPages = parseInt('@ViewData["TotalPages"]');
-        const form = document.querySelector('form'); // Define form element
-
-        // Function to load a specific page
-        function loadPage(page) {
-            fetch(`/Tuotteet/GetTuotteetPartial?pageSize=${pageSize}&currentPage=${page}`)
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('tuotteet-container').innerHTML = html;
-                    currentPage = page;
-                    updatePagination();
-                });
-        }
-
-        // Update the pagination buttons based on the current page
-        function updatePagination() {
-            document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
-            const pageButtons = document.querySelectorAll('.page-number');
-            if (pageButtons[currentPage]) {
-                pageButtons[currentPage].closest('li').classList.add('active');
-            }
-        }
-
-        // Add event listeners for page number buttons
-        function attachPaginationHandlers() {
-            document.querySelectorAll('.page-number').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const page = parseInt(btn.getAttribute('data-page'));
-                    loadPage(page);
-                });
-            });
-        }
+        const form = document.querySelector('form');
+        renderPagination();
 
         // Get filter parameters from the form
         function getFilterParams() {
@@ -133,8 +104,8 @@
             };
         }
 
-        // Function to load filtered and sorted items
-        function loadTuotteet({ sortOrder = null, page = currentPage } = {}) {
+        // Load tuotteet with optional filters and pagination
+        function loadTuotteet({ page = currentPage, sortOrder = null } = {}) {
             const filters = getFilterParams();
             let params = new URLSearchParams({
                 pageSize,
@@ -147,30 +118,93 @@
             }
 
             fetch(`/Tuotteet/GetTuotteetPartial?${params.toString()}`)
-                .then(res => res.text())
+                .then(res => {
+                    totalPages = parseInt(res.headers.get("X-TotalPages"));
+                    return res.text();
+                })
                 .then(html => {
                     document.getElementById('tuotteet-container').innerHTML = html;
-                    attachPaginationHandlers(); // Reattach pagination handlers after loading new content
+                    currentPage = page;
+                    renderPagination();
                 });
         }
 
-        // Previous page button functionality
+        // Update the pagination buttons' active state
+        function updatePagination() {
+            document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
+            const pageButtons = document.querySelectorAll('.page-number');
+            if (pageButtons[currentPage]) {
+                pageButtons[currentPage].closest('li').classList.add('active');
+            }
+        }
+
+        // Add click handlers to page number buttons
+        function attachPaginationHandlers() {
+            document.querySelectorAll('.page-number').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    loadTuotteet({ page });
+                });
+            });
+        }
+
+        // Previous page
         document.getElementById('prevPage').addEventListener('click', () => {
-            if (currentPage > 0) loadPage(currentPage - 1);
+            if (currentPage > 0) loadTuotteet({ page: currentPage - 1 });
         });
 
-        // Next page button functionality
+        // Next page
         document.getElementById('nextPage').addEventListener('click', () => {
-            if (currentPage < totalPages - 1) loadPage(currentPage + 1);
+            if (currentPage < totalPages - 1) loadTuotteet({ page: currentPage + 1 });
         });
 
         // Filter form submission
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            loadTuotteet(); // Load items with current filters
+            loadTuotteet({ page: 0 }); // Always reset to page 0 on filter
         });
 
-        // Load the first page on initial load
-        loadPage(currentPage);
+        // Initial load
+        loadTuotteet({ page: currentPage });
+    
+        function renderPagination() {
+        const paginationContainer = document.querySelector(".pagination");
+        let html = `
+            <li class="page-item">
+                <button class="page-link" id="prevPage">Edellinen</button>
+            </li>
+        `;
+
+        for (let i = 0; i < totalPages; i++) {
+            html += `
+                <li class="page-item ${i === currentPage ? "active" : ""}">
+                    <button class="page-link page-number" data-page="${i}">${i + 1}</button>
+                </li>
+            `;
+        }
+
+        html += `
+            <li class="page-item">
+                <button class="page-link" id="nextPage">Seuraava</button>
+            </li>
+        `;
+
+        paginationContainer.innerHTML = html;
+
+        // Reattach handlers
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 0) loadTuotteet({ page: currentPage - 1 });
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages - 1) loadTuotteet({ page: currentPage + 1 });
+        });
+
+        attachPaginationHandlers();
+    }
     });
+
+
+
+
 </script>
