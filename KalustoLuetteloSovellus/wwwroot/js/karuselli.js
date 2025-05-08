@@ -11,7 +11,7 @@ window.onload = function () {
     const items = document.querySelectorAll('.carousel-item');
 
     const totalItems = items.length;
-
+    
     function updateCarousel(itemWidth) {
         // console.log(currentIndex)
         const offset = currentIndex * itemWidth; 
@@ -30,7 +30,7 @@ window.onload = function () {
             btnLeft.classList.remove("hidden"); // Näytä
         }
 
-        if (currentIndex == totalItems - 1) {
+        if (currentIndex == totalItems - 3) {
             btnRight.classList.add("disabled");
             btnRight.classList.add("hidden"); // Piilota
         }
@@ -45,7 +45,7 @@ window.onload = function () {
 
     btnRight.addEventListener('click', () => {
         const itemWidth = getItemWidth();
-        if (currentIndex < totalItems) {
+        if (currentIndex < totalItems - 3) {  // Fix: Stop at totalItems - 3 näyttää paremmalle, toivottavasti ei ole sivuvaikutuksia
             currentIndex++;
         
             updateCarousel(itemWidth);
