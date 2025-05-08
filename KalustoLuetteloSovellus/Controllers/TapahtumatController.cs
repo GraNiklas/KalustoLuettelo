@@ -180,11 +180,28 @@ namespace KalustoLuetteloSovellus.Controllers
                 .FirstOrDefault(t => RoleHelper.IsUser(t.KäyttäjäId, HttpContext) || RoleHelper.IsAdmin(HttpContext)); // katotaan onko käyttäjän tekemä tai oletko admin
 
             if (tapahtuma == null) return View("Error"); // error jos ei löydy tapahtumaa
-            
-            tapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today); // en tiedä tarviiko muuttaa lopetus päivää palautuspäiväksi mutta ehkäpä.
-            tapahtuma.StatusId = 60001;
 
-            return View("Create",tapahtuma);
+            // tapahtuma pitää kloonata
+
+            var palautusTapahtuma = new Tapahtuma(); // luodaan uusi tapahtuma
+
+            palautusTapahtuma.Käyttäjä = käyttäjä; // kopioidaan käyttäjä edellisestä tapahtumasta
+            palautusTapahtuma.Tuote = tuote; // kopioidaan tuote edellisestä tapahtumasta
+            palautusTapahtuma.Status = tapahtuma.Status; // kopioidaan status edellisestä tapahtumasta
+
+
+
+            // kopioidaan tiedot edellisestä
+            palautusTapahtuma.TuoteId = tapahtuma.TuoteId;
+            palautusTapahtuma.KäyttäjäId = tapahtuma.KäyttäjäId; 
+            palautusTapahtuma.Kommentti = tapahtuma.Kommentti + "\n" + "PALAUTUS";
+
+            palautusTapahtuma.AloitusPvm = DateOnly.FromDateTime(DateTime.Today);
+            palautusTapahtuma.LopetusPvm = DateOnly.FromDateTime(DateTime.Today); // en tiedä tarviiko muuttaa lopetus päivää palautuspäiväksi mutta ehkäpä.
+            palautusTapahtuma.StatusId = 60001; // status vapaa
+
+
+            return View("Create",palautusTapahtuma);
         }
 
         // GET: Tapahtumat/Create

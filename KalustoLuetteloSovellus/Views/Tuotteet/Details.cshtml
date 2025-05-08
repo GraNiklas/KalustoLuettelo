@@ -5,15 +5,21 @@
 }
 
 <h1>Tiedot</h1>
-
-<div>
     <h4>Tuote</h4>
-    <hr />
-    <dl class="row ">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kuva)
-        </dt>
-        <dd class = "col-sm-10">
+
+<div class="p-4" style="border:2px solid var(--main-color-hover)">
+    <div class="d-flex flex-row justify-content-between p-4 align-items-center" style="border:1px solid var(--main-color-hover)">
+        <h4 class="m-0">@Html.DisplayFor(model => model.IdNumero)</h4>
+        <h4 class="m-0">@Html.DisplayFor(model => model.Kuvaus)</h4>
+
+        <div class="d-flex flex-row gap-3">
+            <h4 class="m-0"> @Model.Status?.StatusNimi</h4>
+            <h4 class="m-0 align-content-center"> @await Html.PartialAsync("_StatusPartial", Model.Status)</h4>
+        </div>
+    </div>
+    
+    <div class="d-flex flex-row gap-5 p-4">
+        <div class="d-flex">
             @{
                 var kuva = "~/Images/OletusKuva.png";
                 if (Model.Kuva != null && Model.Kuva.Length > 0)
@@ -27,67 +33,97 @@
             }
             <img class="" style="width:256px;height:256px;object-fit:cover;border-radius:16px" src="@kuva" alt="Tuote kuva" />
 
-        </dd>
-        <dt class="col-sm-2" style="font-size:2rem">
-            @Html.DisplayNameFor(model => model.IdNumero)
-        </dt>
-        <dd class = "col-sm-10"style="font-size:2rem">
-            @Html.DisplayFor(model => model.IdNumero)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kuvaus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kuvaus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OstoPvm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OstoPvm)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hinta)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hinta)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Takuu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Takuu)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Aktiivinen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Aktiivinen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kategoria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kategoria.KategoriaNimi)
-        </dd>
-         <dt class = "col-sm-2"> 
-             @Html.DisplayNameFor(model => model.Status) 
-         </dt> 
-         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status.StatusNimi)
-         </dd> 
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Toimipiste)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Toimipiste.KaupunkiJaToimipisteNimi)
-        </dd>
+        </div>
+        <dl class="list-group w-100">
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OstoPvm)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OstoPvm)
+                </dd>
+            </div>
 
-    </dl>
-</div>
-<div>
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Hinta)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Hinta)
+                </dd>
+            </div>
+
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Takuu)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Takuu)
+                </dd>
+            </div>
+
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Aktiivinen)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Aktiivinen)
+                </dd>
+            </div>
+
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Kategoria)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Kategoria.KategoriaNimi)
+                </dd>
+            </div>
+
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Status.StatusNimi)
+                </dd>
+            </div>
+
+            <div class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Toimipiste)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Toimipiste.KaupunkiJaToimipisteNimi)
+                </dd>
+            </div>
+        </dl>
+
+       
+    </div>
+    <strong>Lisätietoja</strong>
+    <div class="p-4" style="border:1px solid var(--main-color-hover)">
+        
+        <h5>Viimeisimmän tapahtuman tiedot</h5>
+        <h6>Käyttäjä:</h6>
+        <p>
+            @Model.ViimeisinTapahtuma?.Käyttäjä?.Käyttäjätunnus
+        </p>
+
+        <h6>Kommentti:</h6>
+        <p>
+            @Model.ViimeisinTapahtuma?.Kommentti
+        </p>
+
+        <h6>Aloitus pvm ja arvioitu palautus pvm:</h6>
+        <p>
+            @Model.ViimeisinTapahtuma?.AloitusPvm / @Model.ViimeisinTapahtuma?.LopetusPvm
+        </p>
+    </div>
+<div class="mt-4">
     <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.TuoteId"><i class="fas fa-edit"></i>Muokkaa</a>
     <button class="btn btn-secondary ms-2" onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
+</div>
 </div>
 
 <hr />

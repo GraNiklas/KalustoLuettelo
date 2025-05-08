@@ -61,6 +61,11 @@
     background-color: var(--darkmode-bg-color) !important;
     color: var(--darkmode-text-sec-color) !important;
 }
+.darkMode .card {
+    background-color: var(--darkmode-bg-sec-color) !important;
+    color: var(--darkmode-text-color) !important;
+    border-color: var(--darkmode-text-sec-color) !important;
+}
 
 .darkMode thead {
 
@@ -158,6 +163,36 @@ footer {
     color: var(--text-color);
 }
 /*BUTTONIT*/
+
+/*
+    nappi animaatio
+*/
+@keyframes scaleUpDown {
+    0% {
+        transform: scale(1); /* Initial size */
+    }
+
+    50% {
+        transform: scale(1.1); /* Scale up */
+        filter:drop-shadow(0 0 10px rgb(0,0,0,0.2));
+    }
+
+    100% {
+        transform: scale(1); /* Scale down to original size */
+    }
+}
+.btn{
+    transition:transform 0.5s ease-in-out;
+}
+.btn:hover{
+    animation:scaleUpDown 0.2s ease-in-out;
+}
+
+/*
+    nappi animaatio
+*/
+
+
 .btn-main {
     background-color: var(--main-color);
     border-radius: 2px;
