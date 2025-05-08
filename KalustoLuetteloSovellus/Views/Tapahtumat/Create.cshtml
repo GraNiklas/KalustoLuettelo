@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="LopetusPvm" class="control-label"></label>
-                        <input asp-for="LopetusPvm" class="form-control" type="date" />
+                        <input asp-for="LopetusPvm" class="form-control" type="date" min="@date"/>
                         <span asp-validation-for="LopetusPvm" class="text-danger"></span>
                     </div>
                     <div class="form-group">
