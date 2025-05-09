@@ -16,39 +16,42 @@
     height: 16px;
     width: 16px;
     border-radius: 256px;
-    border: 2px solid gray;
-    animation: throb 1.2s infinite ease-in-out;
+    border: 2px solid #808080; /* gray */
+    animation: throb 1.2s infinite ease-in-out; 
 }
 
 .status-varattu {
-    background-color: red;
-    border-color:darkred;
-    filter: drop-shadow(0px 0px 4px red);
+    background-color: #ff0000 !important; /* red */
+    border-color: #8b0000 !important; /* darkred */
+    filter: drop-shadow(0px 0px 4px #ff0000) !important;
 }
+
 .status-vapaa {
-    background-color: chartreuse;
-    border-color:green;
-    filter: drop-shadow(0px 0px 4px chartreuse);
+    background-color: #7fff00 !important; /* chartreuse */
+    border-color: #008000 !important; /* green */
+    filter: drop-shadow(0px 0px 4px #7fff00) !important;
 }
 
 .status-huollossa {
-    background-color: yellow;
-    border-color:gold;
-    filter: drop-shadow(0px 0px 4px yellow);
+    background-color: #ffff00 !important; /* yellow */
+    border-color: #ffd700 !important; /* gold */
+    filter: drop-shadow(0px 0px 4px #ffff00) !important;
 }
+
 .status-kadonnut {
-    background-color: cornflowerblue;
-    border-color: blue;
-    filter: drop-shadow(0px 0px 4px cornflowerblue);
+    background-color: #6495ed !important; /* cornflowerblue */
+    border-color: #0000ff !important; /* blue */
+    filter: drop-shadow(0px 0px 4px #6495ed) !important;
 }
+
 .status-poistettu {
-    background-color: gray;
-    border-color: black;
-    filter: drop-shadow(0px 0px 4px gray);
+    background-color: #808080 !important; /* gray */
+    border-color: #000000 !important; /* black */
+    filter: drop-shadow(0px 0px 4px #808080) !important;
 }
 
 .status-other {
-    background-color: mediumpurple;
-    border-color: purple;
-    filter: drop-shadow(0px 0px 4px mediumpurple);
+    background-color: #9370db !important; /* mediumpurple */
+    border-color: #800080 !important; /* purple */
+    filter: drop-shadow(0px 0px 4px #9370db) !important;
 }
