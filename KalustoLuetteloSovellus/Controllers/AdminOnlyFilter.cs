@@ -13,7 +13,7 @@ public class AdminOnlyFilter : IActionFilter
     {
         var rooliId = context.HttpContext.Session.GetInt32("RooliId");
 
-        if (rooliId != 40000)
+        if (rooliId != 40000) // ONGELMA VERTAA ROOLI NIMI EIKÄ ID
         {
             context.Result = new RedirectToActionResult("AccessDenied", "Home", null);
         }

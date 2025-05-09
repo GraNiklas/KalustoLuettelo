@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // Tämä hakee connection stringin appsettings.jsonista
@@ -17,6 +19,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Lisä
 builder.Services.AddControllersWithViews(); //
 
 builder.Services.AddDistributedMemoryCache();
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -41,6 +44,13 @@ builder.Services.Configure<SmtpSettings>(
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<KaluDbContext>();
+    DbInitializer.SeedDefaults(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -31,15 +31,15 @@ navbar-toggler-icon{
     background-color:red!important;
 }
 
-body { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+body { 
     color: var(--text-color);
     background-color: var(--bg-color);
 }
-.nav-link { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+.nav-link {
     color: var(--text-color)!important;
     background-color: transparent !important;
 }
-.navbar-brand { /* testasin vaan nopean darkmoden ei näytä hyvältä vielä*/
+.navbar-brand {
     color: var(--text-color) !important;
     background-color: transparent !important;
 }

@@ -77,7 +77,7 @@ public class HomeController : Controller
                 // Only set session variables if the claims are valid
                 HttpContext.Session.SetString("K‰ytt‰j‰tunnus", userNameClaim);
                 HttpContext.Session.SetInt32("K‰ytt‰j‰Id", int.Parse(userIdClaim));
-                HttpContext.Session.SetInt32("RooliId", int.Parse(userRoleClaim));
+                HttpContext.Session.SetInt32("RooliId", int.Parse(userRoleClaim)); // ONGELMA TARKISTA ROOLI NIMI EIKƒ ID, ID VOI VAIHTUA, NIMI EI
             }
             else
             {
@@ -177,7 +177,7 @@ public class HomeController : Controller
             k‰ytt‰j‰.K‰ytt‰j‰tunnus != "@student.careeria.fi" &&
             k‰ytt‰j‰.Salasana != "")
         {
-            k‰ytt‰j‰.RooliId = 40001;
+            k‰ytt‰j‰.RooliId = 40001; // ONGELMA!! HAE ROOLI ID NIMEN PERUSTEELLA USER
             var olemassaolevaK‰ytt‰j‰ = await _context.K‰ytt‰j‰t.FirstOrDefaultAsync(k => k.K‰ytt‰j‰tunnus == k‰ytt‰j‰.K‰ytt‰j‰tunnus);
             if (olemassaolevaK‰ytt‰j‰ != null)
             {
@@ -262,14 +262,14 @@ public class HomeController : Controller
         ViewBag.LoginError = 0;
         HttpContext.Session.SetString("K‰ytt‰j‰tunnus", loggedUser.K‰ytt‰j‰tunnus);
         HttpContext.Session.SetInt32("K‰ytt‰j‰Id", loggedUser.K‰ytt‰j‰Id);
-        HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId);
+        HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId); // ONGELMA loggaa roolinimi eik‰ id kun id voi vaihtua mutta nimi ei
 
 
         var claims = new List<Claim>
                 {
                     new Claim("UserName", loggedUser.K‰ytt‰j‰tunnus),
                     new Claim("UserId", loggedUser.K‰ytt‰j‰Id.ToString()),
-                    new Claim("Role", loggedUser.RooliId.ToString())
+                    new Claim("Role", loggedUser.RooliId.ToString()) // ONGELMA TALLENNA ROOLI NIMI EIKƒ ID
                     // add roles/permissions here if needed
                 };
 
