@@ -164,10 +164,27 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 if (tuote.KuvaFile != null)
                 {
-                    using (var memoryStream = new MemoryStream())
+                    using (var inputStream = tuote.KuvaFile.OpenReadStream())
+                    using (var image = await SixLabors.ImageSharp.Image.LoadAsync(inputStream))
                     {
-                        await tuote.KuvaFile.CopyToAsync(memoryStream);
-                        tuote.Kuva = memoryStream.ToArray();
+                        // Resize image
+                        image.Mutate(x => x.Resize(new ResizeOptions
+                        {
+                            Size = new SixLabors.ImageSharp.Size(256, 256),
+                            Mode = ResizeMode.Max
+                        }));
+
+                        // compressoi ja tallentaa memory streamiin
+                        using (var outputStream = new MemoryStream())
+                        {
+                            var encoder = new SixLabors.ImageSharp.Formats.Jpeg.JpegEncoder
+                            {
+                                Quality = 50 // Pienentää laatua
+                            };
+
+                            await image.SaveAsJpegAsync(outputStream, encoder);
+                            tuote.Kuva = outputStream.ToArray();
+                        }
                     }
                 }
                 _context.Add(tuote);
