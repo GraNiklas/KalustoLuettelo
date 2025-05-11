@@ -22,7 +22,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                if (item.Status.StatusId != 60002) // ONGELMA VERTAA STATUSNIMEEN EIKÄ ID:HEN
+                if (item.Status.StatusNimi != "Huollossa") 
                 {
                     continue;
                 }

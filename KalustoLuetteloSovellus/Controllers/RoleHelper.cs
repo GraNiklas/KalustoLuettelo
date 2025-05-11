@@ -4,7 +4,7 @@
     {
         public static bool IsAdmin(HttpContext context)
         {
-            return context.Session.GetInt32("RooliId") == 40000;
+            return context.Session.GetString("Rooli") == "Admin";
         }
         public static bool IsUser(int käyttäjäId,HttpContext context)
         {

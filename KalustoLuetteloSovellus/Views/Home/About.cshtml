@@ -4,7 +4,7 @@
     ViewData["Title"] = "About";
 
     var käyttäjä = Context.Session.GetString("Käyttäjätunnus"); 
-    var isAdmin = Context.Session.GetInt32("RooliId") == 40000;
+    var isAdmin = RoleHelper.IsAdmin(Context);
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
 <div class="d-flex flex-column justify-content-center align-items-center text-center">

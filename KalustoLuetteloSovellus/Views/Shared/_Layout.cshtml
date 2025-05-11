@@ -4,7 +4,7 @@
 @{
 
     var käyttäjä = Context.Session.GetString("Käyttäjätunnus"); 
-    var isAdmin = Context.Session.GetInt32("RooliId") == 40000;
+    var isAdmin = RoleHelper.IsAdmin(Context);
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
 <head>

@@ -77,7 +77,7 @@ public class HomeController : Controller
                 // Only set session variables if the claims are valid
                 HttpContext.Session.SetString("Käyttäjätunnus", userNameClaim);
                 HttpContext.Session.SetInt32("KäyttäjäId", int.Parse(userIdClaim));
-                HttpContext.Session.SetInt32("RooliId", int.Parse(userRoleClaim)); // ONGELMA TARKISTA ROOLI NIMI EIKÄ ID, ID VOI VAIHTUA, NIMI EI
+                HttpContext.Session.SetString("Rooli", userRoleClaim); 
             }
             else
             {
@@ -177,7 +177,17 @@ public class HomeController : Controller
             käyttäjä.Käyttäjätunnus != "@student.careeria.fi" &&
             käyttäjä.Salasana != "")
         {
-            käyttäjä.RooliId = 40001; // ONGELMA!! HAE ROOLI ID NIMEN PERUSTEELLA USER
+            var adminRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliNimi == "Admin");
+
+            if (adminRooli == null)
+            {
+                Console.WriteLine("Admin rooli ei löydy tietokannasta, mahdollinen ongelma DbInitializer luokassa");
+                return View("Error");
+            }
+            
+
+            käyttäjä.RooliId = adminRooli.RooliId;
+
             var olemassaolevaKäyttäjä = await _context.Käyttäjät.FirstOrDefaultAsync(k => k.Käyttäjätunnus == käyttäjä.Käyttäjätunnus);
             if (olemassaolevaKäyttäjä != null)
             {
@@ -262,14 +272,20 @@ public class HomeController : Controller
         ViewBag.LoginError = 0;
         HttpContext.Session.SetString("Käyttäjätunnus", loggedUser.Käyttäjätunnus);
         HttpContext.Session.SetInt32("KäyttäjäId", loggedUser.KäyttäjäId);
-        HttpContext.Session.SetInt32("RooliId", loggedUser.RooliId); // ONGELMA loggaa roolinimi eikä id kun id voi vaihtua mutta nimi ei
-
+        var käyttäjäRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliId == loggedUser.RooliId);
+        if (käyttäjäRooli == null)
+        {
+            ViewBag.ErrorMessage = "Roolia ei löydy";
+            return View("Login");
+        }
+        HttpContext.Session.SetString("Rooli", käyttäjäRooli.RooliNimi); // toivottavasti rooli ei ole null tässä.
+        
 
         var claims = new List<Claim>
                 {
                     new Claim("UserName", loggedUser.Käyttäjätunnus),
                     new Claim("UserId", loggedUser.KäyttäjäId.ToString()),
-                    new Claim("Role", loggedUser.RooliId.ToString()) // ONGELMA TALLENNA ROOLI NIMI EIKÄ ID
+                    new Claim("Role", käyttäjäRooli.RooliNimi)
                     // add roles/permissions here if needed
                 };
 
