@@ -20,16 +20,57 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">Status @SortIcon("Status")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">TapahtumaId @SortIcon("TapahtumaId")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">TuoteId @SortIcon("TuoteId")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">Tuote @SortIcon("Tuote")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">Tunnistenro. @SortIcon("IdNumero")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">Luonti pvm @SortIcon("AloitusPvm")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">Palautus pvm @SortIcon("LopetusPvm")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">Kommentti @SortIcon("Kommentti")</a></th>
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">Käyttäjä @SortIcon("Käyttäjä")</a></th> 
-            <th style="vertical-align: top;"><a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">Toimipiste @SortIcon("Toimipiste")</a></th>
+            <th style="vertical-align: top;" title="Sort by Status">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">
+                    Status @SortIcon("Status")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Tapahtuma ID">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">
+                    TapahtumaId @SortIcon("TapahtumaId")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Tuote ID">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">
+                    TuoteId @SortIcon("TuoteId")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Tuote">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">
+                    Tuote @SortIcon("Tuote")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Tunnistenumero">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">
+                    Tunnistenro. @SortIcon("IdNumero")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Luonti Pvm">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">
+                    Luonti pvm @SortIcon("AloitusPvm")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Palautus Pvm">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">
+                    Palautus pvm @SortIcon("LopetusPvm")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Kommentti">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">
+                    Kommentti @SortIcon("Kommentti")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Käyttäjä">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">
+                    Käyttäjä @SortIcon("Käyttäjä")
+                </a>
+            </th>
+            <th style="vertical-align: top;" title="Sort by Toimipiste">
+                <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">
+                    Toimipiste @SortIcon("Toimipiste")
+                </a>
+            </th>
+
             @* TÄMÄ ON VANHA NÄKYMÄ MISSÄ OTSIKOILLA EI OLE LAJITTELUA. JÄTÄN TÄHÄN JOS TARVITSEE PALATA VANHAAN KOSKA, UUDESSA SYSTEEMISSÄ ON ONGELMA ETTÄ SE LATAA SIVUN UUDELLEEN KUN PAINAA OTSIKOITA, TOIMII MUTTA HUONO KÄYTTÄJÄKOKEMUS. T :NIKLAS
             <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
             <th>@Html.DisplayNameFor(model => model.Tuote.IdNumero)</th>
@@ -47,35 +88,43 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
-                <td>@Html.DisplayFor(modelItem => item.TapahtumaId)</td>
-                <td>@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
-                <td>@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
-                <td>@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td>
-                <td>@Html.DisplayFor(modelItem => item.AloitusPvm)</td>
-                <td>@Html.DisplayFor(modelItem => item.LopetusPvm)</td>
-                <td>@Html.DisplayFor(modelItem => item.Kommentti)</td>
-                <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td> 
+                <td title="@item.Status.StatusNimi">@Html.DisplayFor(modelItem => item.Status.StatusNimi)</td>
+                <td title="@item.TapahtumaId">@Html.DisplayFor(modelItem => item.TapahtumaId)</td>
+                <td title="@item.Tuote.TuoteId">@Html.DisplayFor(modelItem => item.Tuote.TuoteId)</td>
+                <td title="@item.Tuote.Kuvaus">@Html.DisplayFor(modelItem => item.Tuote.Kuvaus)</td>
+                <td title="@item.Tuote.IdNumero">@Html.DisplayFor(modelItem => item.Tuote.IdNumero)</td>
+                <td title="@item.AloitusPvm">@Html.DisplayFor(modelItem => item.AloitusPvm)</td>
+                <td title="@item.LopetusPvm">@Html.DisplayFor(modelItem => item.LopetusPvm)</td>
+                <td title="@item.Kommentti">@Html.DisplayFor(modelItem => item.Kommentti)</td>
+                <td title="@item.Käyttäjä.Käyttäjätunnus">@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
                 @* <td class="ms-auto">@if (item.Status != null)@await Html.PartialAsync("_StatusPartial", item.Status)</td> *@
-                <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
-                <td class="d-flex gap-2">
-                    @if (RoleHelper.IsUser(item.KäyttäjäId,Context) || RoleHelper.IsAdmin(Context))
-                    {
-                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
-                    }
-                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
-                    @if (RoleHelper.IsAdmin(Context))
-                    {
-                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
-                    }else
-                    {
-                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
-                    }                    
+                <td title="@item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi">@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
+                <td class="dropdown" style="overflow: visible;">
+                    <button class="btn btn-main dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bars me-2"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item @(!RoleHelper.IsUser(item.KäyttäjäId, Context) && !RoleHelper.IsAdmin(Context) ? "disabled" : "")"
+                               asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId">
+                                <i class="fas fa-edit me-2"></i>Muokkaa
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId">
+                                <i class="fas fa-search me-2"></i>Tiedot
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item @(RoleHelper.IsAdmin(Context) ? "" : "disabled")"
+                               asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId">
+                                <i class="fas fa-trash me-2"></i>Poista
+                            </a>
+                        </li>
+                    </ul>
                 </td>
+
             </tr>
         }
     </tbody>

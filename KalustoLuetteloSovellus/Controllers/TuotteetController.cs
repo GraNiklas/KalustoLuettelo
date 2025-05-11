@@ -397,34 +397,46 @@ namespace KalustoLuetteloSovellus.Controllers
                 .ToListAsync();
             // YLLÄ OLEVA FILTTERÖINTI TOIMII. EI TARVITSE FILTTERÖIDÄ UUDELLEEN NÄKYMÄSSÄ JA VOI TEHDÄ YHDEN GENEERISEN SIVUN MISSÄ NÄKYY TUOTTET LISTASSA SITTEN KUTSUU return view("Sivunimi",tuotteet) NIIN PITÄISI TOIMIA NÄIHIN KAIKKIIN EIKÄ TARVITA KOLMEA ERI SIVUA.
 
-            return View(tuotteet);
+            return View("Huollossatuotteet", tuotteet);
         }
 
         public async Task<IActionResult> Varatuttuotteet()
         {
-            var tuotteet = _context.Tuotteet
-            .Include(t => t.Kategoria)
-            .Include(t => t.Toimipiste)
-            .Include(t => t.Tapahtumat)
-                .ThenInclude(t => t.Käyttäjä)
-            .Include(t => t.Tapahtumat)
-                .ThenInclude(t => t.Status)
-            .AsQueryable();
+            var tuotteet = await _context.Tuotteet
+                .Include(t => t.Kategoria)
+                .Include(t => t.Toimipiste)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(tap => tap.Käyttäjä)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(tap => tap.Status)
+                .Where(t => t.Tapahtumat
+                    .OrderByDescending(tap => tap.AloitusPvm)
+                    .Select(tap => tap.Status.StatusNimi)
+                    .FirstOrDefault() == "Varattu")
+                .ToListAsync();
+            // YLLÄ OLEVA FILTTERÖINTI TOIMII. EI TARVITSE FILTTERÖIDÄ UUDELLEEN NÄKYMÄSSÄ JA VOI TEHDÄ YHDEN GENEERISEN SIVUN MISSÄ NÄKYY TUOTTET LISTASSA SITTEN KUTSUU return view("Sivunimi",tuotteet) NIIN PITÄISI TOIMIA NÄIHIN KAIKKIIN EIKÄ TARVITA KOLMEA ERI SIVUA.
 
-            return View(await tuotteet.ToListAsync());
+            return View("Huollossatuotteet", tuotteet);
         }
         public async Task<IActionResult> Vapaanatuotteet()
         {
-            var tuotteet = _context.Tuotteet
-            .Include(t => t.Kategoria)
-            .Include(t => t.Toimipiste)
-            .Include(t => t.Tapahtumat)
-                .ThenInclude(t => t.Käyttäjä)
-            .Include(t => t.Tapahtumat)
-                .ThenInclude(t => t.Status)
-            .AsQueryable();
+            var tuotteet = await _context.Tuotteet
+                .Include(t => t.Kategoria)
+                .Include(t => t.Toimipiste)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(tap => tap.Käyttäjä)
+                .Include(t => t.Tapahtumat)
+                    .ThenInclude(tap => tap.Status)
+                .Where(t =>
+                    !t.Tapahtumat.Any() ||
+                    t.Tapahtumat
+                        .OrderByDescending(tap => tap.AloitusPvm)
+                        .Select(tap => tap.Status.StatusNimi)
+                        .FirstOrDefault() == "Vapaa"
+                )
+                .ToListAsync();
 
-            return View(await tuotteet.ToListAsync());
+            return View("Huollossatuotteet", tuotteet);
         }
 
 

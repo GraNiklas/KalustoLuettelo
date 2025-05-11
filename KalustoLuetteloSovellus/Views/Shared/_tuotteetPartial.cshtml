@@ -5,26 +5,26 @@
     <p>Näytetyt tuotteet: <strong>@ViewData["Suodatetut"]</strong></p>
 </div>
 
-<div id="accordion" class="container-fluid">
+
     <table class="table table-hover table-bordered">
         <thead>
             <tr>
-                <th>Tapahtumat</th>
-                <th>TuoteId</th>
-                <th>Status</th>
-                <th>Tunnistenro.</th>
-                <th>Kuva</th>
-                <th>Kuvaus</th>
-                <th>OstoPvm.</th>
-                <th>Hinta</th>
-                <th>Takuu</th>
-                <th>Kategoria</th>
-                <th>Toimipiste</th>
-                <th>Aktiivinen</th>
-                <th></th>
+                <th title="Tapahtumat">Tapahtumat</th>
+                <th title="Tuote ID">TuoteId</th>
+                <th title="Status">Status</th>
+                <th title="Tunnistenumero">Tunnistenro.</th>
+                <th title="Kuva">Kuva</th>
+                <th title="Kuvaus">Kuvaus</th>
+                <th title="Ostopäivämäärä">OstoPvm.</th>
+                <th title="Hinta">Hinta</th>
+                <th title="Takuu">Takuu</th>
+                <th title="Kategoria">Kategoria</th>
+                <th title="Toimipiste">Toimipiste</th>
+                <th title="Aktiivinen">Aktiivinen</th>
+                <th title="Toiminnot"></th>
             </tr>
         </thead>
-        @* <tbody> *@
+        <tbody>
             @foreach (var item in Model)
             {
                 string imageSrc;
@@ -38,8 +38,8 @@
                 }
 
                 <tr data-itemid="@item.TuoteId">
-                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-stream" style="color:black"></i></a></td>
-                    <td>@Html.DisplayFor(modelItem => item.TuoteId)</td>
+                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-list" style="color:black"></i></a></td>
+                    <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td>
                     <td class="ms-auto">
                         @if (item.Aktiivinen == true)
                         {
@@ -53,57 +53,75 @@
                             <i class="fas fa-circle-xmark"></i>
                         }
                     </td>
-                    <td>@Html.DisplayFor(modelItem => item.IdNumero)</td>
+                    <td title="@item.IdNumero">@Html.DisplayFor(modelItem => item.IdNumero)</td>
                     <td><img class="img-thumbnail" style="width:25px;height:25px;object-fit:cover" src="@imageSrc" alt="Tuote kuva" /></td>
-                    <td>@Html.DisplayFor(modelItem => item.Kuvaus)</td>
-                    <td>@Html.DisplayFor(modelItem => item.OstoPvm)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Hinta)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Takuu)</td>
-                    <td>@if (item.Kategoria != null) @Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi) </td>
-                    <td>@if (item.Toimipiste != null) @Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi) </td>
-                    <td>@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
-                    <td class="d-flex gap-2">
-                        <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.TuoteId"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-main" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search"></i></a>
-                        @if (KalustoLuetteloSovellus.RoleHelper.IsAdmin(Context))
-                        {
-                            <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-main disabled" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash"></i></a>
-                        }
+                    <td title="@item.Kuvaus">@Html.DisplayFor(modelItem => item.Kuvaus)</td>
+                    <td title="@item.OstoPvm">@Html.DisplayFor(modelItem => item.OstoPvm)</td>
+                    <td title="@item.Hinta">@Html.DisplayFor(modelItem => item.Hinta)</td>
+                    <td title="@item.Takuu">@Html.DisplayFor(modelItem => item.Takuu)</td>
+                    <td title="@item.Kategoria.KategoriaNimi">@if (item.Kategoria != null) @Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi) </td>
+                    <td title="@item.Toimipiste.KaupunkiJaToimipisteNimi">@if (item.Toimipiste != null) @Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
+                    <td title="@item.Aktiivinen">@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
+                    <td class="dropdown" style="overflow: visible;">
+                        <button class="btn btn-main dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bars me-2"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TuoteId">
+                                    <i class="fas fa-edit me-2"></i>Muokkaa
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TuoteId">
+                                    <i class="fas fa-search me-2"></i>Tiedot
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item @(KalustoLuetteloSovellus.RoleHelper.IsAdmin(Context) ? "" : "disabled")"
+                                    asp-action="Delete" asp-route-id="@item.TuoteId">
+                                    <i class="fas fa-trash me-2"></i>Poista
+                                </a>
+                            </li>
+                        </ul>
                     </td>
+
                 </tr>
                 <tr>
                     <td colspan="13">
-                        <div id="collapse_@item.TuoteId" class="collapse" data-bs-parent="#accordion" aria-labelledby="heading_@item.TuoteId">
+                        <div id="collapse_@item.TuoteId" class="collapse"  aria-labelledby="heading_@item.TuoteId">
                             <div class="card-body">
-                                @{
-                                    var isVarattu = item?.Status?.StatusNimi == "Varattu";
-                                    var userIsOwner = item.ViimeisinTapahtuma != null && RoleHelper.IsUser(item.ViimeisinTapahtuma.KäyttäjäId, Context);
-                                    var userIsAdmin = RoleHelper.IsAdmin(Context);
-                                }
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex">
 
-                                @if (isVarattu)
-                                {
-                                    <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
-                                }
-                                else
-                                {
-                                    <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId">
-                                        <i class="fas fa-calendar-check"></i> Luo uusi tapahtuma
-                                    </a>
-                                }
 
-                                @if (isVarattu && (userIsOwner || userIsAdmin))
-                                {
-                                    <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
-                                        <i class="fas fa-handshake"></i> Palauta tuote
-                                    </a>
-                                }
+                                        @{
+                                        var isVarattu = item?.Status?.StatusNimi == "Varattu";
+                                        var userIsOwner = item.ViimeisinTapahtuma != null && RoleHelper.IsUser(item.ViimeisinTapahtuma.KäyttäjäId, Context);
+                                        var userIsAdmin = RoleHelper.IsAdmin(Context);
+                                        }
+
+                                        @if (isVarattu)
+                                        {
+                                        <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
+                                        }
+                                        else
+                                        {
+                                        <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId">
+                                            <i class="fas fa-calendar-check"></i> Luo uusi tapahtuma
+                                        </a>
+                                        }
+
+                                        @if (isVarattu && (userIsOwner || userIsAdmin))
+                                        {
+                                        <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
+                                            <i class="fas fa-handshake"></i> Palauta tuote
+                                        </a>
+                                        }
+                                    </div>
+                                </div>
                                 <hr />
-                                <p class="fw-bold"> Tuotteen @item.TuoteId tapahtumarivit </p>
+                                <p class="fw-bold"> Tuotteen @item.Kuvaus, tapahtumarivit </p>
                                 @await Html.PartialAsync("_TapahtumaRivitPartial", item.Tapahtumat)
                             </div>
                         </div>
@@ -112,4 +130,3 @@
             }
         </tbody>
     </table>
-</div>

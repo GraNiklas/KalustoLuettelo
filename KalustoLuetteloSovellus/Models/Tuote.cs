@@ -38,5 +38,5 @@ public partial class Tuote
 
     [Display(Name = "Viimeisin tapahtuma")]
     public virtual Tapahtuma? ViimeisinTapahtuma => Tapahtumat.OrderByDescending(t => t.AloitusPvm).FirstOrDefault();
-    [NotMapped] public virtual Status? Status => ViimeisinTapahtuma?.Status ?? new Status { StatusNimi = "Vapaa"}; 
+    [NotMapped] public virtual Status? Status => ViimeisinTapahtuma?.Status ?? new Status { StatusNimi = "Vapaa"};
 }

@@ -57,24 +57,30 @@
                 <td>@Html.DisplayFor(modelItem => item.Käyttäjä.Käyttäjätunnus)</td>
                 @* <td class="ms-auto">@if (item.Status != null)@await Html.PartialAsync("_StatusPartial", item.Status)</td> *@
                 <td>@Html.DisplayFor(model => item.Tuote.Toimipiste.KaupunkiJaToimipisteNimi)</td>
-                <td class="d-flex gap-2">
-                    @if (RoleHelper.IsUser(item.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context))
-                    {
-                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit"></i></a>
-                    }
-                    <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search"></i></a>
-                    @if (RoleHelper.IsAdmin(Context))
-                    {
-                        <a class="btn btn-main" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-main disabled" asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash"></i></a>
-                    }
+                <td class="dropdown" style="overflow: visible;">
+                    <button class="btn btn-main dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bars me-2"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item @(!RoleHelper.IsUser(item.KäyttäjäId, Context) && !RoleHelper.IsAdmin(Context) ? "disabled" : "")"
+                               asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId">
+                                <i class="fas fa-edit me-2"></i>Muokkaa
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId">
+                                <i class="fas fa-search me-2"></i>Tiedot
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item @(RoleHelper.IsAdmin(Context) ? "" : "disabled")"
+                               asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId">
+                                <i class="fas fa-trash me-2"></i>Poista
+                            </a>
+                        </li>
+                    </ul>
                 </td>
             </tr>
         }
