@@ -77,6 +77,11 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
+            if (IsProtected(rooli))
+            {
+                TempData["ErrorMessage"] = "Ei voi muuttaa tarvittuja rooleja...";
+                return RedirectToAction(nameof(Index));
+            }
             return View(rooli);
         }
 
@@ -132,6 +137,11 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
+            if (IsProtected(rooli))
+            {
+                TempData["ErrorMessage"] = "Ei voi poistaa tarvittuja rooleja...";
+                return RedirectToAction(nameof(Index));
+            }
             return View(rooli);
         }
 
@@ -154,6 +164,11 @@ namespace KalustoLuetteloSovellus.Controllers
         private bool RooliExists(int id)
         {
             return _context.Roolit.Any(e => e.RooliId == id);
+        }
+        public bool IsProtected(Rooli rooli)
+        {
+            var protectedRoolit = new List<String> { "Admin", "User" };
+            return protectedRoolit.Contains(rooli.RooliNimi);
         }
     }
 }

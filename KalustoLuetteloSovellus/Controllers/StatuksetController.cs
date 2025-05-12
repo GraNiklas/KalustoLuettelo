@@ -78,6 +78,11 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
+            if (IsProtected(status))
+            {
+                TempData["ErrorMessage"] = "Ei voi muuttaa tarvittuja statuksia...";
+                return RedirectToAction(nameof(Index));
+            }
             return View(status);
         }
 
@@ -94,6 +99,8 @@ namespace KalustoLuetteloSovellus.Controllers
                 return NotFound();
             }
 
+            
+            
             if (ModelState.IsValid)
             {
                 try
@@ -132,6 +139,11 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
+            if (IsProtected(status))
+            {
+                TempData["ErrorMessage"] = "Ei voi poistaa tarvittuja statuksia...";
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(status);
         }
@@ -146,6 +158,7 @@ namespace KalustoLuetteloSovellus.Controllers
             if (status != null)
             {
                 _context.Statukset.Remove(status);
+                
             }
 
             await _context.SaveChangesAsync();
@@ -155,6 +168,12 @@ namespace KalustoLuetteloSovellus.Controllers
         private bool StatusExists(int id)
         {
             return _context.Statukset.Any(e => e.StatusId == id);
+        }
+
+        public bool IsProtected(Status status)
+        {
+            var protectedStatuses = new List<String> { "Varattu", "Vapaa", "Huollossa", "Kadonnut", "Poistettu" };
+            return protectedStatuses.Contains(status.StatusNimi);
         }
     }
 }
