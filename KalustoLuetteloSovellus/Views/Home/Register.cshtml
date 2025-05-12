@@ -4,15 +4,19 @@
 @{
     ViewData["Title"] = "Login";
 }
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
 
 <h1 style="padding-left:30%">Rekisteröityminen</h1>
-
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     <body>
 
         <div class="form-horizontal" style="width:70%;padding-left:30%">
+            <div class="alert-info"> Käyttäjätunnus pitää olla muodossa - email@student.careeria.fi TAI email@careeria.fi"</div>
             <hr />
                 <form asp-action="Register">
                 <div class="form-group">
@@ -26,6 +30,11 @@
                     <label asp-for="Salasana" class="control-label"></label>
                     <input asp-for="Salasana" class="form-control" type="password"/>
                     <span asp-validation-for="Salasana" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="VahvistaSalasana">Vahvista salasana</label>
+                    <input name="VahvistaSalasana" type="password" class="form-control" required />
+                    <span id="confirmError" class="text-danger"></span>
                 </div>
             <label class="text-danger">
                 @* @Html.DisplayFor(model => model.LoginErrorMessage) *@
@@ -41,3 +50,22 @@
         </div>
     </body>
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const password = document.querySelector('[name="Salasana"]');
+        const confirm = document.querySelector('[name="VahvistaSalasana"]');
+        const errorSpan = document.getElementById("confirmError");
+
+        function checkMatch() {
+            if (confirm.value !== password.value) {
+                errorSpan.textContent = "Salasanat eivät täsmää";
+            } else {
+                errorSpan.textContent = "";
+            }
+        }
+
+        password.addEventListener('input', checkMatch);
+        confirm.addEventListener('input', checkMatch);
+    });
+</script>

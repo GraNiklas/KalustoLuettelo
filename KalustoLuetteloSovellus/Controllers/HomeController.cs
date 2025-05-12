@@ -173,15 +173,16 @@ public class HomeController : Controller
         //}
 
         if ((käyttäjä.Käyttäjätunnus.Contains("@student.careeria.fi") ||
-             käyttäjä.Käyttäjätunnus.Contains("@careeria.fi")) &&
-            käyttäjä.Käyttäjätunnus != "@student.careeria.fi" &&
-            käyttäjä.Salasana != "")
+        käyttäjä.Käyttäjätunnus.Contains("@careeria.fi")) &&
+        käyttäjä.Käyttäjätunnus != "@student.careeria.fi" &&
+        käyttäjä.Salasana != "")
         {
             var adminRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliNimi == "Admin");
 
             if (adminRooli == null)
             {
                 Console.WriteLine("Admin rooli ei löydy tietokannasta, mahdollinen ongelma DbInitializer luokassa");
+                ViewBag.ErrorMessage = "Admin roolia ei löydy. Ota yhteys järjestelmänvalvojaan.";
                 return View("Error");
             }
             
@@ -211,6 +212,10 @@ public class HomeController : Controller
                 return RedirectToAction("Index", "Home"); // mihin mennään kun rekisteröinti onnistuu
             }
         }
+        else
+        {
+            ViewBag.ErrorMessage = "Käyttäjätunnus pitää olla muodossa - email@student.careeria.fi TAI email@careeria.fi";
+        }
         return View();
     }
     public async Task<IActionResult> Logout()
@@ -234,7 +239,7 @@ public class HomeController : Controller
         var hasher = new PasswordHasher<Käyttäjä>();
         if (string.IsNullOrEmpty(käyttäjä.Salasana))
         {
-            ViewBag.ErrorMessage = "Tyhjä salasana, arvaa mitä sun pitää täyttää se...";
+            ViewBag.ErrorMessage = "Tyhjä salasana kenttä.";
             return View("Login");
         }
 
