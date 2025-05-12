@@ -346,6 +346,9 @@ footer {
     transition: width 0.3s ease-in-out;
 }
 
+    
+
+
 .nav-item a.nav-link:hover::after {
     width: 100%;
 }

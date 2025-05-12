@@ -344,6 +344,23 @@ footer {
     width: 100%;
 }
 
+
+/*  Viivauksen esto Tervetuloa viestissä*/
+.nav-item a.nav-link.UnChange {
+    cursor: default !important;
+    pointer-events: none;
+}
+
+.nav-item a.nav-link.UnChange::after {
+    width: 0% !important; /* Estetään hoverin aiheuttama leveysmuutos */
+    background-color: transparent !important; /* Ei näytetä viivaa ollenkaan */
+    transition: none !important; /* Ei animaatiota */
+}
+
+.nav-item a.nav-link.UnChange:hover::after {
+    width: none !important; /* Hover-tilassa ei vaikutusta */
+} 
+
 /*AADMIN PUDOTUS VALIKON LINKIT*/
 
 select{
