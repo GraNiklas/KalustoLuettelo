@@ -1,0 +1,39 @@
+﻿@model KalustoLuetteloSovellus.ViewModels.StatsViewModel
+
+@{
+    var percentage = 0f;
+    if (Model.Total != 0)
+    {
+        percentage = (float)Model.Used / (float)Model.Total * 100f;
+    }
+}
+
+
+<div class="d-flex flex-column p-4 align-items-center" style="border:1px solid var(--main-color-hover)">
+    <div class="d-flex flex-column align-items-center mb-2">
+        <h5>@Model.Name</h5>
+        <h6>@percentage%</h6>
+    </div>
+
+    <div class="pie-chart-wrapper" title="@(percentage + "%")">
+        <div class="pie-chart-container">
+            <div class="pie-chart-bg"></div>
+            <div class="pie-chart-fill" style="--fill: @(percentage)%"></div>
+        </div>
+    </div>
+</div>
+
+@*
+
+
+<script>
+function updatePieChartFill(percentage) {
+    const pieChartFill = document.querySelector('.pie-chart-fill');
+    pieChartFill.style.setProperty('--fill', `${percentage}%`);
+}
+
+setTimeout(() => {
+    updatePieChartFill(@percentage);
+}, 1000);
+</script>
+*@

@@ -36,4 +36,37 @@
     </div>
 }
 
+    <div class="d-flex flex-row justify-content-around mb-5">
+    @{
+        var viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+    }
+        <div class="mt-5">
+            @{
+                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                viewModel.Name = "Varatut tuotteet";
+                viewModel.Total = Model.Count();
+                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Varattu").Count();
+            }
+            @await Html.PartialAsync("_StatsPartial",viewModel)
+        </div>
+        <div class="mt-5">
+            @{
+                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                viewModel.Name = "Huollossa tuotteet";
+                viewModel.Total = Model.Count();
+                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Huollossa").Count();
+            }
+            @await Html.PartialAsync("_StatsPartial",viewModel)
+        </div>
+        <div class="mt-5">
+            @{
+                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                viewModel.Name = "Vapaat tuotteet";
+                viewModel.Total = Model.Count();
+                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Vapaa").Count();
+            }
+            @await Html.PartialAsync("_StatsPartial",viewModel)
+        </div>
+    </div>
+
 <script type="text/javascript" src="~/js/karuselli.js" ></script>
