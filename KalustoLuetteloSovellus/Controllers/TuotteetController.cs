@@ -397,7 +397,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 .ToListAsync();
             // YLLÄ OLEVA FILTTERÖINTI TOIMII. EI TARVITSE FILTTERÖIDÄ UUDELLEEN NÄKYMÄSSÄ JA VOI TEHDÄ YHDEN GENEERISEN SIVUN MISSÄ NÄKYY TUOTTET LISTASSA SITTEN KUTSUU return view("Sivunimi",tuotteet) NIIN PITÄISI TOIMIA NÄIHIN KAIKKIIN EIKÄ TARVITA KOLMEA ERI SIVUA.
 
-            return View("Huollossatuotteet", tuotteet);
+            return View("TuoteWrapper", tuotteet);
         }
 
         public async Task<IActionResult> Varatuttuotteet()
@@ -416,7 +416,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 .ToListAsync();
             // YLLÄ OLEVA FILTTERÖINTI TOIMII. EI TARVITSE FILTTERÖIDÄ UUDELLEEN NÄKYMÄSSÄ JA VOI TEHDÄ YHDEN GENEERISEN SIVUN MISSÄ NÄKYY TUOTTET LISTASSA SITTEN KUTSUU return view("Sivunimi",tuotteet) NIIN PITÄISI TOIMIA NÄIHIN KAIKKIIN EIKÄ TARVITA KOLMEA ERI SIVUA.
 
-            return View("Huollossatuotteet", tuotteet);
+            return View("TuoteWrapper", tuotteet);
         }
         public async Task<IActionResult> Vapaanatuotteet()
         {
@@ -436,7 +436,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 )
                 .ToListAsync();
 
-            return View("Huollossatuotteet", tuotteet);
+            return View("TuoteWrapper", tuotteet);
         }
 
 
