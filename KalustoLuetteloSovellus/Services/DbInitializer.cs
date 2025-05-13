@@ -1,4 +1,6 @@
-﻿using KalustoLuetteloSovellus.Models;
+﻿//Initialisoi Db:n (statukset ja roolit)
+
+using KalustoLuetteloSovellus.Models;
 
 public static class DbInitializer
 {
