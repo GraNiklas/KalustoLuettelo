@@ -25,7 +25,12 @@
             <td>@Model.Rooli.RooliNimi</td>
             <td>@Model.Tapahtumat.Count()kpl</td>
             <td>@Model.Tapahtumat.Where(t => t.Tuote.Status.StatusNimi != "Vapaa" && RoleHelper.IsUser(t.KäyttäjäId,Context)).Count()kpl (tämä ei ihan toimi oikein)</td>
-            <td><a class="btn btn-main" asp-controller="Home" onclick="return confirm('Haluatko varmasti poistaa tilin?')" asp-action="DeleteAccount" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-trash"></i> Poista tili</a></td>
+            @{
+                if(!Model.Tapahtumat.Any())
+                {
+                    <td><a class="btn btn-main" asp-controller="Home" onclick="return confirm('Haluatko varmasti poistaa tilin?')" asp-action="DeleteAccount" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-trash"></i> Poista tili</a></td>
+                }
+            }
         </tr>
     </tbody>
 </table>
