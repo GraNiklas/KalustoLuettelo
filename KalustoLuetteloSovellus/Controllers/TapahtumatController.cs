@@ -116,7 +116,7 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewData["Suodatetut"] = totalFiltered;
 
 
-            return PartialView("_TapahtumatTablePartial", tapahtumatPaged);
+            return PartialView("_TapahtumaRivitPartial", tapahtumatPaged);
         }
 
 

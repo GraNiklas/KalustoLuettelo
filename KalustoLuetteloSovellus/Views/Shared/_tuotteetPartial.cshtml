@@ -121,8 +121,12 @@
                                     </div>
                                 </div>
                                 <hr />
-                                <p class="fw-bold"> Tuotteen @item.Kuvaus, tapahtumarivit </p>
-                                @await Html.PartialAsync("_TapahtumaRivitPartial", item.Tapahtumat)
+                                <p class="fw-bold"> Tuotteen @item.Kuvaus 10 viimeisintä tapahtumaa. Tuotteen kaikki tapahtumat: @item.Tapahtumat.Count() </p>
+                                
+                                
+                                @await Html.PartialAsync("_TapahtumaRivitPartial",
+                                         item.Tapahtumat.OrderByDescending(t => t.AloitusPvm).Take(10),
+                                         new ViewDataDictionary(ViewData) { { "lajittelu", false } })
                             </div>
                         </div>
                     </td>
