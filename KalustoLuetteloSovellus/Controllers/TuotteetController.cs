@@ -90,7 +90,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             Response.Headers["X-TotalPages"] = Math.Ceiling((double)totalFiltered / pageSize).ToString();
 
-            return PartialView("_TuotteetPartial", tuotteetPaged);
+            return PartialView("_TuoteRivitPartial", tuotteetPaged);
         }
         public async Task<IActionResult> _StatusPartial(int statusId)
         {
