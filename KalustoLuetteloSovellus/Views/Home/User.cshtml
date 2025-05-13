@@ -6,6 +6,7 @@
 
 <h1>Omat sivut</h1>
 
+@* Tässä näytetään omat tiedot rivinäkymänä *@
 
 <br />
 <table class="table table-bordered">
@@ -28,6 +29,8 @@
         </tr>
     </tbody>
 </table>
+
+@* Tästä alkaa käyttäjän luomat tapahtumarivit *@
 
 <h5>Käyttäjän luomat tapahtumat</h5>
 @await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat)

@@ -10,6 +10,9 @@
 }
 
 <h1 style="padding-left:30%">Rekisteröityminen</h1>
+
+@* Tästä alkaa rekisteröitymislomake-näkymä *@
+
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -50,6 +53,8 @@
         </div>
     </body>
 }
+
+@* Tässä varmistetaan käyttäjätunnuksen ja salasanan yhteensopivuus *@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

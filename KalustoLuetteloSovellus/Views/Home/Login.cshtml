@@ -13,6 +13,9 @@
 <h1 style="padding-left:30%">Kirjautuminen</h1>
 
 <h2 style="padding-left:30%">Kirjaudu sisään</h2>
+
+@* Tästä alkaa kirjautumislomake *@
+
 @using (Html.BeginForm("Authorize", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
