@@ -3,77 +3,80 @@
 @{
     ViewData["Title"] = "Home Page";
 
-    var käyttäjä = Context.Session.GetString("Käyttäjätunnus"); 
+    var käyttäjä = Context.Session.GetString("Käyttäjätunnus");
     var isAdmin = RoleHelper.IsAdmin(Context);
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
 <div class="d-flex flex-column justify-content-center align-items-center text-center">
-    <h1 class="display-4">Tervetuloa KaLuun</h1>    
+    <h1 class="display-4">Tervetuloa KaLuun</h1>
 </div>
+<hr />
 
 @if(isLoggedIn)
 {
-    <hr />
-    <div class="container">
-        <h5 class="text-center mt-5">Viimeksi lisätyt tuotteet (10)</h5>
 
-@* Tästä alkaa karusellinäkymä *@
+        @* Tästä alkaa karusellinäkymä *@
 
-        <div class="carousel-container">
-            <button class="btn btn-sec" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
-            <div class="carousel-view">
-                <div class="carousel-track" id="carouselTrack">
-                    @foreach (var item in Model)
-                    {
+    <section class="d-flex flex-column">
+            <h5 class="text-center mt-5">Viimeksi lisätyt tuotteet (10)</h5>
+            <div class="carousel-container ">
+
+                <button class="btn btn-sec" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
+                <div class="carousel-view">
+                    <div class="carousel-track" id="carouselTrack">
+                        @foreach (var item in Model)
+                        {
                         @await Html.PartialAsync("_TuoteKorttiPartialSmall", item)
-                    }
+                        }
+                    </div>
                 </div>
+                <button class="btn btn-sec" id="btnRight" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
             </div>
-            <button class="btn btn-sec" id="btnRight" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
-        </div>
+        </section>
 
-@* Tästä alkaa Status-tila näkymä *@
+        
+        @* Tästä alkaa Status-tila näkymä *@
 
-        <div class="mt-5">
-            @await Html.PartialAsync("_TuoteStatusKortitPartial")
-        </div>
-    </div>
+    <section class="row mt-5" style="background-color:var(--tertiary-color);">
+        <div class="col-2" style="background:var(--bg-color)"></div>
+        
+        <div class="col-2">@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
+
+            @* Tästä alkaa Statistiikka-näkymä *@
+
+            <div class="d-flex col-6 flex-row gap-4 p-3 justify-content-between">
+                @{
+                var viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                }
+
+                
+                    @{
+                    viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                    viewModel.Name = "Varatut tuotteet";
+                    viewModel.Total = Model.Count();
+                    viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Varattu").Count();
+                    }
+                    @await Html.PartialAsync("_StatsPartial",viewModel)
+                
+                    @{
+                    viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                    viewModel.Name = "Huollossa tuotteet";
+                    viewModel.Total = Model.Count();
+                    viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Huollossa").Count();
+                    }
+                    @await Html.PartialAsync("_StatsPartial",viewModel)
+                
+                    @{
+                    viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                    viewModel.Name = "Vapaat tuotteet";
+                    viewModel.Total = Model.Count();
+                    viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Vapaa").Count();
+                    }
+                    @await Html.PartialAsync("_StatsPartial",viewModel)
+
+            </div>
+        <div class="col-2" style="background:var(--bg-color)"></div>
+    </section>
 }
 
-
-@* Tästä alkaa Statistiikka-näkymä *@
-
-    <div class="d-flex flex-row justify-content-around mb-5">
-    @{
-        var viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-    }
-        <div class="mt-5">
-            @{
-                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                viewModel.Name = "Varatut tuotteet";
-                viewModel.Total = Model.Count();
-                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Varattu").Count();
-            }
-            @await Html.PartialAsync("_StatsPartial",viewModel)
-        </div>
-        <div class="mt-5">
-            @{
-                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                viewModel.Name = "Huollossa tuotteet";
-                viewModel.Total = Model.Count();
-                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Huollossa").Count();
-            }
-            @await Html.PartialAsync("_StatsPartial",viewModel)
-        </div>
-        <div class="mt-5">
-            @{
-                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                viewModel.Name = "Vapaat tuotteet";
-                viewModel.Total = Model.Count();
-                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Vapaa").Count();
-            }
-            @await Html.PartialAsync("_StatsPartial",viewModel)
-        </div>
-    </div>
-
-<script type="text/javascript" src="~/js/karuselli.js" ></script>
+<script type="text/javascript" src="~/js/karuselli.js"></script>
