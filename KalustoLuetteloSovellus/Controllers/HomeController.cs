@@ -47,8 +47,8 @@ public class HomeController : Controller
                 // Set session variables
                 HttpContext.Session.SetString("K‰ytt‰j‰tunnus", userNameClaim);
                 HttpContext.Session.SetInt32("K‰ytt‰j‰Id", int.Parse(userIdClaim));
-                HttpContext.Session.SetInt32("RooliId", int.Parse(userRoleClaim));
-                                
+                HttpContext.Session.SetString("Rooli", userRoleClaim);
+
                 return View(); // N‰yt‰ About-n‰kym‰
             }
             else
