@@ -10,9 +10,15 @@
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
+
+@* Lisää uusi status linkki *@
+
 <p>
     <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus-circle"></i> Lisää uusi</a>
 </p>
+
+@* Tästä alkaa status listanäkymä *@
+
 <table class="table">
     <thead>
         <tr>
