@@ -33,34 +33,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> About()
     {
-        if (HttpContext.User.Identity.IsAuthenticated)
-        {
-            // Extract claims from the cookie
-            var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
-            var userNameClaim = HttpContext.User.FindFirst("UserName")?.Value;
-            var userRoleClaim = HttpContext.User.FindFirst("Role")?.Value;
-
-            if (!string.IsNullOrEmpty(userIdClaim) &&
-                !string.IsNullOrEmpty(userNameClaim) &&
-                !string.IsNullOrEmpty(userRoleClaim))
-            {
-                // Set session variables
-                HttpContext.Session.SetString("K‰ytt‰j‰tunnus", userNameClaim);
-                HttpContext.Session.SetInt32("K‰ytt‰j‰Id", int.Parse(userIdClaim));
-                HttpContext.Session.SetString("Rooli", userRoleClaim);
-
-                return View(); // N‰yt‰ About-n‰kym‰
-            }
-            else
-            {
-                ViewBag.ErrorMessage = "Failed to retrieve user data from authentication.";
-                return RedirectToAction("Login");
-            }
-        }
-        else
-        {
-            return RedirectToAction("Login");
-        }         
+        return View(); // N‰yt‰ About-n‰kym‰
     }
     public async Task<IActionResult> Index()
     {
@@ -96,17 +69,17 @@ public class HomeController : Controller
         // T‰m‰ ottaa nyt vaa 10 ensimm‰ist‰ tuotetta tietokannasta, voidaan keksi‰ joku juttu miss‰ se hakee tapahtumista viimeisimm‰t 10 tapahtumaa ja listaa ne tuotteet, en tied‰.
         //var t = _context.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).Take(10);  // t‰m‰ on nyt vain esimerkki viimeisimmist‰ tapahtumista
 
-
-        var viimeiset10 = await _context.Tuotteet
+        var m‰‰r‰ = 20;
+        var viimeisimm‰tTuotteet = await _context.Tuotteet
             .Include(t => t.Kategoria)
             .Include(t => t.Toimipiste)
             .Include(t => t.Tapahtumat)
                 .ThenInclude(t => t.Status)
             .OrderByDescending(t => t.TuoteId) 
-            .Take(10)
+            .Take(m‰‰r‰)
             .ToListAsync();
 
-        return View(viimeiset10);
+        return View(viimeisimm‰tTuotteet);
     }
 
     public async Task<IActionResult> User()

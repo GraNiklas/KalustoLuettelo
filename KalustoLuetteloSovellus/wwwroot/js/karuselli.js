@@ -1,53 +1,45 @@
-﻿// Karuselli koodi
-// document.body.classList.add('darkMode');
-window.onload = function () {
-
+﻿window.onload = function () {
     const track = document.getElementById('carouselTrack');
     const btnLeft = document.getElementById('btnLeft');
     const btnRight = document.getElementById('btnRight');
+    const items = document.querySelectorAll('.carousel-item');
+    const view = document.querySelector('.carousel-view');
 
     let currentIndex = 0;
-
-    const items = document.querySelectorAll('.carousel-item');
-
     const totalItems = items.length;
-    
+
+    function getItemWidth() {
+        return items[0].offsetWidth;
+    }
+
+    function getVisibleCount() {
+        return Math.floor(view.offsetWidth / getItemWidth());
+    }
+
+    function getMaxIndex() {
+        return Math.max(0, totalItems - getVisibleCount());
+    }
+
     function updateCarousel(itemWidth) {
-        // console.log(currentIndex)
-        const offset = currentIndex * itemWidth; 
+        const offset = currentIndex * itemWidth;
         track.style.transform = `translateX(-${offset}px)`;
     }
-    function getItemWidth() {
-        return items[0].offsetWidth; // Get the width of the first item
-    }
-    function updateButtons(currentIndex) {
-        if (currentIndex == 0) {
-            btnLeft.classList.add("disabled");
-            btnLeft.classList.add("hidden");   // Piilota
-        }
-        else {
-            btnLeft.classList.remove("disabled");
-            btnLeft.classList.remove("hidden"); // Näytä
-        }
 
-        if (currentIndex == totalItems - 3) {
-            btnRight.classList.add("disabled");
-            btnRight.classList.add("hidden"); // Piilota
-        }
-        else {
-            btnRight.classList.remove("disabled");
-            btnRight.classList.remove("hidden"); // Näytä
-        }
+    function updateButtons(index) {
+        const maxIndex = getMaxIndex();
+        btnLeft.classList.toggle("disabled", index === 0);
+        btnLeft.classList.toggle("hidden", index === 0);
+        btnRight.classList.toggle("disabled", index >= maxIndex);
+        btnRight.classList.toggle("hidden", index >= maxIndex);
     }
-
 
     updateButtons(currentIndex);
 
     btnRight.addEventListener('click', () => {
         const itemWidth = getItemWidth();
-        if (currentIndex < totalItems - 3) {  // Fix: Stop at totalItems - 3 näyttää paremmalle, toivottavasti ei ole sivuvaikutuksia
+        const maxIndex = getMaxIndex();
+        if (currentIndex < maxIndex) {
             currentIndex++;
-        
             updateCarousel(itemWidth);
             updateButtons(currentIndex);
         }
@@ -62,4 +54,17 @@ window.onload = function () {
         }
     });
 
+    // Auto-scroll
+    const interval = 3000; // ms
+    setInterval(() => {
+        const itemWidth = getItemWidth();
+        const maxIndex = getMaxIndex();
+        if (currentIndex < maxIndex) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        updateCarousel(itemWidth);
+        updateButtons(currentIndex);
+    }, interval);
 };

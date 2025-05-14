@@ -35,9 +35,32 @@ navbar-toggler-icon{
     background-color:red!important;
 }
 
-body { 
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
     color: var(--text-color);
     background-color: var(--bg-color);
+    background-image: url(../Images/hero-bg.svg);
+    background-repeat: no-repeat;
+    background-position: right top;
+    min-height: 34rem;
+    margin:0;
+}
+
+footer {
+    width: 100%;
+    padding-bottom: 32px;
+    background-color: var(--footer-color);
+    background-image: url(../Images/footer-bg.svg);
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height:20vh;
+}
+
+.careeria-logo {
+    color: var(--text-color);
 }
 .nav-link {
     color: var(--text-color)!important;
@@ -143,23 +166,8 @@ tr:hover {
     text-decoration:unset;
 }
 
-body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    display:flex;
-    flex-direction:column;
-}
-footer {
-    /*    justify-self:flex-end;*/
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-    padding-bottom: 32px;
-    background-color: var(--footer-color);
-}
 
-.careeria-logo {
-    color: var(--text-color);
-}
+
 /*BUTTONIT*/
 
 /*
@@ -448,7 +456,7 @@ select{
     text-overflow: ellipsis;
     transition: background 1s ease, white-space 1s ease;
     position: relative;
-    background-color: transparent;
+    background-color: var(--bg-color);
 }
 /*
 .table td:hover {

@@ -42,7 +42,7 @@
 
     @* Bodyn renderöinti *@
 
-    <div class="body-content">
+    <div class="d-flex flex-column align-items-center justify-content-center text-center">
         @RenderBody()
     </div>
 
@@ -54,9 +54,13 @@
 
     @*Footer-osio *@
 
-    <footer class="border-top footer text-muted">
-        <div class="container text-center">
-            &copy; 2025 - KalustoLuetteloSovellus - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted mt-5 p-5">
+        <div class="d-flex justify-content-around align-items-center">
+            <img class="careeria-logo" src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px;width:auto;filter:invert()" />
+            <p>
+                &copy; 2025 - KalustoLuetteloSovellus 
+            </p>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 </body>
