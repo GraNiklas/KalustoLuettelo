@@ -15,7 +15,7 @@
 @if(isLoggedIn)
 {
 
-        @* Tästä alkaa karusellinäkymä *@
+    @* Tästä alkaa karusellinäkymä *@
 
     <section class="d-flex flex-column w-100 ps-5 pe-5">
         <h5 class="text-center mt-5">Viimeksi lisätyt tuotteet (@Model.Count())</h5>
@@ -26,7 +26,7 @@
                 <div class="carousel-track" id="carouselTrack">
                     @foreach (var item in Model)
                     {
-                    @await Html.PartialAsync("_TuoteKorttiPartialSmall", item)
+                        @await Html.PartialAsync("_TuoteKorttiPartialSmall", item)
                     }
                 </div>
             </div>
@@ -34,48 +34,61 @@
         </div>
     </section>
 
-        
-        @* Tästä alkaa Status-tila näkymä *@
+
+    @* Tästä alkaa Status-tila näkymä *@
 
     <section class="row mt-5 w-100" style="background-color:var(--tertiary-color);">
         <div class="col-2" style="background:var(--bg-color)"></div>
-        
+
         <div class="col-2">@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
 
-            @* Tästä alkaa Statistiikka-näkymä *@
+        @* Tästä alkaa Statistiikka-näkymä *@
 
-            <div class="d-flex col-6 flex-row gap-4 p-3 justify-content-between">
-                @{
+        <div class="d-flex col-6 flex-row gap-4 p-3 justify-content-between">
+            @{
                 var viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                }
+            }
 
-                
-                    @{
-                    viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                    viewModel.Name = "Varatut tuotteet";
-                    viewModel.Total = Model.Count();
-                    viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Varattu").Count();
-                    }
-                    @await Html.PartialAsync("_StatsPartial",viewModel)
-                
-                    @{
-                    viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                    viewModel.Name = "Huollossa tuotteet";
-                    viewModel.Total = Model.Count();
-                    viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Huollossa").Count();
-                    }
-                    @await Html.PartialAsync("_StatsPartial",viewModel)
-                
-                    @{
-                    viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
-                    viewModel.Name = "Vapaat tuotteet";
-                    viewModel.Total = Model.Count();
-                    viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Vapaa").Count();
-                    }
-                    @await Html.PartialAsync("_StatsPartial",viewModel)
 
-            </div>
+            @{
+                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                viewModel.Name = "Varatut tuotteet";
+                viewModel.Total = Model.Count();
+                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Varattu").Count();
+            }
+            @await Html.PartialAsync("_StatsPartial",viewModel)
+
+            @{
+                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                viewModel.Name = "Huollossa tuotteet";
+                viewModel.Total = Model.Count();
+                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Huollossa").Count();
+            }
+            @await Html.PartialAsync("_StatsPartial",viewModel)
+
+            @{
+                viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
+                viewModel.Name = "Vapaat tuotteet";
+                viewModel.Total = Model.Count();
+                viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Vapaa").Count();
+            }
+            @await Html.PartialAsync("_StatsPartial",viewModel)
+
+        </div>
         <div class="col-2" style="background:var(--bg-color)"></div>
+    </section>
+
+    <section>
+        @{
+            var topKolme = Model.OrderByDescending(t => t.Tapahtumat.Count()).Take(3); // kolme suosituinta
+        }
+        <h5 class="text-center mt-5">Top(3) tuotteet</h5>
+        <div class="d-flex flex-row">
+            @foreach (var item in topKolme)
+            {
+            @await Html.PartialAsync("_TuoteKorttiPartialSmall",item)
+            }
+        </div>
     </section>
 }
 
