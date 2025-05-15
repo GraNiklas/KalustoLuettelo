@@ -4,77 +4,74 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Uusi tuote</h1>
+<div class="ms-auto me-auto">
 
-<h4>Tuote</h4>
-<hr />
+    <h1>Uusi tuote</h1>
+    <h4>Tuote</h4>
+    <hr />
 
-@* Tästä alkaa uuden tapahtuman lisäysnäkymä *@
+    @* Tästä alkaa uuden tapahtuman lisäysnäkymä *@
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdNumero" class="control-label"></label>
-                <input asp-for="IdNumero" class="form-control" />
-                <span asp-validation-for="IdNumero" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Kategoria" class="control-label"></label>
-                <select asp-for="KategoriaId" class ="form-control" asp-items="ViewBag.KategoriaNimi"></select>
-            </div>
-            @* <div class="form-group"> *@
-            @*     <label asp-for="Status" class="control-label"></label> *@
-            @*     <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusNimi"></select> *@
-            @* </div> *@
-            <div class="form-group">
-                <label asp-for="Toimipiste" class="control-label"></label>
-                <select asp-for="ToimipisteId" class ="form-control" asp-items="ViewBag.ToimipisteNimi"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Kuvaus" class="control-label"></label>
-                <input asp-for="Kuvaus" class="form-control" />
-                <span asp-validation-for="Kuvaus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="KuvaFile" class="control-label"></label>
-                <input asp-for="KuvaFile" class="form-control" type="file" />
-                <span asp-validation-for="KuvaFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OstoPvm" class="control-label"></label>
-                <input asp-for="OstoPvm" class="form-control" type="date" />
-                <span asp-validation-for="OstoPvm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Takuu" class="control-label"></label>
-                <input asp-for="Takuu" class="form-control" type="date"/>
-                <span asp-validation-for="Takuu" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hinta" class="control-label"></label>
-                <input asp-for="Hinta" class="form-control" />
-                <span asp-validation-for="Hinta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="Aktiivinen" hidden checked class="form-control" type="checkbox" />
-                <span asp-validation-for="Aktiivinen" class="text-danger"></span>
-            </div>
-            <div class="d-flex mt-2 gap-2 mb-4">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <div class="btn btn-primary">
-                        <i class="fas fa-save"></i>
-                        <input type="submit" value="Tallenna" style="background:none;border:none;color:white" />
+                    <label asp-for="IdNumero" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="IdNumero" class="form-control mb-2" />
+                    <span asp-validation-for="IdNumero" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Kategoria" class="control-label fw-bold text-start w-100"></label>
+                    <select asp-for="KategoriaId" class="form-control mb-2" asp-items="ViewBag.KategoriaNimi"></select>
+                </div>
+                @* <div class="form-group"> *@
+                @*     <label asp-for="Status" class="control-label"></label> *@
+                @*     <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusNimi"></select> *@
+                @* </div> *@
+                <div class="form-group">
+                    <label asp-for="Toimipiste" class="control-label fw-bold text-start w-100"></label>
+                    <select asp-for="ToimipisteId" class="form-control mb-2" asp-items="ViewBag.ToimipisteNimi"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Kuvaus" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="Kuvaus" class="form-control mb-2" />
+                    <span asp-validation-for="Kuvaus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="KuvaFile" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="KuvaFile" class="form-control mb-2" type="file" />
+                    <span asp-validation-for="KuvaFile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OstoPvm" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="OstoPvm" class="form-control mb-2" type="date" />
+                    <span asp-validation-for="OstoPvm" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Takuu" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="Takuu" class="form-control mb-2" type="date" />
+                    <span asp-validation-for="Takuu" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hinta" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="Hinta" class="form-control mb-2" />
+                    <span asp-validation-for="Hinta" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Aktiivinen" hidden checked class="form-control" type="checkbox" />
+                    <span asp-validation-for="Aktiivinen" class="text-danger"></span>
+                </div>
+                <div class="d-flex mt-2 gap-2 mb-4">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Tallenna</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        <i class="fas fa-arrow-left"></i> Takaisin
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
