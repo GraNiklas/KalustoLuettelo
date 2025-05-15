@@ -3,38 +3,31 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Tiedot</h1>
-
-<div>
-    <h4>Toimipiste</h4>
+<div class="ms-auto me-auto">
+    <h1>Tiedot</h1>
+    <h4>Status</h4>
     <hr />
 
     @* Tästä alkaa tapahtumatietojen katseluäkymä *@
 
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Oppilaitos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Oppilaitos)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kaupunki)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kaupunki)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ToimipisteNimi)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ToimipisteNimi)
-        </dd>
+        <div class="col-md-2">
+            <dt class="col-sm-4 text-center text-nowrap">@Html.DisplayNameFor(model => model.Oppilaitos)</dt>
+            <dd class="col-sm-8 text-center text-nowrap mb-4" text-end>@Html.DisplayFor(model => model.Oppilaitos)</dd>
+
+            <dt class="col-sm-4 text-center text-nowrap">@Html.DisplayNameFor(model => model.Kaupunki)</dt>
+            <dd class="col-sm-8 text-center text-nowrap mb-4">@Html.DisplayFor(model => model.Kaupunki)</dd>
+
+            <dt class="col-sm-4 text-center text-nowrap">@Html.DisplayNameFor(model => model.ToimipisteNimi)</dt>
+            <dd class="col-sm-8 text-center text-nowrap mb-4">@Html.DisplayFor(model => model.ToimipisteNimi)</dd>
+        </div>
     </dl>
+
+    <div class="text-center">
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.ToimipisteId"><i class="fas fa-edit"></i> Muokkaa</a>
+    <button class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
+    </div>
 </div>
-<div>
-    <div class="d-flex gap-2 mb-4">
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.ToimipisteId"><i class="fas fa-edit"></i> Muokkaa</a>
-    <button class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
-</div>
+
+
+
