@@ -17,18 +17,18 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="KäyttäjäId" />
                 <div class="form-group">
-                    <label asp-for="Käyttäjätunnus" class="control-label"></label>
-                    <input asp-for="Käyttäjätunnus" class="form-control" />
+                    <label asp-for="Käyttäjätunnus" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="Käyttäjätunnus" class="form-control mb-2" />
                     <span asp-validation-for="Käyttäjätunnus" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    @* <label asp-for="Salasana" class="control-label"></label> *@
+                    @* <label asp-for="Salasana" class="control-label fw-bold text-start w-100"></label> *@
                     <input asp-for="Salasana" class="form-control" hidden/>
                     <span asp-validation-for="Salasana" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="RooliId" class="control-label"></label>
-                    <select asp-for="RooliId" class="form-control" asp-items="ViewBag.RooliId"></select>
+                    <label asp-for="RooliId" class="control-label fw-bold text-start w-100"></label>
+                    <select asp-for="RooliId" class="form-control mb-2" asp-items="ViewBag.RooliId"></select>
                     <span asp-validation-for="RooliId" class="text-danger"></span>
                 </div>
                 <div class="d-flex mt-2 gap-2 mb-4">

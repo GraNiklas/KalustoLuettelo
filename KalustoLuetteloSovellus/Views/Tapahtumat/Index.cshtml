@@ -11,7 +11,7 @@
 
 <h1>Tapahtumahistoria</h1>
 
-<h5 class="pb-4">Uuden tapahtuman luonti tuotteen kautta</h5>
+<h5 class="pb-4">Voit luoda uuden tapahtuman Tuote-sivun kautta!</h5>
 
 
 
@@ -19,21 +19,21 @@
     <form method="get" class="d-flex gap-2 mb-2" id="filterForm">
         <div class="form-group">
             <label>Status</label>
-            <select name="statusId" class="form-control" asp-items="ViewBag.Statuses">
+            <select name="statusId" class="form-control" style="height: 38px" asp-items="ViewBag.Statuses">
                 <option value="">Kaikki</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Toimipiste</label>
-            <select name="toimipisteId" class="form-control" asp-items="ViewBag.Toimipisteet">
+            <select name="toimipisteId" class="form-control" style="height: 38px" asp-items="ViewBag.Toimipisteet">
                 <option value="">Kaikki</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Tuote</label>
-            <select name="tuoteId" class="form-control" asp-items="ViewBag.Tuotteet">
+            <select name="tuoteId" class="form-control" style="height: 38px" asp-items="ViewBag.Tuotteet">
                 <option value="">Kaikki</option>
             </select>
         </div>
