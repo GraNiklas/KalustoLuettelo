@@ -10,7 +10,6 @@
 <div class="d-flex flex-column justify-content-center align-items-center text-center">
     <h1 class="display-4">Tervetuloa KaLuun</h1>
 </div>
-<hr />
 
 @if(isLoggedIn)
 {
@@ -20,7 +19,6 @@
     <section class="d-flex flex-column w-100 ps-5 pe-5">
         <h5 class="text-center mt-5">Viimeksi lisätyt tuotteet (@Model.Count())</h5>
         <div class="carousel-container ">
-
             <button class="btn btn-sec" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
             <div class="carousel-view">
                 <div class="carousel-track" id="carouselTrack">
@@ -33,22 +31,22 @@
             <button class="btn btn-sec" id="btnRight" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-right"></i></button>
         </div>
     </section>
-
-
-    @* Tästä alkaa Status-tila näkymä *@
-
+    
     <section class="row mt-5 w-100" style="background-color:var(--tertiary-color);">
         <div class="col-2" style="background:var(--bg-color)"></div>
+
+        @* Tästä alkaa Status-tila näkymä *@
 
         <div class="col-2">@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
 
         @* Tästä alkaa Statistiikka-näkymä *@
 
+
         <div class="d-flex col-6 flex-row gap-4 p-3 justify-content-between">
+
             @{
                 var viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
             }
-
 
             @{
                 viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
@@ -56,6 +54,7 @@
                 viewModel.Total = Model.Count();
                 viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Varattu").Count();
             }
+
             @await Html.PartialAsync("_StatsPartial",viewModel)
 
             @{
@@ -64,6 +63,7 @@
                 viewModel.Total = Model.Count();
                 viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Huollossa").Count();
             }
+
             @await Html.PartialAsync("_StatsPartial",viewModel)
 
             @{
@@ -72,11 +72,14 @@
                 viewModel.Total = Model.Count();
                 viewModel.Used = Model.Where(t => t.Status.StatusNimi == "Vapaa").Count();
             }
+
             @await Html.PartialAsync("_StatsPartial",viewModel)
 
         </div>
         <div class="col-2" style="background:var(--bg-color)"></div>
     </section>
+
+    @* Tästä alkaa TOP3 näkymä *@
 
     <section>
         @{
