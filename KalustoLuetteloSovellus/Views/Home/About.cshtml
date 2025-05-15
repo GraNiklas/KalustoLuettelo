@@ -1,5 +1,8 @@
-﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
+﻿@* Tämä on About sivun näkymä *@
+
+@model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
 @using Microsoft.AspNetCore.Http
+
 @{
     ViewData["Title"] = "About";
 
@@ -7,6 +10,7 @@
     var isAdmin = RoleHelper.IsAdmin(Context);
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
+
 <div class="d-flex flex-column justify-content-center align-items-center text-center">
     <h1 class="display-4">Tervetuloa KaLuun</h1>
     <h5 class="mt-2 gap-2 mb-4">Kehitystiimi:</h5>
@@ -37,7 +41,9 @@
         </tbody>
     </table>
 
-
+<hr />
+<hr />
+<hr />
 
 @*  Tämä on vain testikäytössä ja poistetaan ennen palautusta *@
 <h5 class="mt-2 gap-2 mb-4">...Luonnostellaan tässä alla sähköpostilomakepohjaa (Poistetaan tämä kun on valmis)...</h5>
