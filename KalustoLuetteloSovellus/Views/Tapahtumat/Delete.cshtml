@@ -4,67 +4,46 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Poista</h1>
+<div class="ms-auto me-auto">
+    <h1>Poista</h1>
+    <h3>Haluatko varmasti poistaa tämän?</h3>
+    <div>
+        <h4>Tapahtuma</h4>
+        <hr />
 
-<h3>Haluatko varmasti poistaa tämän tapahtuman?</h3>
-<div>
-    <h4>Tapahtuma</h4>
-    <hr />
+        @* Tästä alkaa tapahtuman poistonäkymä *@
 
-    @* Tästä alkaa tapahtuman poistonäkymä *@
-
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AloitusPvm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AloitusPvm)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LopetusPvm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LopetusPvm)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kommentti)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kommentti)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Käyttäjä)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Käyttäjä.Käyttäjätunnus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tuote)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tuote.Kuvaus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tuote.IdNumero)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tuote.IdNumero)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="TapahtumaId" />
-        <div class=" d-flex gap-2 mb-4">
-            <div class="form-group">
-                <div class="btn btn-danger">
-                    <i class="fas fa-trash"></i>
-                    <input type="submit" value="Delete" style="background:none;border:none;color:white" />
-                </div> 
+        <dl class="row">
+            <div class="col-md-2">
+                <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.AloitusPvm)</dt>
+                <dd class="col-sm-10 text-nowrap">@Html.DisplayFor(model => model.AloitusPvm)</dd>
+                <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.LopetusPvm)</dt>
+                <dd class="col-sm-10 text-nowrap">@Html.DisplayFor(model => model.LopetusPvm)</dd>
+                <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Kommentti)</dt>
+                <dd class="col-sm-10 text-nowrap">@Html.DisplayFor(model => model.Kommentti)</dd>
+                <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Käyttäjä)</dt>
+                <dd class="col-sm-10 text-nowrap">@Html.DisplayFor(model => model.Käyttäjä.Käyttäjätunnus)</dd>
+                <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Tuote)</dt>
+                <dd class="col-sm-10 text-nowrap">@Html.DisplayFor(model => model.Tuote.Kuvaus)</dd>
+                <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Tuote.IdNumero)</dt>
+                <dd class="col-sm-10 text-nowrap">@Html.DisplayFor(model => model.Tuote.IdNumero)</dd>
             </div>
+        </dl>
+    
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="TapahtumaId" />
+            <div class=" d-flex gap-2 mb-4">
+                <div class="form-group">
+                    <div class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                        <input type="submit" value="Delete" style="background:none;border:none;color:white" />
+                    </div> 
+                </div>
             
-            <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                <i class="fas fa-arrow-left"></i> Takaisin
-            </button>
-        </div>
-    </form>
+                <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i> Takaisin
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
