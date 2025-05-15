@@ -83,6 +83,7 @@
             var topKolme = Model.OrderByDescending(t => t.Tapahtumat.Count()).Take(3); // kolme suosituinta
         }
         <h5 class="text-center mt-5">Top(3) tuotteet</h5>
+        <h6 class="text-center">Eniten tapahtumia</h6>
         <div class="d-flex flex-row">
             @foreach (var item in topKolme)
             {
