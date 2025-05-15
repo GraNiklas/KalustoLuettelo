@@ -93,35 +93,37 @@
                     <td colspan="13">
                         <div id="collapse_@item.TuoteId" class="collapse"  aria-labelledby="heading_@item.TuoteId">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex">
-
-
-                                        @{
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-column">
+                                    @{
                                         var isVarattu = item?.Status?.StatusNimi == "Varattu";
                                         var userIsOwner = item.ViimeisinTapahtuma != null && RoleHelper.IsUser(item.ViimeisinTapahtuma.KäyttäjäId, Context);
                                         var userIsAdmin = RoleHelper.IsAdmin(Context);
-                                        }
+                                    }
 
-                                        @if (isVarattu)
-                                        {
-                                        <p class="text-danger">Tämä tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kun tuote on "Vapaa"-tilassa!</p>
-                                        }
-                                        else
-                                        {
-                                        <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId">
+                                    @if (isVarattu)
+                                    {
+                                        <div class="text-danger text-start w-100 mb-2">Tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kuin tuote on "Vapaa"-tilassa!</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group text-start">
+                                        <a class="btn btn-main btn-sm mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId">
                                             <i class="fas fa-calendar-check"></i> Luo uusi tapahtuma
                                         </a>
-                                        }
+                                        </div>
+                                    }
 
-                                        @if (isVarattu && (userIsOwner || userIsAdmin))
-                                        {
-                                        <a class="btn btn-main mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
+                                    @if (isVarattu && (userIsOwner || userIsAdmin))
+                                    {
+                                        <div class="form-group text-start">
+                                        <a class="btn btn-main btn-sm mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
                                             <i class="fas fa-handshake"></i> Palauta tuote
                                         </a>
-                                        }
-                                    </div>
+                                        </div>
+                                    }
                                 </div>
+                            </div>
                                 <hr />
                                 <p class="fw-bold"> Tuotteen @item.Kuvaus 10 viimeisintä tapahtumaa. Tuotteen kaikki tapahtumat: @item.Tapahtumat.Count() </p>
                                 
