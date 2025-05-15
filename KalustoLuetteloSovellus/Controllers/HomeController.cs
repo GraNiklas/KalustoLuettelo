@@ -151,16 +151,17 @@ public class HomeController : Controller
         käyttäjä.Salasana != "")
         {
             var adminRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliNimi == "Admin");
+            var userRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliNimi == "User");
 
-            if (adminRooli == null)
+            if (userRooli == null)
             {
-                Console.WriteLine("Admin rooli ei löydy tietokannasta, mahdollinen ongelma DbInitializer luokassa");
+                Console.WriteLine("user rooli ei löydy tietokannasta, mahdollinen ongelma DbInitializer luokassa");
                 ViewBag.ErrorMessage = "Admin roolia ei löydy. Ota yhteys järjestelmänvalvojaan.";
                 return View("Error");
             }
             
 
-            käyttäjä.RooliId = adminRooli.RooliId;
+            käyttäjä.RooliId = userRooli.RooliId;
 
             var olemassaolevaKäyttäjä = await _context.Käyttäjät.FirstOrDefaultAsync(k => k.Käyttäjätunnus == käyttäjä.Käyttäjätunnus);
             if (olemassaolevaKäyttäjä != null)
