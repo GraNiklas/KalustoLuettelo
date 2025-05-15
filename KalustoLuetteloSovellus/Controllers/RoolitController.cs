@@ -79,7 +79,7 @@ namespace KalustoLuetteloSovellus.Controllers
             }
             if (IsProtected(rooli))
             {
-                TempData["ErrorMessage"] = "Ei voi muuttaa tarvittuja rooleja...";
+                TempData["ErrorMessage"] = "Kyseinen status ei ole muutettavissa....";
                 return RedirectToAction(nameof(Index));
             }
             return View(rooli);
@@ -139,7 +139,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             if (IsProtected(rooli))
             {
-                TempData["ErrorMessage"] = "Ei voi poistaa tarvittuja rooleja...";
+                TempData["ErrorMessage"] = "Kyseinen status ei ole poistettavissa...";
                 return RedirectToAction(nameof(Index));
             }
             return View(rooli);

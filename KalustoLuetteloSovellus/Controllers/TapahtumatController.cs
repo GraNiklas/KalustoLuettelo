@@ -143,7 +143,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
             return View(tapahtuma);
         }
-
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Palauta(int tuoteId)
         {
             var tuote = await _context.Tuotteet
@@ -205,6 +205,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tapahtumat/Create
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Create(int tuoteId)
         {
             var tuote = await _context.Tuotteet

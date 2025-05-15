@@ -80,7 +80,7 @@ namespace KalustoLuetteloSovellus.Controllers
             }
             if (IsProtected(status))
             {
-                TempData["ErrorMessage"] = "Ei voi muuttaa tarvittuja statuksia...";
+                TempData["ErrorMessage"] = "Kyseinen status ei ole muokattavissa...";
                 return RedirectToAction(nameof(Index));
             }
             return View(status);
@@ -141,7 +141,7 @@ namespace KalustoLuetteloSovellus.Controllers
             }
             if (IsProtected(status))
             {
-                TempData["ErrorMessage"] = "Ei voi poistaa tarvittuja statuksia...";
+                TempData["ErrorMessage"] = "Kyseinen status ei ole poistettavissa...";
                 return RedirectToAction(nameof(Index));
             }
 
