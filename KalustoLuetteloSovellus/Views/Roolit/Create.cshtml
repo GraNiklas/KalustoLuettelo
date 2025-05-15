@@ -3,33 +3,33 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="ms-auto me-auto">
+    <h1>Uusi rooli</h1>
 
-<h1>Uusi rooli</h1>
+    <h4>Rooli</h4>
+    <hr />
 
-<h4>Rooli</h4>
-<hr />
+    @* Tästä alkaa uuden tapahtuman lisäysnäkymä *@
 
-@* Tästä alkaa uuden tapahtuman lisäysnäkymä *@
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RooliNimi" class="control-label"></label>
-                <input asp-for="RooliNimi" class="form-control" />
-                <span asp-validation-for="RooliNimi" class="text-danger"></span>
-            </div>
-            <div class="d-flex mt-2 gap-2 mb-4">
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Lisää uusi</button>
-            </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        <i class="fas fa-arrow-left"></i> Takaisin
-                    </button>
-                </div>
-        </form>
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="RooliNimi" class="control-label"></label>
+                        <input asp-for="RooliNimi" class="form-control" />
+                        <span asp-validation-for="RooliNimi" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex mt-2 gap-2 mb-4">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Tallenna</button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
+                        </div>
+                    </div>  
+            </form>
+        </div>
     </div>
 </div>
 

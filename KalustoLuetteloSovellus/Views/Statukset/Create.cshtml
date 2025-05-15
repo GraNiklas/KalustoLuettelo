@@ -4,35 +4,35 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Uusi status</h1>
+<div class="ms-auto me-auto">
+    <h1>Uusi status</h1>
 
-<h4>Status</h4>
-<hr />
+    <h4>Status</h4>
+    <hr />
 
-@* Tästä alkaa uuden tapahtuman lisäysnäkymä *@
+    @* Tästä alkaa uuden tapahtuman lisäysnäkymä *@
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="StatusNimi" class="control-label"></label>
-                <input asp-for="StatusNimi" class="form-control" />
-                <span asp-validation-for="StatusNimi" class="text-danger"></span>
-            </div>
-            <div class="d-flex mt-2 gap-2 mb-4">
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Lisää uusi</button>
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        <i class="fas fa-arrow-left"></i> Takaisin
-                    </button>
+                    <label asp-for="StatusNimi" class="control-label"></label>
+                    <input asp-for="StatusNimi" class="form-control" />
+                    <span asp-validation-for="StatusNimi" class="text-danger"></span>
                 </div>
-        </form>
+                <div class="d-flex mt-2 gap-2 mb-4">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Tallenna</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
