@@ -360,6 +360,8 @@ tr:hover {
 }
 
 
+/* loin uuden UNCHANGE alaluokan nav-item nav-link luokkaan jolla määritän ettei tervehdys etusivulla ole alle viivattu*/
+
 /*  Viivauksen esto Tervetuloa viestissä*/
 .nav-item a.nav-link.UnChange {
     cursor: default !important;

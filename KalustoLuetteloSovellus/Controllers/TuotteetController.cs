@@ -58,6 +58,7 @@ namespace KalustoLuetteloSovellus.Controllers
             return View(tuotteet);
         }
 
+        //ESITTELE TÄMÄ NÄYTÖSSÄ v
         [HttpGet]
         public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
         {
@@ -117,7 +118,7 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-
+            //ESITTELE RETURN FUNKITIO
             TempData["ReturnUrl"] = Request.Headers["Referer"].ToString(); // tähän talletetaan viimeisin sivu mihin halutaan palata takasin napista.
 
             return View(tuote);
