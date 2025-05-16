@@ -37,28 +37,28 @@
             </div>
             <dl class="list-group w-100">
                 <div class="row">
+                    <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Kategoria)</dt>
+                    <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.Kategoria.KategoriaNimi)</dd>
+                </div>
+
+                <div class="row">
                     <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.OstoPvm)</dt>
                     <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.OstoPvm)</dd>
                 </div>
 
                 <div class="row">
                     <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Hinta)</dt>
-                    <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.Hinta)</dd>
+                    <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.Hinta) EUR</dd>
                 </div>
 
                 <div class="row">
-                    <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Takuu)</dt>
+                    <dt class="col-sm-2 text-nowrap  mb-5">@Html.DisplayNameFor(model => model.Takuu)</dt>
                     <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.Takuu)</dd>
                 </div>
 
                 <div class="row">
                     <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Aktiivinen)</dt>
                     <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.Aktiivinen)</dd>
-                </div>
-
-                <div class="row">
-                    <dt class="col-sm-2 text-nowrap">@Html.DisplayNameFor(model => model.Kategoria)</dt>
-                    <dd class="col-sm-10 text-end text-nowrap">@Html.DisplayFor(model => model.Kategoria.KategoriaNimi)</dd>
                 </div>
 
                 <div class="row">
@@ -76,22 +76,23 @@
         </div>
         <strong>Lisätietoja</strong>
         <div class="p-4" style="border:1px solid var(--main-color-hover)">
-        
-            <h5>Viimeisimmän tapahtuman tiedot</h5>
-            <h6>Käyttäjä:</h6>
-            <p>
-                @Model.ViimeisinTapahtuma?.Käyttäjä?.Käyttäjätunnus
-            </p>
-
-            <h6>Kommentti:</h6>
-            <p>
-                @Model.ViimeisinTapahtuma?.Kommentti
-            </p>
-
-            <h6>Aloitus pvm ja arvioitu palautus pvm:</h6>
-            <p>
-                @Model.ViimeisinTapahtuma?.AloitusPvm / @Model.ViimeisinTapahtuma?.LopetusPvm
-            </p>
+            <div class="text-center">
+                <h5 class="mb-3">Viimeisimmän tapahtuman tiedot</h5>
+            </div>
+            <div class="text-start">
+                <h6>Tapahtuman luoja:</h6>
+                <p>
+                    @Model.ViimeisinTapahtuma?.Käyttäjä?.Käyttäjätunnus
+                </p>
+                <h6>Kommentti:</h6>
+                <p>
+                    @Model.ViimeisinTapahtuma?.Kommentti
+                </p>
+                <h6>Tapahtuman luonti pvm ja arvioitu palautus pvm:</h6>
+                <p>
+                    @Model.ViimeisinTapahtuma?.AloitusPvm / @Model.ViimeisinTapahtuma?.LopetusPvm
+                </p>
+            </div>
         </div>
     <div class="mt-4">
         <a class="btn btn-primary mb-4" asp-action="Edit" asp-route-id="@Model?.TuoteId"><i class="fas fa-edit"></i>Muokkaa</a>
