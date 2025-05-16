@@ -2,30 +2,70 @@
 
 @model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
 
+@{
+    var currentSort = Context.Request.Query["sortOrder"].ToString();
+
+    string NextSort(string col)
+    {
+        return currentSort == col ? col + "_desc" :
+        currentSort == col + "_desc" ? col :
+        col;
+    }
+
+    string SortIcon(string col)
+    {
+        if (currentSort == col) return " ▲";
+        if (currentSort == col + "_desc") return " ▼";
+        return "";
+    }
+    
+}
+
 <div class="d-flex gap-2">
     <p>Kaikki tuotteet: <strong>@ViewData["Kaikki"]</strong></p>
     <p>Näytetyt tuotteet: <strong>@ViewData["Suodatetut"]</strong></p>
 </div>
 
-
     <table class="table table-hover table-bordered">
-        <thead>
-            <tr>
-                <th title="Tapahtumat">Tapahtumat</th>
-                <th title="Tuote ID">TuoteId</th>
-                <th title="Status">Status</th>
-                <th title="Tunnistenumero">Tunnistenro.</th>
-                <th title="Kuva">Kuva</th>
-                <th title="Kuvaus">Kuvaus</th>
-                <th title="Ostopäivämäärä">OstoPvm.</th>
-                <th title="Hinta">Hinta</th>
-                <th title="Takuu">Takuu</th>
-                <th title="Kategoria">Kategoria</th>
-                <th title="Toimipiste">Toimipiste</th>
-                <th title="Aktiivinen">Aktiivinen</th>
-                <th title="Toiminnot"></th>
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th title="Tapahtumat">Tapahtumat</th>
+            <th title="Tuote ID">
+                <a href="#" class="sort-link" data-sort="TuoteId">TuoteId @SortIcon("TuoteId")</a>
+            </th>
+            <th title="Status">
+                <a href="#" class="sort-link" data-sort="Status">Status @SortIcon("Status")</a>
+            </th>
+            <th title="Tunnistenumero">
+                <a href="#" class="sort-link" data-sort="IdNumero">Tunnistenro @SortIcon("IdNumero")</a>
+            </th>
+            <th title="Kuva">Kuva</th>
+            <th title="Kuvaus">
+                <a href="#" class="sort-link" data-sort="Kuvaus">Kuvaus @SortIcon("Kuvaus")</a>
+            </th>
+            <th title="Ostopäivämäärä">
+                <a href="#" class="sort-link" data-sort="OstoPvm">OstoPvm @SortIcon("OstoPvm")</a>
+            </th>
+            <th title="Hinta">
+                <a href="#" class="sort-link" data-sort="Hinta">Hinta @SortIcon("Hinta")</a>
+            </th>
+            <th title="Takuu">
+                <a href="#" class="sort-link" data-sort="Takuu">Takuu @SortIcon("Takuu")</a>
+            </th>
+            <th title="Kategoria">
+                <a href="#" class="sort-link" data-sort="Kategoria">Kategoria @SortIcon("Kategoria")</a>
+            </th>
+            <th title="Toimipiste">
+                <a href="#" class="sort-link" data-sort="Toimipiste">Toimipiste @SortIcon("Toimipiste")</a>
+            </th>
+            <th title="Aktiivinen">
+                <a href="#" class="sort-link" data-sort="Aktiivinen">Aktiivinen @SortIcon("Aktiivinen")</a>
+            </th>
+            <th title="Toiminnot"></th>
+
+        </tr>
+    </thead>
+
         <tbody>
             @foreach (var item in Model)
             {

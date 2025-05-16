@@ -84,17 +84,6 @@
         let totalPages = @ViewData["TotalPages"];
         let currentSortOrder = null;
 
-        // Pagination
-        function loadPage(page) {
-            fetch(`/Tapahtumat/GetTapahtumatPartial?pageSize=${pageSize}&currentPage=${page}`)
-                .then(response => response.text())
-                .then(html => {
-                    container.innerHTML = html;
-                    currentPage = page;
-                    updatePagination();
-                    attachSortHandlers(); // Reattach sorting after pagination
-                });
-        }
 
         function updatePagination() {
             document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
@@ -114,13 +103,15 @@
             };
         }
 
-        function loadTapahtumat({ page = currentPage } = {}) {
+        function loadTapahtumat({ page = currentPage, sortOrder =  "asc"  } = {}) {
+            currentSortOrder = sortOrder; // Track it globally
+
             const filters = getFilterParams();
 
             const params = new URLSearchParams({
                 pageSize,
                 currentPage: page,
-                sortOrder: "asc", // Järjestys on vanhimmasta uusimpaan
+                sortOrder,
                 ...filters
             });
 
@@ -134,9 +125,9 @@
                     container.innerHTML = html;
                     currentPage = page;
                     renderPagination();
-                   
+                    attachSortHandlers();
                 });
-        }
+            }
 
         // Attach sorting handlers to sort links
         function attachSortHandlers() {
@@ -159,13 +150,13 @@
         }
 
         // Event listeners for pagination buttons
-        document.getElementById('prevPage').addEventListener('click', () => {
-            if (currentPage > 0) loadPage(currentPage - 1);
-        });
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 0) loadTapahtumat({ page: currentPage - 1 });
+            });
 
-        document.getElementById('nextPage').addEventListener('click', () => {
-            if (currentPage < totalPages - 1) loadPage(currentPage + 1);
-        });
+            document.getElementById('nextPage').addEventListener('click', () => {
+                if (currentPage < totalPages - 1) loadTapahtumat({ page: currentPage + 1 });
+            });
 
         // Filter form submission
         form.addEventListener('submit', function (e) {

@@ -50,6 +50,24 @@
 
 @* Tuotelistanäkymä alkaa tästä *@
 
+
+<div id="loading-indicator" style="
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background:#333;
+    color:#fff;
+    padding:20px 40px;
+    border-radius:5px;
+    z-index:1000;
+    font-size:30px;
+    text-align:center;
+">
+    Sorting...
+</div>
+
 <div id="tuotteet-container">
     <p>Haetaan tuotteita tietokannasta...</p>
     <div class="loading-container">
@@ -86,6 +104,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let currentPage = parseInt('@ViewData["CurrentPage"]');
+        let currentSortOrder = null;  // e.g. "Status" or "Status_desc"
         const pageSize = parseInt('@ViewData["PageSize"]');
         let totalPages = parseInt('@ViewData["TotalPages"]');
         const form = document.querySelector('form');
@@ -103,7 +122,13 @@
         }
         
         // Load tuotteet with optional filters and pagination
-        function loadTuotteet({ page = currentPage, sortOrder = null } = {}) {
+        function loadTuotteet({ page = currentPage, sortOrder = currentSortOrder } = {}) {
+            const loading = document.getElementById('loading-indicator');
+            if(sortOrder != null)
+            {
+                loading.style.display = 'block'; // show loading
+            }
+    
             const filters = getFilterParams();
             let params = new URLSearchParams({
                 pageSize,
@@ -123,7 +148,15 @@
                 .then(html => {
                     document.getElementById('tuotteet-container').innerHTML = html;
                     currentPage = page;
-                    renderPagination();
+                    if(sortOrder) currentSortOrder = sortOrder;
+                     renderPagination();
+                     attachSortHandlers();
+                })
+                .catch(err => {
+                    console.error("Load error:", err);
+                })
+                .finally(() => {
+                    loading.style.display = 'none'; // hide loading
                 });
         }
 
@@ -166,39 +199,60 @@
         loadTuotteet({ page: currentPage });
     
         function renderPagination() {
-        const paginationContainer = document.querySelector(".pagination");
-        let html = `
-            <li class="page-item">
-                <button class="page-link" id="prevPage">Edellinen</button>
-            </li>
-        `;
-
-        for (let i = 0; i < totalPages; i++) {
-            html += `
-                <li class="page-item ${i === currentPage ? "active" : ""}">
-                    <button class="page-link page-number" data-page="${i}">${i + 1}</button>
+            const paginationContainer = document.querySelector(".pagination");
+            let html = `
+                <li class="page-item">
+                    <button class="page-link" id="prevPage">Edellinen</button>
                 </li>
             `;
+
+            for (let i = 0; i < totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? "active" : ""}">
+                        <button class="page-link page-number" data-page="${i}">${i + 1}</button>
+                    </li>
+                `;
+            }
+
+            html += `
+                <li class="page-item">
+                    <button class="page-link" id="nextPage">Seuraava</button>
+                </li>
+            `;
+
+            paginationContainer.innerHTML = html;
+
+            // Reattach handlers
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 0) loadTuotteet({ page: currentPage - 1 });
+            });
+
+            document.getElementById('nextPage').addEventListener('click', () => {
+                if (currentPage < totalPages - 1) loadTuotteet({ page: currentPage + 1 });
+            });
+
+            attachPaginationHandlers();
+
         }
+        function attachSortHandlers() {
+            document.querySelectorAll('.sort-link').forEach(link => {
+                link.addEventListener('click', function(e) {
 
-        html += `
-            <li class="page-item">
-                <button class="page-link" id="nextPage">Seuraava</button>
-            </li>
-        `;
+                    e.preventDefault();
+                     console.log("Sort clicked:", this.dataset.sort); // Add this
+                    const field = this.dataset.sort;
+                    if (!field) return;
 
-        paginationContainer.innerHTML = html;
+                    let newSortOrder;
+                    if (currentSortOrder === field) {
+                        newSortOrder = field + "_desc";
+                    } else {
+                        newSortOrder = field;
+                    }
 
-        // Reattach handlers
-        document.getElementById('prevPage').addEventListener('click', () => {
-            if (currentPage > 0) loadTuotteet({ page: currentPage - 1 });
-        });
-
-        document.getElementById('nextPage').addEventListener('click', () => {
-            if (currentPage < totalPages - 1) loadTuotteet({ page: currentPage + 1 });
-        });
-
-        attachPaginationHandlers();
-    }
+                    loadTuotteet({ page: 0, sortOrder: newSortOrder });
+                });
+            });
+        }
     });
 </script>

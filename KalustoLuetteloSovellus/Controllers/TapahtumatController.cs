@@ -24,7 +24,7 @@ namespace KalustoLuetteloSovellus.Controllers
         {
             // For the initial page load, set up filters and pagination info
 
-            var totalTapahtumat = _context.Tapahtumat.Count();
+            var totalTapahtumat = await _context.Tapahtumat.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalTapahtumat / pageSize);
             
             // Return the shell view

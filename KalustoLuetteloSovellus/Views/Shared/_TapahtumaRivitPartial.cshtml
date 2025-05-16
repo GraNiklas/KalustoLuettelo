@@ -23,60 +23,61 @@
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
-            @if(lajittelu)
+            @if (lajittelu)
             {
                 <th style="vertical-align: top;" title="Sort by Status">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")" data-sort="Status">
                         Status @SortIcon("Status")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tapahtuma ID">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")" data-sort="TapahtumaId">
                         TapahtumaId @SortIcon("TapahtumaId")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tuote ID">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")" data-sort="TuoteId">
                         TuoteId @SortIcon("TuoteId")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tuote">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")" data-sort="Tuote">
                         Tuote @SortIcon("Tuote")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tunnistenumero">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")" data-sort="IdNumero">
                         Tunnistenro. @SortIcon("IdNumero")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Luonti Pvm">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")" data-sort="AloitusPvm">
                         Luonti pvm @SortIcon("AloitusPvm")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Palautus Pvm">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")" data-sort="LopetusPvm">
                         Palautus pvm @SortIcon("LopetusPvm")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Kommentti">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")" data-sort="Kommentti">
                         Kommentti @SortIcon("Kommentti")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Käyttäjä">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")" data-sort="Käyttäjä">
                         Käyttäjä @SortIcon("Käyttäjä")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Toimipiste">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")">
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")" data-sort="Toimipiste">
                         Toimipiste @SortIcon("Toimipiste")
                     </a>
                 </th>
                 <th style="vertical-align: top;">Toiminnot</th>
             }
+
             else
             {
                 

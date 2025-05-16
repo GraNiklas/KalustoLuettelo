@@ -31,36 +31,38 @@ namespace KalustoLuetteloSovellus.Controllers
         public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
         {
             // Get the total number of products
-            var totalTuotteet = _context.Tuotteet.Count();
+            var totalTuotteet = await _context.Tuotteet.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalTuotteet / pageSize);
 
-            // Ensure currentPage is within bounds
+
+            //// Ensure currentPage is within bounds
             currentPage = Math.Max(0, Math.Min(currentPage, totalPages - 1));
 
 
+            // NÄITÄ EI TARVITSE HAKEA TÄSSÄ KOHTAA KUN JAVASCRIPT HAKEE SEN KUITENKIN, JOS TÄN JÄTTÄÄ POIS NIIN TUOTE SIVU LATAA NOPEAMMIN
 
-            // Get the products for the current page
-            var tuotteet = _context.Tuotteet
-                .Skip(currentPage * pageSize)
-                .Take(pageSize)
-                .ToList();
+            //// Get the products for the current page
+            //var tuotteet = await _context.Tuotteet
+            //    .Skip(currentPage * pageSize)
+            //    .Take(pageSize)
+            //    .ToListAsync();
 
 
-            // Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
+            //// Ladataan kategoriat ja aktiivisuusvalinnat ViewBagiin
             ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
             ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
             ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
-            
+
             ViewData["PageSize"] = pageSize;
             ViewData["CurrentPage"] = currentPage;
             ViewData["TotalPages"] = totalPages;
 
-            return View(tuotteet);
+            return View();
         }
 
         //ESITTELE TÄMÄ NÄYTÖSSÄ v
         [HttpGet]
-        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
+        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null, string? sortOrder = null)
         {
             var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)
@@ -78,6 +80,62 @@ namespace KalustoLuetteloSovellus.Controllers
                 tuotteet = tuotteet.Where(t => t.Aktiivinen == onAktiivinen.Value);
             if (toimipisteId.HasValue)
                 tuotteet = tuotteet.Where(t => t.ToimipisteId == toimipisteId.Value);
+
+            // Sorting
+            tuotteet = sortOrder switch
+            {
+                "Status" => tuotteet
+                    .Select(t => new
+                    {
+                        Tuote = t,
+                        LatestStatusName = t.Tapahtumat
+                            .OrderByDescending(x => x.AloitusPvm)
+                            .Select(x => x.Status.StatusNimi)
+                            .FirstOrDefault()
+                    })
+                    .OrderBy(x => x.LatestStatusName)
+                    .Select(x => x.Tuote),
+                "Status_desc" => tuotteet
+                    .Select(t => new
+                    {
+                        Tuote = t,
+                        LatestStatusName = t.Tapahtumat
+                            .OrderByDescending(x => x.AloitusPvm)
+                            .Select(x => x.Status.StatusNimi)
+                            .FirstOrDefault()
+                    })
+                    .OrderByDescending(x => x.LatestStatusName)
+                    .Select(x => x.Tuote),
+
+                "Hinta" => tuotteet.OrderBy(t => t.Hinta),
+                "Hinta_desc" => tuotteet.OrderByDescending(t => t.Hinta),
+
+                "Kuvaus" => tuotteet.OrderBy(t => t.Kuvaus),
+                "Kuvaus_desc" => tuotteet.OrderByDescending(t => t.Kuvaus),
+
+                "Ostopvm" => tuotteet.OrderBy(t => t.OstoPvm), 
+                "Ostopvm_desc" => tuotteet.OrderByDescending(t => t.OstoPvm),
+
+                "Takuu" => tuotteet.OrderBy(t => t.Takuu),
+                "Takuu_desc" => tuotteet.OrderByDescending(t => t.Takuu),
+
+                "Kategoria" => tuotteet.OrderBy(t => t.Kategoria.KategoriaNimi),
+                "Kategoria_desc" => tuotteet.OrderByDescending(t => t.Kategoria.KategoriaNimi),
+
+                "Toimipiste" => tuotteet.OrderBy(t => t.Toimipiste.ToimipisteNimi),
+                "Toimipiste_desc" => tuotteet.OrderByDescending(t => t.Toimipiste.ToimipisteNimi),
+
+                "Tunnistenro" => tuotteet.OrderBy(t => t.IdNumero),
+                "Tunnistenro_desc" => tuotteet.OrderByDescending(t => t.IdNumero),
+
+                "Aktiivinen" => tuotteet.OrderBy(t => t.Aktiivinen),
+                "Aktiivinen_desc" => tuotteet.OrderByDescending(t => t.Aktiivinen),
+
+                "TuoteId" => tuotteet.OrderBy(t => t.TuoteId),
+                "TuoteId_desc" => tuotteet.OrderByDescending(t => t.TuoteId),
+
+                _ => tuotteet.OrderBy(t => t.TuoteId)
+            };
 
             var totalFiltered = await tuotteet.CountAsync();
 
