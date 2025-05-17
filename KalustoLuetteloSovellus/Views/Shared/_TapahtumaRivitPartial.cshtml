@@ -80,8 +80,8 @@
 
             else
             {
-                
-                 //TÄMÄ ON VANHA NÄKYMÄ MISSÄ OTSIKOILLA EI OLE LAJITTELUA. JÄTÄN TÄHÄN JOS TARVITSEE PALATA VANHAAN KOSKA, UUDESSA SYSTEEMISSÄ ON ONGELMA ETTÄ SE LATAA SIVUN UUDELLEEN KUN PAINAA OTSIKOITA, TOIMII MUTTA HUONO KÄYTTÄJÄKOKEMUS. T :NIKLAS
+
+                //TÄSSÄ ON OTSIKOT ILMAN LAJITTELU OMINAISUUTTA
                 <th>@Html.DisplayNameFor(model => model.Status)</th>
                 <th>@Html.DisplayNameFor(model => model.TapahtumaId)</th>
                 <th>@Html.DisplayNameFor(model => model.Tuote.TuoteId)</th>
@@ -116,26 +116,57 @@
                         <i class="fas fa-bars me-2"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item @(!RoleHelper.IsUser(item.KäyttäjäId, Context) && !RoleHelper.IsAdmin(Context) ? "disabled" : "")"
-                               asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId">
-                                <i class="fas fa-edit me-2"></i>Muokkaa
-                            </a>
-                        </li>
+                        @{
+                            var latestStatus = Model
+                            .Where(t => t.TuoteId == item.TuoteId)
+                            .OrderByDescending(t => t.AloitusPvm)
+                            .FirstOrDefault()?.Status.StatusNimi;
+                        }
+                        @if ((RoleHelper.IsUser(item.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context)) && latestStatus != "Vapaa")
+                        {
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
+                                    <i class="fas fa-handshake me-2"></i>Palauta
+                                </a>
+                            </li>
+                        }
+
+                        @if (RoleHelper.IsUser(item.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context))
+                        {
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId">
+                                    <i class="fas fa-edit me-2"></i>Muokkaa
+                                </a>
+                            </li>
+                        }
+
                         <li>
                             <a class="dropdown-item"
                                asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId">
-                                <i class="fas fa-search me-2"></i>Tiedot
+                                <i class="fas fa-search me-2"></i>Tapahtuman tiedot
                             </a>
                         </li>
+
                         <li>
-                            <a class="dropdown-item @(RoleHelper.IsAdmin(Context) ? "" : "disabled")"
-                               asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId">
-                                <i class="fas fa-trash me-2"></i>Poista
+                            <a class="dropdown-item" asp-action="Details" asp-controller="Tuotteet" asp-route-id="@item.TuoteId">
+                                <i class="fas fa-search me-2"></i>Tuotteen tiedot
                             </a>
                         </li>
+
+                        @if (RoleHelper.IsAdmin(Context))
+                        {
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId">
+                                    <i class="fas fa-trash me-2"></i>Poista
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </td>
+
 
             </tr>
         }

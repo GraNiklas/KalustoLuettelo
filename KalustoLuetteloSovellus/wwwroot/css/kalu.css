@@ -459,7 +459,7 @@ select{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: background 1s ease, white-space 1s ease;
+    transition: white-space 1s ease;
     position: relative;
     background-color: var(--bg-color);
 }

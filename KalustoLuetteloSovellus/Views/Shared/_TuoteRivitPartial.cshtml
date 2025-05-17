@@ -18,15 +18,15 @@
         if (currentSort == col + "_desc") return " ▼";
         return "";
     }
-    
+
 }
 
-<div class="d-flex gap-2">
+<div class="d-flex gap-2 justify-content-center align-items-center">
     <p>Kaikki tuotteet: <strong>@ViewData["Kaikki"]</strong></p>
     <p>Näytetyt tuotteet: <strong>@ViewData["Suodatetut"]</strong></p>
 </div>
 
-    <table class="table table-hover table-bordered">
+<table class="table table-hover table-bordered">
     <thead>
         <tr>
             <th title="Tapahtumat">Tapahtumat</th>
@@ -66,65 +66,67 @@
         </tr>
     </thead>
 
-        <tbody>
-            @foreach (var item in Model)
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string imageSrc;
+            if (item.Kuva != null && item.Kuva.Length > 0)
             {
-                string imageSrc;
-                if (item.Kuva != null && item.Kuva.Length > 0)
-                {
-                    imageSrc = $"data:image/jpeg;base64,{Convert.ToBase64String(item.Kuva)}";
-                }
-                else
-                {
-                    imageSrc = Url.Content("~/Images/OletusKuva.png");
-                }
+                imageSrc = $"data:image/jpeg;base64,{Convert.ToBase64String(item.Kuva)}";
+            }
+            else
+            {
+                imageSrc = Url.Content("~/Images/OletusKuva.png");
+            }
 
-                <tr data-itemid="@item.TuoteId">
-                    <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-list" style="color:black"></i></a></td>
-                    <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td>
-                    <td class="ms-auto">
-                        @if (item.Aktiivinen == true)
+            <tr data-itemid="@item.TuoteId">
+                <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-list" style="color:black"></i></a></td>
+                <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td>
+                <td class="ms-auto">
+                    @if (item.Aktiivinen == true)
+                    {
+                        @if (item.Status != null)
                         {
-                            @if (item.Status != null)
-                            {
-                                @await Html.PartialAsync("_StatusPartial", item.Status)
-                            }
+                            @await Html.PartialAsync("_StatusPartial", item.Status)
                         }
-                        else
+                    }
+                    else
+                    {
+                        <i class="fas fa-circle-xmark"></i>
+                    }
+                </td>
+                <td title="@item.IdNumero">@Html.DisplayFor(modelItem => item.IdNumero)</td>
+                <td><img class="img-thumbnail" style="width:25px;height:25px;object-fit:cover" src="@imageSrc" alt="Tuote kuva" /></td>
+                <td title="@item.Kuvaus">@Html.DisplayFor(modelItem => item.Kuvaus)</td>
+                <td title="@item.OstoPvm">@Html.DisplayFor(modelItem => item.OstoPvm)</td>
+                <td title="@item.Hinta">@Html.DisplayFor(modelItem => item.Hinta)</td>
+                <td title="@item.Takuu">@Html.DisplayFor(modelItem => item.Takuu)</td>
+                <td title="@item.Kategoria.KategoriaNimi">@if (item.Kategoria != null) @Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi) </td>
+                <td title="@item.Toimipiste.KaupunkiJaToimipisteNimi">@if (item.Toimipiste != null) @Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
+                <td title="@item.Aktiivinen">@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
+                <td class="dropdown" style="overflow: visible;">
+                    <button class="btn btn-main dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bars me-2"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TuoteId">
+                                <i class="fas fa-edit me-2"></i>Muokkaa
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TuoteId">
+                                <i class="fas fa-search me-2"></i>Tiedot
+                            </a>
+                        </li>
+                        @if(KalustoLuetteloSovellus.RoleHelper.IsAdmin(Context))
                         {
-                            <i class="fas fa-circle-xmark"></i>
-                        }
-                    </td>
-                    <td title="@item.IdNumero">@Html.DisplayFor(modelItem => item.IdNumero)</td>
-                    <td><img class="img-thumbnail" style="width:25px;height:25px;object-fit:cover" src="@imageSrc" alt="Tuote kuva" /></td>
-                    <td title="@item.Kuvaus">@Html.DisplayFor(modelItem => item.Kuvaus)</td>
-                    <td title="@item.OstoPvm">@Html.DisplayFor(modelItem => item.OstoPvm)</td>
-                    <td title="@item.Hinta">@Html.DisplayFor(modelItem => item.Hinta)</td>
-                    <td title="@item.Takuu">@Html.DisplayFor(modelItem => item.Takuu)</td>
-                    <td title="@item.Kategoria.KategoriaNimi">@if (item.Kategoria != null) @Html.DisplayFor(modelItem => item.Kategoria.KategoriaNimi) </td>
-                    <td title="@item.Toimipiste.KaupunkiJaToimipisteNimi">@if (item.Toimipiste != null) @Html.DisplayFor(modelItem => item.Toimipiste.ToimipisteNimi)</td>
-                    <td title="@item.Aktiivinen">@Html.DisplayFor(modelItem => item.Aktiivinen)</td>
-                    <td class="dropdown" style="overflow: visible;">
-                        <button class="btn btn-main dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-bars me-2"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TuoteId">
-                                    <i class="fas fa-edit me-2"></i>Muokkaa
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TuoteId">
-                                    <i class="fas fa-search me-2"></i>Tiedot
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item @(KalustoLuetteloSovellus.RoleHelper.IsAdmin(Context) ? "" : "disabled")"
-                                    asp-action="Delete" asp-route-id="@item.TuoteId">
+                        <li>
+                            <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.TuoteId">
                                     <i class="fas fa-trash me-2"></i>Poista
                                 </a>
                             </li>
+                        }
                         </ul>
                     </td>
 

@@ -9,7 +9,8 @@
 @* Tässä näytetään omat tiedot rivinäkymänä *@
 
 <br />
-<table class="table table-bordered">
+<h5>Käyttäjän tiedot</h5>
+<table class="table table-bordered w-50">
     <thead>
         <tr>
             <th>Käyttäjätunnus</th>
@@ -24,8 +25,19 @@
             <td>@Model.Käyttäjätunnus</td>
             <td>@Model.Rooli.RooliNimi</td>
             <td>@Model.Tapahtumat.Count()kpl</td>
-            <td>@Model.Tapahtumat.Where(t => t.Tuote.Status.StatusNimi != "Vapaa" && RoleHelper.IsUser(t.KäyttäjäId,Context)).Count()kpl (tämä ei ihan toimi oikein)</td>
-            @{
+            <td>
+                @{
+                    var käyttäjänAukiOlevatTapahtumat = Model.Tapahtumat
+                    .GroupBy(t => t.TuoteId)
+                    .Select(g => g.OrderByDescending(e => e.AloitusPvm).FirstOrDefault())
+                    .Where(e => e != null
+                    && e.Status?.StatusNimi != "Vapaa"
+                    && RoleHelper.IsUser(e.KäyttäjäId, Context))
+                    .ToList();
+                }
+                @käyttäjänAukiOlevatTapahtumat.Count() kpl
+                @{
+
                 if(!Model.Tapahtumat.Any())
                 {
                     <td><a class="btn btn-main" asp-controller="Home" onclick="return confirm('Haluatko varmasti poistaa tilin?')" asp-action="DeleteAccount" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-trash"></i> Poista tili</a></td>
@@ -36,6 +48,9 @@
 </table>
 
 @* Tästä alkaa käyttäjän luomat tapahtumarivit *@
+
+@* <h5>Käyttäjän auki olevat tapahtumat</h5> *@
+@* @await Html.PartialAsync("_TapahtumaRivitPartial", käyttäjänAukiOlevatTapahtumat) *@
 
 <h5>Käyttäjän luomat tapahtumat</h5>
 @await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat)
