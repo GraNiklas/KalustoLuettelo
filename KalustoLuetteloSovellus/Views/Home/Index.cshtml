@@ -33,16 +33,16 @@
     </section>
     
     <section class="row mt-5 w-100" style="background-color:var(--tertiary-color);">
-        <div class="col-2" style="background:var(--bg-color)"></div>
+        <div class="col-xl-2" style="background:var(--bg-color)"></div>
 
         @* Tästä alkaa Status-tila näkymä *@
 
-        <div class="col-2">@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
+        <div class="col-xl-2">@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
 
         @* Tästä alkaa Statistiikka-näkymä *@
 
 
-        <div class="d-flex col-6 flex-row gap-4 p-3 justify-content-between">
+        <div class="d-flex col-xl-6 flex-row gap-4 p-3 justify-content-between">
 
             @{
                 var viewModel = new KalustoLuetteloSovellus.ViewModels.StatsViewModel();
@@ -76,21 +76,24 @@
             @await Html.PartialAsync("_StatsPartial",viewModel)
 
         </div>
-        <div class="col-2" style="background:var(--bg-color)"></div>
+        <div class="col-xl-2" style="background:var(--bg-color)"></div>
     </section>
 
     @* Tästä alkaa TOP3 näkymä *@
 
-    <section>
-        @{
-            var topKolme = Model.OrderByDescending(t => t.Tapahtumat.Count()).Take(3); // kolme suosituinta
-        }
-        <h5 class="text-center mt-5">Top(3) tuotteet</h5>
-        <h6 class="text-center">Eniten tapahtumia</h6>
-        <div class="d-flex flex-row">
+    <section class="mt-5 w-100">
+        <h5 class="text-center">Eniten käytetyt tuotteet</h5>
+
+        <div class="row justify-content-center">
+            @{
+                var topKolme = Model.OrderByDescending(t => t.Tapahtumat.Count()).Take(3);
+            }
+
             @foreach (var item in topKolme)
             {
-            @await Html.PartialAsync("_TuoteKorttiPartialSmall",item)
+                <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-center mb-3">
+                    @await Html.PartialAsync("_TuoteKorttiPartialSmall", item)
+                </div>
             }
         </div>
     </section>

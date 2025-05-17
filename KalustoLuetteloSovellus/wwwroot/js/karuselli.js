@@ -11,9 +11,14 @@
     function getItemWidth() {
         return items[0].offsetWidth;
     }
-
+    function getItemFullWidth() {
+        const style = window.getComputedStyle(items[0]);
+        const marginLeft = parseFloat(style.marginLeft);
+        const marginRight = parseFloat(style.marginRight);
+        return items[0].offsetWidth + marginLeft + marginRight;
+    }
     function getVisibleCount() {
-        return Math.floor(view.offsetWidth / getItemWidth());
+        return Math.floor(view.offsetWidth / getItemFullWidth());
     }
 
     function getMaxIndex() {
@@ -36,7 +41,7 @@
     updateButtons(currentIndex);
 
     btnRight.addEventListener('click', () => {
-        const itemWidth = getItemWidth();
+        const itemWidth = getItemFullWidth();
         const maxIndex = getMaxIndex();
         if (currentIndex < maxIndex) {
             currentIndex++;
@@ -46,7 +51,7 @@
     });
 
     btnLeft.addEventListener('click', () => {
-        const itemWidth = getItemWidth();
+        const itemWidth = getItemFullWidth();
         if (currentIndex > 0) {
             currentIndex--;
             updateCarousel(itemWidth);
@@ -57,7 +62,7 @@
     // Auto-scroll
     const interval = 3000; // ms
     setInterval(() => {
-        const itemWidth = getItemWidth();
+        const itemWidth = getItemFullWidth();
         const maxIndex = getMaxIndex();
         if (currentIndex < maxIndex) {
             currentIndex++;

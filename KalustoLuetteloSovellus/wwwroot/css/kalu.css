@@ -34,7 +34,10 @@ navbar-toggler-icon{
     color:red!important;
     background-color:red!important;
 }
-
+html{
+    height:100%;
+    margin:0;
+}
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     display: flex;
@@ -44,22 +47,31 @@ body {
     background-image: url(../Images/hero-bg.svg);
     background-repeat: no-repeat;
     background-position: right top;
-    min-height: 34rem;
-    margin:0;
-    padding-bottom:256px;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    height: 100%;
+    /*    padding-bottom: 256px;*/
+}
+.main {
+    flex: 1 0 auto; /* grow and take remaining space */
 }
 
 footer {
-    position:absolute;
-    bottom:0;
+    flex-shrink: 0; /* prevent footer from shrinking */
+    position: relative; /* instead of absolute */
     width: 100%;
-    padding-bottom: 32px;
+    padding: 16px 32px; /* vertical and horizontal padding */
     background-color: var(--footer-color);
     background-image: url(../Images/footer-bg.svg);
     background-position: right bottom;
     background-repeat: no-repeat;
     background-size: contain;
-    height:15vh;
+    /* Remove fixed height to let content define height */
+    min-height: 10vh; /* optional: minimum height */
+    box-sizing: border-box; /* ensure padding included in height */
 }
 
 .careeria-logo {

@@ -41,11 +41,11 @@
     }
 
     @* Bodyn renderöinti *@
-
-    <div class="d-flex flex-column align-items-center justify-content-center text-center">
-        @RenderBody()
+    <div class="main">
+        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+            @RenderBody()
+        </div>
     </div>
-
     @* Lisää jQuery suoraan *@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -55,13 +55,11 @@
     @*Footer-osio *@
     @RenderSection("scripts", required: false)
 
-    <footer class="border-top footer text-muted mt-5 p-5">
-        <div class="d-flex justify-content-around align-items-center">
-            <img class="careeria-logo" src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px;width:auto;filter:invert()" />
-            <p>
-                &copy; 2025 - KalustoLuetteloSovellus 
-            </p>
-            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="d-flex flex-wrap justify-content-center justify-content-md-around align-items-center gap-3 p-3">
+            <img class="careeria-logo" src="@Url.Content("~/Images/Careeria-logo.png")" style="height:90px; width:auto; filter:invert()" />
+            <p class="mb-0">&copy; 2025 - KalustoLuetteloSovellus</p>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Privacy</a>
         </div>
     </footer>
 </body>
