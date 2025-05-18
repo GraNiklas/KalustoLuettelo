@@ -34,15 +34,11 @@
             <input type="hidden" asp-for="TapahtumaId" />
             <div class=" d-flex gap-2 mb-4">
                 <div class="form-group">
-                    <div class="btn btn-danger">
-                        <i class="fas fa-trash"></i>
-                        <input type="submit" value="Delete" style="background:none;border:none;color:white" />
-                    </div> 
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Poista</button>
                 </div>
-            
-                <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                    <i class="fas fa-arrow-left"></i> Takaisin
-                </button>
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
+                </div>
             </div>
         </form>
     </div>

@@ -43,42 +43,26 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.KäyttäjäId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Käyttäjätunnus)
-            </th>
-            @* <th> *@
-            @*     @Html.DisplayNameFor(model => model.Salasana) *@
-            @* </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Rooli)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.KäyttäjäId)</th>
+            <th>@Html.DisplayNameFor(model => model.Käyttäjätunnus)</th>
+            @* <th>@Html.DisplayNameFor(model => model.Salasana)</th> *@
+            <th>@Html.DisplayNameFor(model => model.Rooli)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.KäyttäjäId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Käyttäjätunnus)
-            </td>
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.Salasana) *@
-            @* </td> *@
-            <td>
-                @if(item.Rooli != null)@Html.DisplayFor(modelItem => item.Rooli.RooliNimi)
-            </td>
+            <td>@Html.DisplayFor(modelItem => item.KäyttäjäId)</td>
+            <td>@Html.DisplayFor(modelItem => item.Käyttäjätunnus)</td>
+            @* <td>@Html.DisplayFor(modelItem => item.Salasana)</td> *@
+            <td>@if(item.Rooli != null)@Html.DisplayFor(modelItem => item.Rooli.RooliNimi)</td>
             <td>
                 <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.KäyttäjäId"><i class="fas fa-edit"></i></a>
                 <a class="btn btn-main" asp-action="Details" asp-route-id="@item.KäyttäjäId"><i class="fas fa-search"></i></a> 
                 <a class="btn btn-main" asp-action="Delete" asp-route-id="@item.KäyttäjäId"><i class="fas fa-trash"></i></a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

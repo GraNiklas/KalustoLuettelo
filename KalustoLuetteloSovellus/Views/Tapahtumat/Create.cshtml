@@ -14,7 +14,6 @@
         <h4>Tapahtuma</h4>
 
         <div class="row col-12">
-            <div class="col-12">
                 <form asp-action="Create" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @* <div class="form-group"> *@
@@ -48,19 +47,15 @@
                     </div>
                     <input type="hidden" asp-for="KäyttäjäId" />
                     <input type="hidden" asp-for="TuoteId" />
-                    <div class="d-flex mt-2">
-                        <div class="form-group d-flex gap-2">
-                            <div class="btn btn-primary">
-                                <i class="fas fa-save"></i>
-                                <input type="submit" value="Tallenna" style="background:none;border:none;color:white" />
-                            </div>
-                            <button type="button" class="btn btn-sec" onclick="window.history.back()">
-                                <i class="fas fa-arrow-left"></i> Takaisin
-                            </button>
+                    <div class="d-flex mt-2 gap-2 mb-4">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Tallenna</button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
                         </div>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
    
