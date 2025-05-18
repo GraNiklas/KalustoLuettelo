@@ -81,7 +81,10 @@
 
             <tr data-itemid="@item.TuoteId">
                 <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-list" style="color:black"></i></a></td>
-                <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td>
+                <td title="@item.TuoteId">
+                    <a asp-action="Details" asp-controller="Tuotteet" asp-route-id="@item.TuoteId">@item.TuoteId</a>
+                </td>
+                @* <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td> *@
                 <td class="ms-auto">
                     @if (item.Aktiivinen == true)
                     {
