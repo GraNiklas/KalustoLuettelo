@@ -9,7 +9,7 @@ namespace KalustoLuetteloSovellus.Models;
 public partial class Tuote
 {
     public int TuoteId { get; set; }
-    [Display(Name = "Tunnistenro")]
+    [Display(Name = "TunnisteNro")]
     public string IdNumero { get; set; } = null!;
 
     public int KategoriaId { get; set; }

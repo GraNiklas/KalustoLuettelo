@@ -125,8 +125,8 @@ namespace KalustoLuetteloSovellus.Controllers
                 "Toimipiste" => tuotteet.OrderBy(t => t.Toimipiste.ToimipisteNimi),
                 "Toimipiste_desc" => tuotteet.OrderByDescending(t => t.Toimipiste.ToimipisteNimi),
 
-                "Tunnistenro" => tuotteet.OrderBy(t => t.IdNumero),
-                "Tunnistenro_desc" => tuotteet.OrderByDescending(t => t.IdNumero),
+                "TunnisteNro" => tuotteet.OrderBy(t => t.IdNumero),
+                "TunnisteNro_desc" => tuotteet.OrderByDescending(t => t.IdNumero),
 
                 "Aktiivinen" => tuotteet.OrderBy(t => t.Aktiivinen),
                 "Aktiivinen_desc" => tuotteet.OrderByDescending(t => t.Aktiivinen),
