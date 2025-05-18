@@ -26,53 +26,43 @@
             @if (lajittelu)
             {
                 <th style="vertical-align: top;" title="Sort by Status">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")" data-sort="Status">
-                        Status @SortIcon("Status")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Status")" data-sort="Status">Status @SortIcon("Status")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tapahtuma ID">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")" data-sort="TapahtumaId">
-                        TapahtumaId @SortIcon("TapahtumaId")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TapahtumaId")" data-sort="TapahtumaId">TapahtumaId @SortIcon("TapahtumaId")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tuote ID">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")" data-sort="TuoteId">
-                        TuoteId @SortIcon("TuoteId")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("TuoteId")" data-sort="TuoteId">TuoteId @SortIcon("TuoteId")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tuote">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")" data-sort="Tuote">
-                        Tuote @SortIcon("Tuote")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Tuote")" data-sort="Tuote">Tuote @SortIcon("Tuote")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Tunnistenumero">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")" data-sort="IdNumero">
-                        Tunnistenro. @SortIcon("IdNumero")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("IdNumero")" data-sort="IdNumero">Tunnistenro. @SortIcon("IdNumero")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Luonti Pvm">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")" data-sort="AloitusPvm">
-                        Luonti pvm @SortIcon("AloitusPvm")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("AloitusPvm")" data-sort="AloitusPvm">Luonti pvm @SortIcon("AloitusPvm")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Palautus Pvm">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")" data-sort="LopetusPvm">
-                        Palautus pvm @SortIcon("LopetusPvm")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("LopetusPvm")" data-sort="LopetusPvm">Palautus pvm @SortIcon("LopetusPvm")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Kommentti">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")" data-sort="Kommentti">
-                        Kommentti @SortIcon("Kommentti")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Kommentti")" data-sort="Kommentti">Kommentti @SortIcon("Kommentti")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Käyttäjä">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")" data-sort="Käyttäjä">
-                        Käyttäjä @SortIcon("Käyttäjä")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Käyttäjä")" data-sort="Käyttäjä">Käyttäjä @SortIcon("Käyttäjä")
                     </a>
                 </th>
                 <th style="vertical-align: top;" title="Sort by Toimipiste">
-                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")" data-sort="Toimipiste">
-                        Toimipiste @SortIcon("Toimipiste")
+                    <a class="sort-link" asp-action="Index" asp-route-sortOrder="@NextSort("Toimipiste")" data-sort="Toimipiste">Toimipiste @SortIcon("Toimipiste")
                     </a>
                 </th>
                 <th style="vertical-align: top;">Toiminnot</th>
@@ -125,9 +115,7 @@
                         @if ((RoleHelper.IsUser(item.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context)) && latestStatus != "Vapaa")
                         {
                             <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId">
-                                    <i class="fas fa-handshake me-2"></i>Palauta
+                                <a class="dropdown-item" asp-controller="Tapahtumat" asp-action="Palauta" asp-route-tuoteId="@item.TuoteId"><i class="fas fa-handshake me-2"></i>Palauta
                                 </a>
                             </li>
                         }
@@ -135,23 +123,19 @@
                         @if (RoleHelper.IsUser(item.KäyttäjäId, Context) || RoleHelper.IsAdmin(Context))
                         {
                             <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId">
-                                    <i class="fas fa-edit me-2"></i>Muokkaa
+                                <a class="dropdown-item" asp-controller="Tapahtumat" asp-action="Edit" asp-route-id="@item.TapahtumaId"><i class="fas fa-edit me-2"></i>Muokkaa
                                 </a>
                             </li>
                         }
 
                         <li>
                             <a class="dropdown-item"
-                               asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId">
-                                <i class="fas fa-search me-2"></i>Tapahtuman tiedot
+                               asp-controller="Tapahtumat" asp-action="Details" asp-route-id="@item.TapahtumaId"><i class="fas fa-search me-2"></i>Tapahtuman tiedot
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item" asp-action="Details" asp-controller="Tuotteet" asp-route-id="@item.TuoteId">
-                                <i class="fas fa-search me-2"></i>Tuotteen tiedot
+                            <a class="dropdown-item" asp-action="Details" asp-controller="Tuotteet" asp-route-id="@item.TuoteId"><i class="fas fa-search me-2"></i>Tuotteen tiedot
                             </a>
                         </li>
 
@@ -159,8 +143,7 @@
                         {
                             <li>
                                 <a class="dropdown-item"
-                                   asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId">
-                                    <i class="fas fa-trash me-2"></i>Poista
+                                   asp-controller="Tapahtumat" asp-action="Delete" asp-route-id="@item.TapahtumaId"><i class="fas fa-trash me-2"></i>Poista
                                 </a>
                             </li>
                         }

@@ -56,7 +56,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 "IdNumero" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.IdNumero) : tapahtumat.OrderBy(t => t.Tuote.IdNumero),
                 "Käyttäjä" => descending ? tapahtumat.OrderByDescending(t => t.Käyttäjä.Käyttäjätunnus) : tapahtumat.OrderBy(t => t.Käyttäjä.Käyttäjätunnus),
                 "Toimipiste" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Toimipiste.ToimipisteNimi) : tapahtumat.OrderBy(t => t.Tuote.Toimipiste.ToimipisteNimi),
-                _ => tapahtumat.OrderByDescending(t => t.AloitusPvm),
+                _ => tapahtumat.OrderByDescending(t => t.Tuote.IdNumero),
             };
         }
 

@@ -134,7 +134,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 "TuoteId" => tuotteet.OrderBy(t => t.TuoteId),
                 "TuoteId_desc" => tuotteet.OrderByDescending(t => t.TuoteId),
 
-                _ => tuotteet.OrderBy(t => t.TuoteId)
+                _ => tuotteet.OrderByDescending(t => t.TuoteId)
             };
 
             var totalFiltered = await tuotteet.CountAsync();
