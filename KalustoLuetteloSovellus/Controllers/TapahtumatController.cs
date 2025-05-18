@@ -82,6 +82,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 }
             }
 
+
             // Apply filtering
             if (statusId.HasValue)
             {

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<KalustoLuetteloSovellus.Models.Tuote>
+
+<link rel="stylesheet" href="~/css/statusbadge.css" />
+
+<div class="d-flex flex-row justify-content-center text-center">
+    <div class="m-3">
+        <div class="card h-100 d-flex align-items-center justify-content-center" style="min-width: 250px;">
+            <div class="card-body position-relative text-nowrap">
+                <div style="position: absolute; top: 10px; right: 20px;">
+                    @{
+                        var statusVarattu = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Varattu" };
+                    }
+                    @await Html.PartialAsync("_StatusPartial", statusVarattu)
+                </div>
+                <h5 class="card-title">Varatut</h5>
+                <p class="card-text">Katso varatut tuotteet</p>
+                <a class="btn btn-primary" asp-action="Varatuttuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
+            </div>
+        </div>
+    </div>
+    <div class="m-3">
+        <div class="card h-100 d-flex align-items-center justify-content-center" style="min-width: 250px;">
+            <div class="card-body position-relative text-nowrap">
+                <div style="position: absolute; top: 10px; right: 20px;">
+                    @{
+                        var statusHuollossa = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Huollossa" };
+                    }
+                    @await Html.PartialAsync("_StatusPartial", statusHuollossa)
+                </div>
+                <h5 class="card-title">Huollossa</h5>
+                <p class="card-text">Katso huollossa olevat tuotteet</p>
+                <a class="btn btn-primary" asp-action="Huollossatuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
+            </div>
+        </div>
+    </div>    
+</div>
+

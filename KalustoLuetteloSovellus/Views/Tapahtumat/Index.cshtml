@@ -13,29 +13,23 @@
 
 <h5 class="pb-4">Voit luoda uuden tapahtuman Tuote-sivun kautta!</h5>
 
-
+@* Tästä alkaa suodatin näkymä *@
 
 <div class="d-flex gap-2">
     <form method="get" class="d-flex gap-2 mb-2" id="filterForm">
         <div class="form-group">
             <label>Status</label>
-            <select name="statusId" class="form-control" style="height: 38px" asp-items="ViewBag.Statuses">
-                <option value="">Kaikki</option>
-            </select>
+            <select name="statusId" class="form-control" style="height: 38px" asp-items="ViewBag.Statuses"><option value="">Kaikki</option></select>
         </div>
 
         <div class="form-group">
             <label>Toimipiste</label>
-            <select name="toimipisteId" class="form-control" style="height: 38px" asp-items="ViewBag.Toimipisteet">
-                <option value="">Kaikki</option>
-            </select>
+            <select name="toimipisteId" class="form-control" style="height: 38px" asp-items="ViewBag.Toimipisteet"><option value="">Kaikki</option></select>
         </div>
 
         <div class="form-group">
             <label>Tuote</label>
-            <select name="tuoteId" class="form-control" style="height: 38px" asp-items="ViewBag.Tuotteet">
-                <option value="">Kaikki</option>
-            </select>
+            <select name="tuoteId" class="form-control" style="height: 38px" asp-items="ViewBag.Tuotteet"><option value="">Kaikki</option></select>
         </div>
         <button type="submit" class="btn btn-main mt-4"><i class="fas fa-filter"></i> Suodata</button>
     </form>
@@ -44,12 +38,17 @@
 @*     <input type="checkbox" id="colorToggle" /> *@
 @*     Värikoodaus *@
 @* </label> *@
+
+@* Tästä alkaa tapahtumahistorialistaus *@
+
 <div id="tapahtumat-container">
     <p>Haetaan tapahtumia tietokannasta...</p>
     <div class="loading-container">
         <div class="loading"></div>
     </div>
 </div>
+
+@* Tästä alkaa sivutus osio *@
 
 <!-- Hidden totalPages value -->
 <span id="totalPages" style="display:none;">@totalPages</span>

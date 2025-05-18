@@ -17,7 +17,7 @@
             <th>Rooli</th>
             <th>Tapahtumia</th>
             <th>Palauttamattomia</th>
-            <th>Toiminnot</th>
+            @* <th>Toiminnot</th> *@
         </tr>
     </thead>
     <tbody>
@@ -46,6 +46,10 @@
         </tr>
     </tbody>
 </table>
+
+<div class="col-xl-2">
+    @await Html.PartialAsync("_TuoteStatusKortitPalautettavatPartial", new List<KalustoLuetteloSovellus.Models.Tuote>())
+</div>
 
 @* Tästä alkaa käyttäjän luomat tapahtumarivit *@
 
