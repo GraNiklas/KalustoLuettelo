@@ -116,7 +116,10 @@ public class HomeController : Controller
             return View("User");
         }
     }
-
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
     public IActionResult Privacy()
     {
         return View();

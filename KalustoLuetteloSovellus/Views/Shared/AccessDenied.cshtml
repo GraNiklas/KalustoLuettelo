@@ -1,0 +1,13 @@
+﻿@* Errorsivunäkymä *@
+
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">PÄÄSY EVÄTTY</h1>
+@* <h1 class="text-danger">ACCESS DENIED</h1> *@
+<h2 class="text-danger">Sinulla ei ole valtuutuksia nähdä tätä sivua.</h2>
+@* <h2 class="text-danger">You are not authorized to view this page.</h2> *@
+
+<button class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
