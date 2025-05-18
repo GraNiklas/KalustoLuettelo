@@ -76,7 +76,7 @@ namespace KalustoLuetteloSovellus.Controllers
         [ServiceFilter(typeof(AdminOnlyFilter))]
         public IActionResult Create()
         {
-            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId");
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliNimi");
             return View();
         }
 
@@ -94,7 +94,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId", käyttäjä.RooliId);
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliNimi", käyttäjä.RooliId);
             return View(käyttäjä);
         }
 
@@ -112,7 +112,7 @@ namespace KalustoLuetteloSovellus.Controllers
             {
                 return NotFound();
             }
-            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId", käyttäjä.RooliId);
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliNimi", käyttäjä.RooliId);
             return View(käyttäjä);
         }
 
@@ -149,7 +149,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliId", käyttäjä.RooliId);
+            ViewData["RooliId"] = new SelectList(_context.Roolit, "RooliId", "RooliNimi", käyttäjä.RooliId);
             return View(käyttäjä);
         }
 
