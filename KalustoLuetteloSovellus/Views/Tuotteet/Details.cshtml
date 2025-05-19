@@ -14,8 +14,19 @@
             <h4 class="m-0">@Html.DisplayFor(model => model.Kuvaus)</h4>
 
             <div class="d-flex flex-row gap-3">
-                <h4 class="m-0"> @Model.Status?.StatusNimi</h4>
-                <h4 class="m-0 align-content-center"> @await Html.PartialAsync("_StatusPartial", Model.Status)</h4>
+                @if (Model.Aktiivinen == true)
+                {
+                    @if (Model.Status != null)
+                    {
+                        <h4 class="m-0"> @Model.Status?.StatusNimi</h4>
+                        <h4 class="m-0 align-content-center"> @await Html.PartialAsync("_StatusPartial", Model.Status)</h4>
+                    }
+                }
+                else
+                {
+                    <h4 class="m-0">Deaktivoitu</h4>
+                    <i class="align-content-center fas fa-circle-xmark"></i>
+                }
             </div>
         </div>
     
