@@ -64,7 +64,10 @@
                 imageSrc = Url.Content("~/Images/OletusKuva.png");
             }
 
-            <tr data-itemid="@item.TuoteId">
+
+            var deaktivoituTyyli = item.Aktiivinen ? "" : "opacity:0.3";
+            
+            <tr data-itemid="@item.TuoteId" style="@deaktivoituTyyli;">
                 <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-list" style="color:black"></i></a></td>
                 <td title="@item.TuoteId"><a class="nav-link" asp-action="Details" asp-controller="Tuotteet" asp-route-id="@item.TuoteId">@item.TuoteId</a></td>
                 @* <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td> *@
@@ -97,7 +100,7 @@
                         <li><a class="dropdown-item" asp-action="Details" asp-route-id="@item.TuoteId"><i class="fas fa-search me-2"></i>Tiedot</a></li>
                         @if(KalustoLuetteloSovellus.RoleHelper.IsAdmin(Context))
                         {
-                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash me-2"></i>Poista</a></li>
+                            <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.TuoteId"><i class="fas fa-trash me-2"></i>Poista</a></li>
                         }
                     </ul>
                 </td>
@@ -113,17 +116,22 @@
                                         var isVarattu = item?.Status?.StatusNimi == "Varattu";
                                         var userIsOwner = item.ViimeisinTapahtuma != null && RoleHelper.IsUser(item.ViimeisinTapahtuma.KäyttäjäId, Context);
                                         var userIsAdmin = RoleHelper.IsAdmin(Context);
+                                        var voiLuodaTapahtuman = !isVarattu && item.Aktiivinen;
                                     }
 
-                                    @if (isVarattu)
+                                    @if (voiLuodaTapahtuman)
+                                    {
+                                        <div class="form-group text-start">
+                                            <a class="btn btn-main btn-sm mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId"><i class="fas fa-calendar-check"></i> Luo tapahtuma</a>
+                                        </div>
+                                    }
+                                    else if(item.Aktiivinen)
                                     {
                                         <div class="text-danger text-start w-100 mb-2">Tuote on varattu! Et voi luoda uutta tapahtumaa, ennen kuin tuote on "Vapaa"-tilassa!</div>
                                     }
                                     else
                                     {
-                                        <div class="form-group text-start">
-                                            <a class="btn btn-main btn-sm mt-2 mb-2" asp-controller="Tapahtumat" asp-action="Create" asp-route-tuoteId="@item.TuoteId"><i class="fas fa-calendar-check"></i> Luo tapahtuma</a>
-                                        </div>
+                                        <div class="text-danger text-start w-100 mb-2">Tuote ei ole aktiivinen! Et voi luoda uutta tapahtumaa, ennen kuin tuote on "Aktiivinen"-tilassa!</div>
                                     }
 
                                     @if (isVarattu && (userIsOwner || userIsAdmin))

@@ -159,6 +159,9 @@ tr:hover {
     color:var(--text-color);
     border-color: var(--text-sec-color)!important;
 }
+.page-link:hover {
+    background-color:var(--bg-sec-color);
+}
 .page-item.active .page-link{
     background-color: var(--main-color)!important;
     border-color: var(--main-color-hover)!important;
