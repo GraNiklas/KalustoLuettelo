@@ -17,7 +17,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="TuoteId" />
                 <div class="form-group">
-                    <label asp-for="IdNumero" class="control-label fw-bold text-start w-100">Tunnistenumero</label>
+                    <label asp-for="IdNumero" class="control-label fw-bold text-start w-100"></label>
                     <input asp-for="IdNumero" class="form-control mb-2" />
                     <span asp-validation-for="IdNumero" class="text-danger"></span>
                 </div>
@@ -82,17 +82,14 @@
                 </div>
                 <div class="d-flex mt-2 gap-2 mb-4">
                     <div class="form-group">
-                        <div class="btn btn-primary">
-                            <i class="fas fa-save"></i>
-                            <input type="submit" value="Tallenna" style="background:none;border:none;color:white" />
-                        </div>
-                        @*Esittele window history back jonka löysin koodaus kysely palstalta*@
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Tallenna</button>
                     </div>
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        <i class="fas fa-arrow-left"></i> Takaisin
-                    </button>
-                </div>     
-                </form>
+                    @*Esittele window history back jonka löysin koodaus kysely palstalta*@
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Takaisin</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -20,10 +20,7 @@
     }
 }
 
-<a style="color: var(--text-color); text-decoration: none;"
-asp-controller="Tuotteet"
-asp-action="Details"
-asp-route-id="@Model.TuoteId">
+<a style="color: var(--text-color); text-decoration: none;"asp-controller="Tuotteet"asp-action="Details"asp-route-id="@Model.TuoteId">
     @{
         var filter = "";
         // if (imageSrc == Url.Content("~/Images/OletusKuva.png"))
@@ -52,6 +49,5 @@ asp-route-id="@Model.TuoteId">
                 @Html.DisplayFor(model => model.IdNumero)
             </div>
         </div>
-
     </div>
 </a>

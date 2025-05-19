@@ -17,24 +17,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.KategoriaId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.KategoriaNimi)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.KategoriaId)</th>
+            <th>@Html.DisplayNameFor(model => model.KategoriaNimi)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.KategoriaId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.KategoriaNimi)
-            </td>
+            <td>@Html.DisplayFor(modelItem => item.KategoriaId)</td>
+            <td>@Html.DisplayFor(modelItem => item.KategoriaNimi)</td>
             <td>
                 <a class="btn btn-main" asp-action="Edit" asp-route-id="@item.KategoriaId"><i class="fas fa-edit"></i></a>
                 <a class="btn btn-main" asp-action="Details" asp-route-id="@item.KategoriaId"><i class="fas fa-search"></i></a>

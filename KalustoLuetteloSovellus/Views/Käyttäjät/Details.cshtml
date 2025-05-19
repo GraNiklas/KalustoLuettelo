@@ -16,8 +16,8 @@
             <div class="col-md-2">
                 <dt class = "col-sm-2">@Html.DisplayNameFor(model => model.Käyttäjätunnus)</dt>
                 <dd class = "col-sm-10">@Html.DisplayFor(model => model.Käyttäjätunnus)</dd>
-    @*             <dt class = "col-sm-2">@Html.DisplayNameFor(model => model.Salasana)</dt>           
-                <dd class = "col-sm-10">@Html.DisplayFor(model => model.Salasana)</dd> *@
+                @*<dt class = "col-sm-2">@Html.DisplayNameFor(model => model.Salasana)</dt>           
+                <dd class = "col-sm-10">@Html.DisplayFor(model => model.Salasana)</dd>*@
                 <dt class = "col-sm-2">@Html.DisplayNameFor(model => model.Rooli)</dt>
                 <dd class = "col-sm-10">@Html.DisplayFor(model => model.Rooli.RooliNimi)</dd>
             </div>
@@ -25,7 +25,7 @@
 
     </div>
     <div class="text-center">
-@*         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.RooliId"><i class="fas fa-edit"></i> Muokkaa</a> *@
+        @*<a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.RooliId"><i class="fas fa-edit"></i> Muokkaa</a>*@
         <button class="btn btn-secondary" onclick="window.history.back()"><i class="fas fa-arrow-left"></i>Takaisin</button>
     </div>
 </div>

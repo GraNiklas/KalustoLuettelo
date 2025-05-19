@@ -56,7 +56,7 @@ namespace KalustoLuetteloSovellus.Controllers
                 "IdNumero" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.IdNumero) : tapahtumat.OrderBy(t => t.Tuote.IdNumero),
                 "Käyttäjä" => descending ? tapahtumat.OrderByDescending(t => t.Käyttäjä.Käyttäjätunnus) : tapahtumat.OrderBy(t => t.Käyttäjä.Käyttäjätunnus),
                 "Toimipiste" => descending ? tapahtumat.OrderByDescending(t => t.Tuote.Toimipiste.ToimipisteNimi) : tapahtumat.OrderBy(t => t.Tuote.Toimipiste.ToimipisteNimi),
-                _ => tapahtumat.OrderByDescending(t => t.AloitusPvm),
+                _ => tapahtumat.OrderByDescending(t => t.Tuote.IdNumero),
             };
         }
 
@@ -81,6 +81,7 @@ namespace KalustoLuetteloSovellus.Controllers
                     tapahtumat = ApplySorting(tapahtumat, sortField, descending);
                 }
             }
+
 
             // Apply filtering
             if (statusId.HasValue)
@@ -259,7 +260,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
                 _context.Add(tapahtuma);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("User", "Home");
             }
             ViewData["KäyttäjäId"] = new SelectList(_context.Käyttäjät, "KäyttäjäId", "KäyttäjäId", tapahtuma.KäyttäjäId);
             ViewData["TuoteId"] = new SelectList(_context.Tuotteet, "TuoteId", "TuoteId", tapahtuma.TuoteId);
