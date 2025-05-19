@@ -602,3 +602,13 @@ thead {
     border: 2px solid var(--main-color-hover);
     padding:16px;
 }
+
+/*kuvan lataus nappi*/
+.file-input::file-selector-button {
+    background-color: var(--main-color);
+    color: var(--bg-color);
+    padding: 6px 12px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
