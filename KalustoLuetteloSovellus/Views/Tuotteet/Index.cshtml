@@ -31,10 +31,11 @@
             <option value="">Kaikki kategoriat</option>
         </select>
     </div>
+
     <div class="form-group">
-        <label>Aktiivisuus</label>
-        <select name="onAktiivinen" class="form-control" style="height: 38px;" asp-items="ViewBag.Aktiiviset">
-            <option value="">Kaikki tilat</option>
+        <label>Status</label>
+        <select name="statusId" class="form-control" style="height: 38px;" asp-items="ViewBag.Statukset">
+            <option value="">Kaikki statukset</option>
         </select>
     </div>
     <div class="form-group">
@@ -117,18 +118,20 @@
                 kuvausHakusanalla: formData.get("kuvausHakusanalla"),
                 toimipisteId: formData.get("toimipisteId"),
                 kategoriaId: formData.get("kategoriaId"),
-                onAktiivinen: formData.get("onAktiivinen")
+                onAktiivinen: formData.get("onAktiivinen"),
+                statusId: formData.get("statusId")
             };
         }
         
         // Load tuotteet with optional filters and pagination
         function loadTuotteet({ page = currentPage, sortOrder = currentSortOrder } = {}) {
+            // hae ja näytä loading indikaattori
             const loading = document.getElementById('loading-indicator');
             if(sortOrder != null)
             {
                 loading.style.display = 'block'; // show loading
             }
-    
+            // hae filtterit
             const filters = getFilterParams();
             let params = new URLSearchParams({
                 pageSize,
@@ -142,7 +145,7 @@
 
             fetch(`/Tuotteet/GetTuotteetPartial?${params.toString()}`)
                 .then(res => {
-                    totalPages = parseInt(res.headers.get("X-TotalPages"));
+                    totalPages = parseInt(res.headers.get("X-TotalPages")); // hakee filtteröidyn sivumäärän
                     return res.text();
                 })
                 .then(html => {
@@ -198,6 +201,7 @@
         // Initial load
         loadTuotteet({ page: currentPage });
     
+        // luo dynaamisesti sivutus napit
         function renderPagination() {
             const paginationContainer = document.querySelector(".pagination");
             let html = `
@@ -234,6 +238,7 @@
             attachPaginationHandlers();
 
         }
+        // lisää eventlistenerit lajittelu otsikoihin
         function attachSortHandlers() {
             document.querySelectorAll('.sort-link').forEach(link => {
                 link.addEventListener('click', function(e) {

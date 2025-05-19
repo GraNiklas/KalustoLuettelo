@@ -28,7 +28,7 @@ namespace KalustoLuetteloSovellus.Controllers
         }
 
         // GET: Tuotteet
-        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null)
+        public async Task<IActionResult> Index(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null, int? statusId = null)
         {
             // Get the total number of products
             var totalTuotteet = await _context.Tuotteet.CountAsync();
@@ -52,6 +52,7 @@ namespace KalustoLuetteloSovellus.Controllers
             ViewBag.Kategoriat = new SelectList(await _context.Kategoriat.ToListAsync(), "KategoriaId", "KategoriaNimi", kategoriaId);
             ViewBag.Toimipisteet = new SelectList(await _context.Toimipisteet.ToListAsync(), "ToimipisteId", "KaupunkiJaToimipisteNimi", toimipisteId);
             ViewBag.Aktiiviset = new SelectList(new[] { new { Value = true, Text = "Aktiivinen" }, new { Value = false, Text = "Ei aktiivinen" } }, "Value", "Text", onAktiivinen);
+            ViewBag.Statukset = new SelectList(await _context.Statukset.ToListAsync(), "StatusId", "StatusNimi", statusId);
 
             ViewData["PageSize"] = pageSize;
             ViewData["CurrentPage"] = currentPage;
@@ -62,7 +63,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
         //ESITTELE TÄMÄ NÄYTÖSSÄ v
         [HttpGet]
-        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null, string? sortOrder = null)
+        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null, int? statusId = null,string? sortOrder = null)
         {
             var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)
@@ -80,6 +81,8 @@ namespace KalustoLuetteloSovellus.Controllers
                 tuotteet = tuotteet.Where(t => t.Aktiivinen == onAktiivinen.Value);
             if (toimipisteId.HasValue)
                 tuotteet = tuotteet.Where(t => t.ToimipisteId == toimipisteId.Value);
+            if (statusId.HasValue)
+                tuotteet = tuotteet.Where(t => t.Tapahtumat.OrderByDescending(t=>t.AloitusPvm).FirstOrDefault().StatusId == statusId.Value); //ota viimeisimmän tapahtuman status
 
             // Sorting
             tuotteet = sortOrder switch
@@ -133,6 +136,9 @@ namespace KalustoLuetteloSovellus.Controllers
 
                 "TuoteId" => tuotteet.OrderBy(t => t.TuoteId),
                 "TuoteId_desc" => tuotteet.OrderByDescending(t => t.TuoteId),
+                
+                "StatusId" => tuotteet.OrderBy(t => t.Tapahtumat.OrderByDescending(t => t.AloitusPvm).FirstOrDefault().StatusId),
+                "StatusId_desc" => tuotteet.OrderByDescending(t => t.Tapahtumat.OrderByDescending(t => t.AloitusPvm).FirstOrDefault().StatusId),
 
                 _ => tuotteet.OrderByDescending(t => t.TuoteId)
             };
