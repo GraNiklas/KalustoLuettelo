@@ -56,6 +56,11 @@
                     <input asp-for="Takuu" class="form-control mb-2" type="date" />
                     <span asp-validation-for="Takuu" class="text-danger"></span>
                 </div>
+                <div class="form-group form-check text-start">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Aktiivinen" /> @Html.DisplayNameFor(model => model.Aktiivinen)
+                    </label>
+                </div>
                @*  Tässä on compressaukseen viittaus esittele *@
                 @if (Model.Kuva != null && Model.Kuva.Length > 0)
                 {
@@ -74,11 +79,6 @@
                     <label asp-for="KuvaFile" class="control-label fw-bold text-start w-100"></label>
                     <input asp-for="KuvaFile" class="form-control mb-2 file-input" type="file" />
                     <span asp-validation-for="KuvaFile" class="text-danger"></span>
-                </div>
-                <div class="form-group form-check text-start">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="Aktiivinen" /> @Html.DisplayNameFor(model => model.Aktiivinen)
-                    </label>
                 </div>
                 <div class="d-flex mt-2 gap-2 mb-4">
                     <div class="form-group">
