@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="~/css/statusbadge.css" />
 
 
-<div class="d-flex flex-column justify-content-center text-center ">
+<div class="d-flex flex-column justify-content-center text-center " >
     <div class=" m-3">
         <div class="card h-100 d-flex align-items-center justify-content-center">
             <div class="card-body">
@@ -15,8 +15,8 @@
                 }
                 @await Html.PartialAsync("_StatusPartial", statusVarattu)
                 </div>
-                <h5 class="card-title">Varatut</h5>
-                <p class="card-text">Katso varatut tuotteet</p>
+                <h5 class="card-title" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Varatut</h5>
+                <p class="card-text" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Katso varatut tuotteet</p>
                 <a class="btn btn-primary" asp-action="Varatuttuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
             </div>
         </div>
@@ -30,8 +30,8 @@
                 }
                 @await Html.PartialAsync("_StatusPartial", statusHuollossa)
                 </div>
-                <h5 class="card-title">Huollossa</h5>
-                <p class="card-text">Katso huollossa olevat tuotteet</p>
+                <h5 class="card-title" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Huollossa</h5>
+                <p class="card-text" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Katso huollossa olevat tuotteet</p>
                 <a class="btn btn-primary" asp-action="Huollossatuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
             </div>
         </div>
@@ -45,8 +45,8 @@
                 }
                 @await Html.PartialAsync("_StatusPartial", statusVapaa)
                 </div>
-                <h5 class="card-title">Vapaana</h5>
-                <p class="card-text">Katso vapaana olevat tuotteet</p>
+                <h5 class="card-title" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Vapaana</h5>
+                <p class="card-text" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Katso vapaana olevat tuotteet</p>
                 <a class="btn btn-primary" asp-action="Vapaanatuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
             </div>
         </div>
