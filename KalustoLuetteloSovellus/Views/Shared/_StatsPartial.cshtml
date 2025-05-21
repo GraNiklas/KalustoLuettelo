@@ -14,10 +14,10 @@
 <div class="card align-items-center kalu-border w-100 h-100">
     <div >
         <div class="d-flex flex-column align-items-center mb-2"> 
-            <h5>@Model.Name</h5>            
-         </div>
+            <h5 style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>@Model.Name</h5>
+        </div>
         <div class="d-flex flex-column align-items-center mb-2" margin-top: 30px;">
-            <h1 style="margin-top: 30px;">@percentage%</h1>
+            <h1 style="margin-top: 30px; pointer-events:none;">@percentage%</h1>
         </div>
     </div>
     <div class="pie-chart-wrapper" style="margin-top: 30px;" title="@(percentage + "%")">
