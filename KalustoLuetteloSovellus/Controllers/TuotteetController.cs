@@ -62,7 +62,7 @@ namespace KalustoLuetteloSovellus.Controllers
 
         //ESITTELE TÄMÄ NÄYTÖSSÄ v
         [HttpGet]
-        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 10, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null, string? sortOrder = null)
+        public async Task<IActionResult> GetTuotteetPartial(int pageSize = 17, int currentPage = 0, string? kuvausHakusanalla = null, int? kategoriaId = null, bool? onAktiivinen = null, int? toimipisteId = null, string? sortOrder = null)
         {
             var tuotteet = _context.Tuotteet
                 .Include(t => t.Kategoria)

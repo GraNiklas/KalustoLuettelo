@@ -8,7 +8,7 @@
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
 }
 <div class="d-flex flex-column justify-content-center align-items-center text-center">
-    <h1 class="display-4">Tervetuloa KaLuun</h1>
+    <h1 class="display-4" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@">Tervetuloa KaLuun</h1>
 </div>
 
 @if(isLoggedIn)
@@ -17,7 +17,7 @@
     @* Tästä alkaa karusellinäkymä *@
 
     <section class="d-flex flex-column w-100 ps-5 pe-5">
-        <h5 class="text-center mt-5">Viimeksi lisätyt tuotteet (@Model.Count())</h5>
+        <h5 class="text-center mt-5" style="pointer-events:none;"@*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>Viimeksi lisätyt tuotteet (@Model.Count())</h5>
         <div class="carousel-container ">
             <button class="btn btn-sec" id="btnLeft" style="flex-grow:0;width:48px;height:48px;margin:auto"><i class="fas fa-arrow-left"></i></button>
             <div class="carousel-view">
@@ -37,7 +37,7 @@
 
         @* Tästä alkaa Status-tila näkymä *@
 
-        <div class="col-xl-2">@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
+        <div class="col-xl-2" >@await Html.PartialAsync("_TuoteStatusKortitPartial")</div>
 
         @* Tästä alkaa Statistiikka-näkymä *@
 
