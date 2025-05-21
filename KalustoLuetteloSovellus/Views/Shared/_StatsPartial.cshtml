@@ -3,10 +3,10 @@
 @model KalustoLuetteloSovellus.ViewModels.StatsViewModel
 
 @{
-    var percentage = 0f;
+    double percentage = 0;
     if (Model.Total != 0)
     {
-        percentage = (float)Model.Used / (float)Model.Total * 100f;
+        percentage = (double)Model.Used / (double)Model.Total * 100;
     }
 }
 
