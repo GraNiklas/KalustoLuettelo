@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.Security.Principal;
+using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Web;
+using System.Net.Http;
 
 namespace KalustoLuetteloSovellus.Controllers;
 
@@ -23,12 +26,15 @@ public class HomeController : Controller
     private readonly KaluDbContext _context;
     private readonly ILogger<HomeController> _logger;
     private readonly IEmailService _emailService;
+    private readonly HttpClient _httpClient;
 
-    public HomeController(ILogger<HomeController> logger, KaluDbContext context, IEmailService emailService)
+
+    public HomeController(ILogger<HomeController> logger, KaluDbContext context, IEmailService emailService, HttpClient httpClient)
     {
         _logger = logger;
         _context = context;
         _emailService = emailService;
+        _httpClient = httpClient;
     }
 
     public async Task<IActionResult> About()
@@ -179,9 +185,19 @@ public class HomeController : Controller
 
                 käyttäjä.Salasana = hasher.HashPassword(käyttäjä, käyttäjä.Salasana); // tämä hashaa salasanan
 
-                await _emailService.SendEmailAsync(käyttäjä.Käyttäjätunnus, "Hello", "This is a test email");
+
+                // tämä voi lähetttää kokonaisen nettisivun
+                //WebFetcher webFetcher = new WebFetcher(_httpClient);
+                //var emailContent = await webFetcher.GetPageHtmlAsync("https://www.bbc.com/news");
+
+                //var path = Path.Combine(Directory.GetCurrentDirectory(), "Views", "Shared", "Email.html");
+
+                //string emailContent = await System.IO.File.ReadAllTextAsync(path);
+
+                await _emailService.SendEmailAsync(käyttäjä.Käyttäjätunnus, "Rekisteröityminen", "kakkapallo");
 
                 await _context.Käyttäjät.AddAsync(käyttäjä);
+
                 await _context.SaveChangesAsync();
 
                 await AuthorizeUser(käyttäjä); // tämä autorisoi käyttäjän heti rekisteröinnin jälkeen
@@ -283,6 +299,10 @@ public class HomeController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
 
         return RedirectToAction("Index", "Home"); // mihin mennään kun login onnistuu
+    }
+    public IActionResult Email()
+    {
+        return PartialView("Email",new Käyttäjä() { KäyttäjäId = 0, Käyttäjätunnus = "PENIS"});
     }
 }
 

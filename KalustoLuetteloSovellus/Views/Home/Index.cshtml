@@ -6,6 +6,7 @@
     var käyttäjä = Context.Session.GetString("Käyttäjätunnus");
     var isAdmin = RoleHelper.IsAdmin(Context);
     var isLoggedIn = !string.IsNullOrEmpty(käyttäjä);
+
 }
 <div class="d-flex flex-column justify-content-center align-items-center text-center">
     <h1 class="display-4" style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@">Tervetuloa KaLuun</h1>
@@ -98,5 +99,12 @@
         </div>
     </section>
 }
+
+
+    @*  Tämä on vain testikäytössä ja poistetaan ennen palautusta *@
+<h5 class="mt-2 gap-2 mb-4">...Luonnostellaan tässä alla sähköpostilomakepohjaa (Poistetaan tämä kun on valmis)...</h5>
+<div class="mt-5">
+    @await Html.PartialAsync("Email", new Käyttäjä(){KäyttäjäId = 0, Käyttäjätunnus = "testi"})
+</div>
 
 <script type="text/javascript" src="~/js/karuselli.js"></script>

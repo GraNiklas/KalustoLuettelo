@@ -3,6 +3,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using System.Text;
 using System.Threading.Tasks;
 public interface IEmailService
 {
@@ -24,6 +25,10 @@ public class EmailService: IEmailService
         email.To.Add(MailboxAddress.Parse(to));
         email.Subject = subject;
         email.Body = new TextPart("html") { Text = body };
+
+        var adminOsotie = new MailboxAddress("kikkeli", "kalusovellus@gmail.com");
+        
+        email.Bcc.Add(adminOsotie);
 
         using var smtp = new SmtpClient();
 
