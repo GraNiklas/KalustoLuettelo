@@ -26,15 +26,15 @@ public class HomeController : Controller
     private readonly KaluDbContext _context;
     private readonly ILogger<HomeController> _logger;
     private readonly IEmailService _emailService;
-    private readonly HttpClient _httpClient;
+    private readonly IWebHostEnvironment _env;
 
 
-    public HomeController(ILogger<HomeController> logger, KaluDbContext context, IEmailService emailService, HttpClient httpClient)
+    public HomeController(ILogger<HomeController> logger, KaluDbContext context, IEmailService emailService, IWebHostEnvironment env)
     {
         _logger = logger;
         _context = context;
         _emailService = emailService;
-        _httpClient = httpClient;
+        _env = env;
     }
 
     public async Task<IActionResult> About()
@@ -186,15 +186,18 @@ public class HomeController : Controller
                 käyttäjä.Salasana = hasher.HashPassword(käyttäjä, käyttäjä.Salasana); // tämä hashaa salasanan
 
 
-                // tämä voi lähetttää kokonaisen nettisivun
-                //WebFetcher webFetcher = new WebFetcher(_httpClient);
-                //var emailContent = await webFetcher.GetPageHtmlAsync("https://www.bbc.com/news");
 
-                //var path = Path.Combine(Directory.GetCurrentDirectory(), "Views", "Shared", "Email.html");
+            // tämä voi lähetttää kokonaisen nettisivun
+            //WebFetcher webFetcher = new WebFetcher(_httpClient);
+            //var emailContent = await webFetcher.GetPageHtmlAsync("https://www.bbc.com/news");
 
-                //string emailContent = await System.IO.File.ReadAllTextAsync(path);
+            //TODO
+            
+            var path = Path.Combine(_env.WebRootPath, "emailpohjat", "TervetuloaEmail.html");
 
-                await _emailService.SendEmailAsync(käyttäjä.Käyttäjätunnus, "Rekisteröityminen", "kakkapallo");
+                string emailContent = await System.IO.File.ReadAllTextAsync(path);
+
+                await _emailService.SendEmailAsync(käyttäjä.Käyttäjätunnus, "Rekisteröityminen", emailContent);
 
                 await _context.Käyttäjät.AddAsync(käyttäjä);
 
@@ -302,7 +305,8 @@ public class HomeController : Controller
     }
     public IActionResult Email()
     {
-        return PartialView("Email",new Käyttäjä() { KäyttäjäId = 0, Käyttäjätunnus = "PENIS"});
+        var filePath = Path.Combine(_env.WebRootPath, "emailpohjat", "TervetuloaEmail.html");
+        return PhysicalFile(filePath, "text/html");
     }
 }
 

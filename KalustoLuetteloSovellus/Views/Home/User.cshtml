@@ -17,7 +17,12 @@
             <th>Rooli</th>
             <th>Tapahtumia</th>
             <th>Palauttamattomia</th>
-            @* <th>Toiminnot</th> *@
+            @if(!Model.Tapahtumat.Any())
+            {
+                <th>Toiminnot</th> 
+            }
+                
+
         </tr>
     </thead>
     <tbody>
