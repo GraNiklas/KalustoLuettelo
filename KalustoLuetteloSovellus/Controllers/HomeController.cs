@@ -18,6 +18,7 @@ using System.Security.Principal;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Web;
 using System.Net.Http;
+using System.Drawing.Printing;
 
 namespace KalustoLuetteloSovellus.Controllers;
 
@@ -45,6 +46,7 @@ public class HomeController : Controller
     {
         if (_context.K‰ytt‰j‰t.Any() && HttpContext.User.Identity.IsAuthenticated)
         {
+            ViewData["Statukset"] = await _context.Statukset.ToListAsync(); // lis‰‰ statukset index sivulle piirakkakaaviolle
             // Extract claims from the cookie
             var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
             var userNameClaim = HttpContext.User.FindFirst("UserName")?.Value;

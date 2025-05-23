@@ -1,0 +1,65 @@
+﻿@* Statistiikka näkymä *@
+
+@model KalustoLuetteloSovellus.ViewModels.PieChartViewModel
+@{
+    var statusColors = new Dictionary<string, string>
+   {
+        { "Varattu", "#E74C3C" },
+        { "Vapaa", "#27AE60" },
+        { "Huollossa", "#F1C40F" },
+        { "Kadonnut", "#3498DB" },
+        { "Poistettu", "#95A5A6" },
+        { "Disabled", "#545C5C" },
+        { "muu", "#9B59B6" }
+    };
+
+    float cumulativeRotation = 0f;
+}
+
+<div class="card align-items-center kalu-border w-100 h-100">
+    <div >
+        <div class="d-flex flex-column align-items-center mb-2"> 
+            <h5 style="pointer-events:none;">Status piirakka</h5>
+        </div>
+    </div>
+    <div class="d-flex flex-column align-items-center mb-2 margin-top: 30px;">
+        @foreach (var item in statusColors)
+        {
+        <div class="d-flex flex-row align-items-center w-100 justify-content-start">
+            <div style="border-radius:8px;height:16px;width:16px;background-color:@item.Value"></div>
+            <p class="p-0 m-0">@item.Key</p>
+        </div>
+        }
+    </div>
+    <div class="pie-chart-wrapper" style="margin-top: 30px;" >
+        <div class="pie-chart-container">
+            <div class="pie-chart-bg"></div>
+            @{
+                foreach (var item in Model.Data)
+                {
+                    var percentageString = $"{item.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)}%"; // muuttaa pilkun pisteeksi että css osaa lukea
+                    var color = statusColors.ContainsKey(item.Key) ? statusColors[item.Key] : statusColors["muu"]; // hakee palan värin
+                    var sliceAngle = item.Value * 3.6f; // palan asteet prosentti * 3,6 astetta.  
+
+                    <div class="pie-chart-fill" style="--fill: @percentageString; transform: rotate(@(cumulativeRotation.ToString(System.Globalization.CultureInfo.InvariantCulture) + "deg")); background: conic-gradient(@color 0% var(--fill), transparent var(--fill) 100%);"></div>
+                    cumulativeRotation += sliceAngle; // lisää edellisen palan asteet seuraavalle
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@*
+
+
+<script>
+function updatePieChartFill(percentage) {
+    const pieChartFill = document.querySelector('.pie-chart-fill');
+    pieChartFill.style.setProperty('--fill', `${percentage}%`);
+}
+
+setTimeout(() => {
+    updatePieChartFill(@percentage);
+}, 1000);
+</script>
+*@
