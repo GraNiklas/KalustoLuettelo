@@ -3,11 +3,13 @@
 @model KalustoLuetteloSovellus.ViewModels.StatsViewModel
 
 @{
-    double percentage = 0;
+    float percentage = 0f;
     if (Model.Total != 0)
     {
-        percentage = (double)Model.Used / (double)Model.Total * 100;
+        percentage = ((float)Model.Used / (float)Model.Total) * 100f;
+
     }
+    int percentageInt = (int)percentage;
     var percentageString = $"{percentage:F1}%";
 }
 
@@ -15,7 +17,7 @@
 <div class="card align-items-center kalu-border w-100 h-100">
     <div >
         <div class="d-flex flex-column align-items-center mb-2"> 
-            <h5 style="pointer-events:none;" @*Lisäsin tämän manuaalisesti koska en löytänyt Luokkaa tyyle tiedostoista*@>@Model.Name</h5>
+            <h5 style="pointer-events:none;">@Model.Name</h5>
         </div>
         <div class="d-flex flex-column align-items-center mb-2" margin-top: 30px;">
             <h1 style="margin-top: 30px; pointer-events:none;">@percentageString</h1>
@@ -24,7 +26,7 @@
     <div class="pie-chart-wrapper" style="margin-top: 30px;" title="@percentageString">
         <div class="pie-chart-container">
             <div class="pie-chart-bg"></div>
-            <div class="pie-chart-fill" style="--fill: @percentage%"></div>
+            <div class="pie-chart-fill" style="--fill: @percentageInt%"></div>
         </div>
     </div>
 </div>

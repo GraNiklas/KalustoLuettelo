@@ -251,7 +251,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+
         public async Task<IActionResult> Create(Tapahtuma tapahtuma)
         {
             if (ModelState.IsValid)
