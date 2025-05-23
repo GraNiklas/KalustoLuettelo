@@ -25,9 +25,9 @@
     <div class="d-flex flex-column align-items-center mb-2 margin-top: 30px;">
         @foreach (var item in statusColors)
         {
-        <div class="d-flex flex-row align-items-center w-100 justify-content-start">
+        <div class="d-flex flex-row align-items-center w-100 justify-content-start gap-2">
             <div style="border-radius:8px;height:16px;width:16px;background-color:@item.Value"></div>
-            <p class="p-0 m-0">@item.Key</p>
+            <p class="p-0 m-0">@item.Key @(Model.Data.GetValueOrDefault(item.Key).ToString("F1") )%</p>
         </div>
         }
     </div>
