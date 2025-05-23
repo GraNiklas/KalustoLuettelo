@@ -43,12 +43,13 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        if (HttpContext.User.Identity.IsAuthenticated)
+        if (_context.Käyttäjät.Any() && HttpContext.User.Identity.IsAuthenticated)
         {
             // Extract claims from the cookie
             var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
             var userNameClaim = HttpContext.User.FindFirst("UserName")?.Value;
             var userRoleClaim = HttpContext.User.FindFirst("Role")?.Value;
+
 
 
             if (!string.IsNullOrEmpty(userIdClaim) && !string.IsNullOrEmpty(userNameClaim) && !string.IsNullOrEmpty(userRoleClaim))
@@ -162,15 +163,23 @@ public class HomeController : Controller
             var adminRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliNimi == "Admin");
             var userRooli = await _context.Roolit.FirstOrDefaultAsync(r => r.RooliNimi == "User");
 
-            if (userRooli == null)
+            if (userRooli == null || adminRooli == null)
             {
-                Console.WriteLine("user rooli ei löydy tietokannasta, mahdollinen ongelma DbInitializer luokassa");
-                ViewBag.ErrorMessage = "Admin roolia ei löydy. Ota yhteys järjestelmänvalvojaan.";
+                Console.WriteLine("Roolit ei löydy tietokannasta, mahdollinen ongelma DbInitializer luokassa");
+                ViewBag.ErrorMessage = "Rooleja ei löydy. Ota yhteys järjestelmänvalvojaan.";
                 return View("Error");
             }
             
 
-            käyttäjä.RooliId = userRooli.RooliId;
+            if(_context.Käyttäjät.Count() == 0)
+            {
+                käyttäjä.RooliId = adminRooli.RooliId;
+            }
+            else
+            {
+                käyttäjä.RooliId = userRooli.RooliId;
+            }
+
 
             var olemassaolevaKäyttäjä = await _context.Käyttäjät.FirstOrDefaultAsync(k => k.Käyttäjätunnus == käyttäjä.Käyttäjätunnus);
             if (olemassaolevaKäyttäjä != null)

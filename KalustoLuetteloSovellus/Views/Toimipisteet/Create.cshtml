@@ -16,9 +16,14 @@
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
+                    <label asp-for="Oppilaitos" class="control-label fw-bold text-start w-100"></label>
+                    <input asp-for="Oppilaitos" class="form-control mb-2" />
+                    <span asp-validation-for="Oppilaitos" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                     <label asp-for="Kaupunki" class="control-label fw-bold text-start w-100"></label>
                     <input asp-for="Kaupunki" class="form-control mb-2" />
-                        <span asp-validation-for="Kaupunki" class="text-danger"></span>
+                    <span asp-validation-for="Kaupunki" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                     <label asp-for="ToimipisteNimi" class="control-label fw-bold text-start w-100"></label>

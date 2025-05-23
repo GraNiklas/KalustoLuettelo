@@ -477,6 +477,7 @@ select{
     transition: white-space 1s ease;
     position: relative;
     background-color: var(--bg-color);
+    align-content:center;
 }
 /*
 .table td:hover {

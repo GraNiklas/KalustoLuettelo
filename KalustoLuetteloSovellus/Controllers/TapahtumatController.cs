@@ -199,7 +199,8 @@ namespace KalustoLuetteloSovellus.Controllers
 
             palautusTapahtuma.AloitusPvm = DateTime.Now;
             palautusTapahtuma.LopetusPvm = DateTime.Now; // en tiedä tarviiko muuttaa lopetus päivää palautuspäiväksi mutta ehkäpä.
-            palautusTapahtuma.StatusId = 60001; // status vapaa
+            var vapaaId = _context.Statukset.FirstOrDefault(s=>s.StatusNimi == "Vapaa").StatusId;
+            palautusTapahtuma.StatusId = vapaaId; // status vapaa
 
 
             return View("Create",palautusTapahtuma);
@@ -250,6 +251,7 @@ namespace KalustoLuetteloSovellus.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Create(Tapahtuma tapahtuma)
         {
             if (ModelState.IsValid)
