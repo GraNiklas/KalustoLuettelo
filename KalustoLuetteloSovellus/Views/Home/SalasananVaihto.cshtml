@@ -1,0 +1,70 @@
+﻿
+@model KalustoLuetteloSovellus.ViewModels.SalasananVaihtoViewModel
+
+@{
+    ViewData["Title"] = "Salasanan vaihto";
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<h1>Salasanan vaihto</h1>
+
+@* Tästä alkaa rekisteröitymislomake-näkymä *@
+
+@using (Html.BeginForm("SalasananVaihto", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form mx-auto" style="max-width: 300px;">
+        <form asp-action="Register">
+        
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="VanhaSalasana" class="control-label"></label>
+            <input asp-for="VanhaSalasana" class="form-control" type="password" />
+            <span asp-validation-for="VanhaSalasana" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="UusiSalasana" class="control-label"></label>
+            <input asp-for="UusiSalasana" class="form-control" type="password" />
+            <span asp-validation-for="UusiSalasana" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="VahvistaSalasana">Vahvista salasana</label>
+            <input name="VahvistaSalasana" type="password" class="form-control" required />
+            <span id="confirmError" class="text-danger"></span>
+        </div>
+    <label class="text-danger">
+        @* @Html.DisplayFor(model => model.LoginErrorMessage) *@
+    </label>
+    <div class="form-group">
+            <button type="submit" value="Rekisteröidy" class="btn btn-success">
+                Vaihda
+            </button>
+    </div>
+    </form>
+</div>
+}
+
+@* Tässä varmistetaan käyttäjätunnuksen ja salasanan yhteensopivuus *@
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const password = document.querySelector('[name="UusiSalasana"]');
+        const confirm = document.querySelector('[name="VahvistaSalasana"]');
+        const errorSpan = document.getElementById("confirmError");
+
+        function checkMatch() {
+            if (confirm.value !== password.value) {
+                errorSpan.textContent = "Salasanat eivät täsmää";
+            } else {
+                errorSpan.textContent = "";
+            }
+        }
+
+        password.addEventListener('input', checkMatch);
+        confirm.addEventListener('input', checkMatch);
+    });
+</script>

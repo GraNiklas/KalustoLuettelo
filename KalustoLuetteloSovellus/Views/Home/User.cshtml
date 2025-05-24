@@ -8,6 +8,14 @@
 
 @* Tässä näytetään omat tiedot rivinäkymänä *@
 
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
 <br />
 <h5>Käyttäjän tiedot</h5>
 <table class="table table-bordered w-50">
@@ -17,12 +25,7 @@
             <th>Rooli</th>
             <th>Tapahtumia</th>
             <th>Palauttamattomia</th>
-            @if(!Model.Tapahtumat.Any())
-            {
-                <th>Toiminnot</th> 
-            }
-                
-
+            <th>Toiminnot</th> 
         </tr>
     </thead>
     <tbody>
@@ -43,10 +46,13 @@
                 @käyttäjänAukiOlevatTapahtumat.Count() kpl
                 @{
 
-                if(!Model.Tapahtumat.Any())
-                {
-                    <td><a class="btn btn-main" asp-controller="Home" onclick="return confirm('Haluatko varmasti poistaa tilin?')" asp-action="DeleteAccount" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-trash"></i> Poista tili</a></td>
-                }
+                    <td>
+                    <a class="btn btn-main" asp-controller="Home" asp-action="SalasananVaihto" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-key"></i> Vaihda salasana</a>
+                    @if(!Model.Tapahtumat.Any())
+                    {
+                        <a class="btn btn-main" asp-controller="Home" onclick="return confirm('Haluatko varmasti poistaa tilin?')" asp-action="DeleteAccount" asp-route-käyttäjäId="@Model.KäyttäjäId"><i class="fas fa-trash"></i> Poista tili</a>
+                    }
+                    </td>
             }
         </tr>
     </tbody>

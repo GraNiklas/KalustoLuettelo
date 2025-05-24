@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Web;
 using System.Net.Http;
 using System.Drawing.Printing;
+using KalustoLuetteloSovellus.ViewModels;
 
 namespace KalustoLuetteloSovellus.Controllers;
 
@@ -318,6 +319,64 @@ public class HomeController : Controller
     {
         var filePath = Path.Combine(_env.WebRootPath, "emailpohjat", "TervetuloaEmail.html");
         return PhysicalFile(filePath, "text/html");
+    }
+    [HttpGet]
+    public IActionResult SalasananVaihto(int k‰ytt‰j‰Id)
+    {
+        return View();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult SalasananVaihto(SalasananVaihtoViewModel salasananVaihtoViewModel)
+    {
+        var kirjautunutK‰ytt‰j‰ = _context.K‰ytt‰j‰t.Include(k => k.Rooli) // hae k‰ytt‰j‰ ja include kaikki navigointi data
+            .Include(k => k.Tapahtumat)
+                .ThenInclude(k => k.Status)
+            .Include(k => k.Tapahtumat)
+                .ThenInclude(t => t.Tuote)
+                .ThenInclude(t => t.Toimipiste)
+            .FirstOrDefault(k => k.K‰ytt‰j‰Id == HttpContext.Session.GetInt32("K‰ytt‰j‰Id")); // t‰m‰ hakee kirjautuneen k‰ytt‰j‰n id:n sessiosta
+
+
+        if (kirjautunutK‰ytt‰j‰ == null)
+        {
+            salasananVaihtoViewModel.Virheviesti = "K‰ytt‰j‰‰ ei lˆydy.";
+            return View("index");
+        }
+
+
+        // salasanan vaihto jutut
+        // Authorize
+        var hasher = new PasswordHasher<K‰ytt‰j‰>();
+        if (string.IsNullOrEmpty(kirjautunutK‰ytt‰j‰.Salasana))
+        {
+            ViewBag.ErrorMessage = "Tyhj‰ salasana kentt‰.";
+            return View("Login");
+        }
+        var hashattuVanhaSalasana = hasher.HashPassword(kirjautunutK‰ytt‰j‰,salasananVaihtoViewModel.VanhaSalasana); // hashaa t‰m‰ ensin ett‰ voi verrata tietokantaan
+
+        var result = hasher.VerifyHashedPassword(kirjautunutK‰ytt‰j‰, kirjautunutK‰ytt‰j‰.Salasana, salasananVaihtoViewModel.VanhaSalasana); // t‰m‰ varmistaa ett‰ vanha salasana on oikein
+
+        if (result == PasswordVerificationResult.Success) // tarkistaa onko salasana verifikaatio success
+        {
+            // jos on ok hashaa uusi salasana ja tallennna
+
+
+            kirjautunutK‰ytt‰j‰.Salasana = hasher.HashPassword(kirjautunutK‰ytt‰j‰, salasananVaihtoViewModel.UusiSalasana); // t‰m‰ hashaa uuden salasanan
+            
+            _context.SaveChanges(); // tallennetaan muutokset tietokantaan
+
+            ViewBag.SuccessMessage = "Salasana vaihdettu onnistuneesti!";
+            return View("user", kirjautunutK‰ytt‰j‰);
+        }
+        else
+        {
+                
+            ViewBag.ErrorMessage = "V‰‰r‰ salasana!";
+            return View("user", kirjautunutK‰ytt‰j‰);
+        }
+
+
     }
 }
 
