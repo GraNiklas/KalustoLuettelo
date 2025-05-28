@@ -1,20 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KalustoLuetteloSovellus.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Routing;
+
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
-using System.IO;
-using System.Threading.Tasks;
-using System;
+
 
 namespace KalustoLuetteloSovellus.Controllers
 {

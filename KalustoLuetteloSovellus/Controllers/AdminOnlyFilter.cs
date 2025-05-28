@@ -13,7 +13,7 @@ public class AdminOnlyFilter : IActionFilter
     {
         var rooli = context.HttpContext.Session.GetString("Rooli");
 
-        if (rooli != "Admin")
+        if (rooli != "Admin") // voi käyttää rolehelper luokkaa tässä
         {
             context.Result = new RedirectToActionResult("AccessDenied", "Home", null);
         }

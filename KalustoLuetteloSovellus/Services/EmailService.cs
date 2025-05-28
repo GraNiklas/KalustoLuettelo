@@ -1,10 +1,7 @@
-﻿using Humanizer;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System.Text;
-using System.Threading.Tasks;
 public interface IEmailService
 {
     Task SendEmailAsync(string toEmail, string subject, string body);
@@ -26,7 +23,7 @@ public class EmailService: IEmailService
         email.Subject = subject;
         email.Body = new TextPart("html") { Text = body };
 
-        var adminOsotie = new MailboxAddress("kikkeli", "kalusovellus@gmail.com");
+        var adminOsotie = new MailboxAddress("Application", "kalusovellus@gmail.com");
         
         email.Bcc.Add(adminOsotie);
 

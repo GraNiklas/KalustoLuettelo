@@ -11,7 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Tämä hakee connection stringin appsettings.jsonista
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Lisää dbcontextin meidän azure sql serveriin i.e yhdistää sovelluksen azuren databaseen
+// Lisää DbContext palveluihin, jotta sitä voidaan injektoida controllereihin.
+// Konfiguroi DbContext käyttämään SQL Serveriä annetulla connection stringillä,
+// eli yhdistää sovelluksen esim. Azure SQL -tietokantaan.
 builder.Services.AddDbContext<KaluDbContext>(options => options.UseSqlServer(connectionString)); 
 
 
@@ -27,6 +29,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 // Sessionin ja cookien asetukset, session käyttöön tarvitaan tämä distributed memory cache
 builder.Services.AddDistributedMemoryCache();
 
+// Session konfigurointi, jotta voidaan käyttää sessionhallintaa sovelluksessa
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(60);
@@ -77,9 +80,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Palvelee staattisia tiedostoja (esim. CSS, JS, kuvat) wwwroot-kansiosta
-app.UseStaticFiles(); 
+app.UseStaticFiles();
 
-// Ottaa käyttöön reitityksen, jotta pyyntö ohjataan oikealle controllerille ja actionille
+// Ottaa käyttöön reitityksen, jotta pyyntö ohjataan oikealle controllerille ja sen action-metodille
 app.UseRouting();
 
 // Ottaa käyttöön sessionhallinnan (esimerkiksi käyttäjän tilatiedot)
