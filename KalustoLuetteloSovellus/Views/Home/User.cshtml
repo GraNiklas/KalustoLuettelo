@@ -68,4 +68,4 @@
 @* @await Html.PartialAsync("_TapahtumaRivitPartial", käyttäjänAukiOlevatTapahtumat) *@
 
 <h5>Käyttäjän luomat tapahtumat</h5>
-@await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat.OrderByDescending(t => t.TapahtumaId))
+@await Html.PartialAsync("_TapahtumaRivitPartial", Model.Tapahtumat.OrderByDescending(t => t.TapahtumaId).Take(10), new ViewDataDictionary(ViewData) { { "lajittelu", false } })
