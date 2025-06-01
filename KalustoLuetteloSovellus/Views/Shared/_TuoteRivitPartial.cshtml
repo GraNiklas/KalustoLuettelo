@@ -68,7 +68,10 @@
             var deaktivoituTyyli = item.Aktiivinen ? "" : "opacity:0.3";
             
             <tr data-itemid="@item.TuoteId" style="@deaktivoituTyyli;">
+                @* Laajennuspainike *@
                 <td><a data-orderid="@item.TuoteId" data-bs-toggle="collapse" href="#collapse_@item.TuoteId" aria-expanded="false"><i class="btn btn-main fas fa-list" style="color:black"></i></a></td>
+                
+                @* Tämä näyttää TuoteId:n päällä tekstin *@
                 <td title="@item.TuoteId"><a class="nav-link" asp-action="Details" asp-controller="Tuotteet" asp-route-id="@item.TuoteId">@item.TuoteId</a></td>
                 @* <td title="@item.TuoteId">@Html.DisplayFor(modelItem => item.TuoteId)</td> *@
                 <td class="ms-auto">
@@ -108,6 +111,7 @@
             </tr>
             <tr>
                 <td colspan="13">
+                    @* Tämä on laajennettava/piilotettava osio *@
                     <div id="collapse_@item.TuoteId" class="collapse"  aria-labelledby="heading_@item.TuoteId">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -145,10 +149,8 @@
                             <hr />
                             <p class="fw-bold"> Tuotteen @item.Kuvaus 10 viimeisintä tapahtumaa. Tuotteen kaikki tapahtumat: @item.Tapahtumat.Count() </p>
                                 
-                                
-                            @await Html.PartialAsync("_TapahtumaRivitPartial",
-                                        item.Tapahtumat.OrderByDescending(t => t.AloitusPvm).Take(10),
-                                        new ViewDataDictionary(ViewData) { { "lajittelu", false } })
+                            @* Tapahtumarivit näkyvät tässä ja lajittelu poistettu *@ 
+                            @await Html.PartialAsync("_TapahtumaRivitPartial",item.Tapahtumat.OrderByDescending(t => t.AloitusPvm).Take(10),new ViewDataDictionary(ViewData) { { "lajittelu", false } })
                         </div>
                     </div>
                 </td>
