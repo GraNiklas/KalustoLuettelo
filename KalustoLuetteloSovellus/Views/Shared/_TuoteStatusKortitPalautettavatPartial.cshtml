@@ -6,8 +6,11 @@
 
 <div class="d-flex flex-row justify-content-center text-center">
     <div class="m-3">
-        <div class="card d-flex align-items-center justify-content-center" style="width: 300px; height: 160px;">
-            <div class="card-body position-relative text-nowrap">
+        <div class="card d-flex align-items-center justify-content-center"
+             style="width: 300px; height: 160px; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease; border: 2px solid #333333; background-color: #fafafa;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.border='4px solid #d7af4d'; this.style.boxShadow='0 4px 12px rgba(215, 175, 77, 0.6)';"
+             onmouseout="this.style.transform='scale(1)'; this.style.border='2px solid #333333'; this.style.boxShadow='none';">
+            <div class="card-body position-relative text-nowrap" style="color: #222;">
                 <div style="position: absolute; top: 10px; right: 20px;">
                     @{
                         var statusVarattu = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Varattu" };
@@ -16,13 +19,18 @@
                 </div>
                 <h5 class="card-title">Varatut</h5>
                 <p class="card-text">Katso varatut tuotteet</p>
-                <a class="btn btn-primary" asp-action="Varatuttuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
+                <a class="btn btn-primary" asp-action="Varatuttuotteet" asp-controller="Tuotteet">
+                    <i class="fas fa-arrow-right"></i> Valitse
+                </a>
             </div>
         </div>
     </div>
     <div class="m-3">
-        <div class="card d-flex align-items-center justify-content-center" style="width: 300px; height: 160px;">
-            <div class="card-body position-relative text-nowrap">
+        <div class="card d-flex align-items-center justify-content-center"
+             style="width: 300px; height: 160px; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease; border: 2px solid #333333; background-color: #fafafa;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.border='4px solid #d7af4d'; this.style.boxShadow='0 4px 12px rgba(215, 175, 77, 0.6)';"
+             onmouseout="this.style.transform='scale(1)'; this.style.border='2px solid #333333'; this.style.boxShadow='none';">
+            <div class="card-body position-relative text-nowrap" style="color: #222;">
                 <div style="position: absolute; top: 10px; right: 20px;">
                     @{
                         var statusHuollossa = new KalustoLuetteloSovellus.Models.Status { StatusNimi = "Huollossa" };
@@ -31,9 +39,12 @@
                 </div>
                 <h5 class="card-title">Huollossa</h5>
                 <p class="card-text">Katso huollossa olevat tuotteet</p>
-                <a class="btn btn-primary" asp-action="Huollossatuotteet" asp-controller="Tuotteet"><i class="fas fa-arrow-right"></i> Valitse</a>
+                <a class="btn btn-primary" asp-action="Huollossatuotteet" asp-controller="Tuotteet">
+                    <i class="fas fa-arrow-right"></i> Valitse
+                </a>
             </div>
         </div>
-    </div>    
+    </div>
 </div>
+
 
